@@ -1,3 +1,3 @@
 # Utilities
 
-A description of this package.
+Miscellaneous helper functions, subscripts, and infix operators 
