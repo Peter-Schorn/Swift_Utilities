@@ -114,15 +114,20 @@ public extension Array {
             Array(self[$0 ..< Swift.min($0 + size, count)])
         }
     }
+    
+    subscript(back i: Int) -> Element {
+        get { return self[self.count - i] }
+        set { self[self.count - i] = newValue }
+    }
  
 }
 
-public extension Collection where Index: Comparable {
-
-    /// Enables accessing elemnts from the end backwards
-    /// [back: 1] returns the last element,
-    /// [back: 2] returns the second last, and so on
-    subscript(back i: Int) -> Iterator.Element {
-        return self[self.index(self.endIndex, offsetBy: -i)]
-    }
-}
+// public extension Collection where Index: Comparable {
+//
+//     /// Enables accessing elemnts from the end backwards
+//     /// [back: 1] returns the last element,
+//     /// [back: 2] returns the second last, and so on
+//     subscript(back i: Int) -> Iterator.Element {
+//         return self[self.index(self.endIndex, offsetBy: -i)]
+//     }
+// }
