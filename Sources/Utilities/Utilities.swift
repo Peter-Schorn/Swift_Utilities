@@ -125,12 +125,14 @@ public extension Array {
  
 }
 
-// public extension Collection where Index: Comparable {
-//
-//     /// Enables accessing elemnts from the end backwards
-//     /// [back: 1] returns the last element,
-//     /// [back: 2] returns the second last, and so on
-//     subscript(back i: Int) -> Iterator.Element {
-//         return self[self.index(self.endIndex, offsetBy: -i)]
-//     }
-// }
+
+extension Double {
+    
+    /// strips trailing zeros and the returns string representation
+    var stripTrailingZeros: String {
+        let formatter = NumberFormatter()
+        let number = NSNumber(value: self)
+        formatter.minimumFractionDigits = 0
+        return String(formatter.string(from: number) ?? "")
+    }
+}
