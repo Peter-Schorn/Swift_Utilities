@@ -115,6 +115,9 @@ public extension Array {
         }
     }
     
+    /// Enables accessing elemnts from the end backwards
+    /// [back: 1] returns the last element,
+    /// [back: 2] returns the second last, and so on
     subscript(back i: Int) -> Element {
         get { return self[self.count - i] }
         set { self[self.count - i] = newValue }
