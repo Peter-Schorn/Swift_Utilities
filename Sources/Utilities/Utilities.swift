@@ -128,11 +128,9 @@ public extension Array {
 
 extension Double {
     
-    /// strips trailing zeros and the returns string representation
+    /// strips trailing zeros and returns the string representation.
+    /// equivalent to String(format: "%g", self)
     var stripTrailingZeros: String {
-        let formatter = NumberFormatter()
-        let number = NSNumber(value: self)
-        formatter.minimumFractionDigits = 0
-        return String(formatter.string(from: number) ?? "")
+        return String(format: "%g", self)
     }
 }
