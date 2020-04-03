@@ -1,7 +1,7 @@
 
 import Foundation
 
-// I am making another change right now
+// new version
 
 public func UtilitiesTest() {
     print("hello from the utilities package!")
