@@ -144,8 +144,9 @@ public extension String {
         return self
     }
 
-    func split(_ pattern: String) -> [String] {
-        return self.components(separatedBy: pattern)
+    /// alias for .components(separatedBy: separator)
+    func split(_ separator: String) -> [String] {
+        return self.components(separatedBy: separator)
     }
     
     
