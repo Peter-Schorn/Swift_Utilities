@@ -1,7 +1,7 @@
 
 import Foundation
 
-// new version
+// I added this from within the ListView SwiftUI project
 
 public func UtilitiesTest() {
     print("hello from the utilities package!")
@@ -29,6 +29,39 @@ public func currentTime() -> String {
     timeFormatter.timeStyle = .medium
     let dateTimeString = timeFormatter.string(from: date)
     return dateTimeString + "\n"
+}
+
+// #################################################################
+
+/// runs a shell script and returns the output with the trailing new line stripped
+/// - Parameters:
+///   - args: a list of arguments to run
+///   - launchPath: the path from which to launch the script. Default is /usr/bin/env
+/// - Returns: the output as String?
+func runShellScript(args: [String], launchPath: String = "/usr/bin/env") -> String? {
+    
+    // Create a Task instance
+    let task = Process()
+
+    // Set the task parameters
+    task.launchPath = launchPath
+    task.arguments = args
+     
+    // Create a Pipe and make the task
+    // put all the output there
+    let pipe = Pipe()
+    task.standardOutput = pipe
+
+    // Launch the task
+    task.launch()
+
+    // Get the data
+    let data = pipe.fileHandleForReading.readDataToEndOfFile()
+    let NSoutput = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
+    let output = NSoutput as String?
+    return output?.stripped()
+    
+
 }
 
 // #################################################################
@@ -99,9 +132,16 @@ public extension String {
         
     }
 
-    /// removes trailing and leading white space
-    func strip() -> String {
+    /// Removes trailing and leading white space.
+    /// Alias for self.trimmingCharacters(in: .whitespacesAndNewlines)
+    func stripped() -> String {
         return self.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    /// Strips trailing and leading white space **in place**
+    mutating func strip() -> String {
+        self = self.stripped()
+        return self
     }
 
 }
@@ -134,3 +174,4 @@ extension Double {
         return String(format: "%g", self)
     }
 }
+
