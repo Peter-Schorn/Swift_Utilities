@@ -195,16 +195,6 @@ extension Double {
 }
 
 
-
-extension String {
-    
-    func regexSub(_ pattern: String, with: String) -> String {
-        return self.replacingOccurrences(
-            of: pattern, with: with, options: [.regularExpression]
-        )
-    }
-}
-
 /// propertyWrapper that removes characters that match a regular expression pattern
 ///
 /// This example will remove all non-word characters from a string
@@ -219,7 +209,7 @@ extension String {
 ///
 /// }
 @propertyWrapper
-struct InvalidChars {
+public struct InvalidChars {
     
     var value: String = ""
     let regex: String
