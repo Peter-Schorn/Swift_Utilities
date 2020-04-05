@@ -132,6 +132,18 @@ public extension String {
         
     }
 
+    /// performs a regular expression replacement
+    /// - Parameters:
+    ///   - pattern: regular expression patter
+    ///   - with: the string to replace matching patterns with
+    /// - Returns: the new string
+    func regexSub(_ pattern: String, with: String) -> String {
+        return self.replacingOccurrences(
+            of: pattern, with: with, options: [.regularExpression]
+        )
+    }
+    
+    
     /// Removes trailing and leading white space.
     /// Alias for self.trimmingCharacters(in: .whitespacesAndNewlines)
     func stripped() -> String {
@@ -182,3 +194,40 @@ extension Double {
     }
 }
 
+
+
+extension String {
+    
+    func regexSub(_ pattern: String, with: String) -> String {
+        return self.replacingOccurrences(
+            of: pattern, with: with, options: [.regularExpression]
+        )
+    }
+}
+
+/// propertyWrapper that removes characters that match a regular expression pattern
+///
+/// This example will remove all non-word characters from a string
+/// ```
+/// struct User {
+///
+///     @InvalidChars(regex: #"\W+"#) var username: String
+///
+///     init(username: String) {
+///         self.username = username
+///     }
+///
+/// }
+@propertyWrapper
+struct InvalidChars {
+    
+    var value: String = ""
+    let regex: String
+    
+    var wrappedValue: String {
+        get { return value }
+        set { value = newValue.regexSub(regex, with: "") }
+    }
+
+
+}
