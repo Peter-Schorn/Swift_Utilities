@@ -211,10 +211,14 @@ extension Double {
 @propertyWrapper
 public struct InvalidChars {
     
-    var value: String = ""
+    private var value: String = ""
     let regex: String
     
-    var wrappedValue: String {
+    public init(_ regex: String) {
+        self.regex = regex
+    }
+    
+    public var wrappedValue: String {
         get { return value }
         set { value = newValue.regexSub(regex, with: "") }
     }
