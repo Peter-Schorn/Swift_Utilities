@@ -212,7 +212,7 @@ extension Double {
 public struct InvalidChars {
     
     private var value: String = ""
-    let regex: String
+    public  let regex: String
     
     public init(_ regex: String) {
         self.regex = regex
