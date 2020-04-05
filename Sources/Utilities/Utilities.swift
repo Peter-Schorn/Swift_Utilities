@@ -144,6 +144,12 @@ public extension String {
         return self
     }
 
+    func split(_ pattern: String) -> [String] {
+        return self.components(separatedBy: pattern)
+    }
+    
+    
+    
 }
 
 public extension Array {
