@@ -140,14 +140,14 @@ public extension String {
     ///   - pattern: regular expression patter
     ///   - with: the string to replace matching patterns with
     /// - Returns: the new string
-    func regexSub(_ pattern: String, with: String) -> String {
+    func regexSub(_ pattern: String, with: String = "") -> String {
         return self.replacingOccurrences(
             of: pattern, with: with, options: [.regularExpression]
         )
     }
     
     /// see regexSub
-    mutating func regexSubInplace(_ pattern: String, with: String) -> String {
+    mutating func regexSubInplace(_ pattern: String, with: String = "") -> String {
         self = self.regexSub(pattern, with: with)
         return self
     }
