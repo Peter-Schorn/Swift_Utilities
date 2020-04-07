@@ -143,6 +143,11 @@ public extension String {
         )
     }
     
+    mutating func regexSubInplace(_ pattern: String, with: String) -> String {
+        self = self.regexSub(pattern, with: with)
+        return self
+    }
+    
     
     /// Removes trailing and leading white space.
     /// Alias for self.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -187,8 +192,12 @@ public extension Array {
 
 extension Double {
     
-    /// strips trailing zeros and returns the string representation.
-    /// equivalent to String(format: "%g", self)
+    /// Strips trailing zeros and returns the string representation.
+    ///
+    /// Equivalent to
+    /// ```
+    /// String(format: "%g", self)
+    /// ```
     var stripTrailingZeros: String {
         return String(format: "%g", self)
     }
