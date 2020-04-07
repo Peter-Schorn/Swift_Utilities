@@ -84,11 +84,13 @@ extension String: Error { }
 
 public extension String {
     
-    /// the following three subscripts add the ability to
-    /// access singe characters and slices of strings
-    /// as if they were an array of characters
-    /// Usage: string[n] or string[n...n] or string[n..<n]
-    /// where n is an integer
+    /**
+     the following three subscripts add the ability to
+     access singe characters and slices of strings
+     as if they were an array of characters
+     Usage: string[n] or string[n...n] or string[n..<n]
+     where n is an integer
+     */
     subscript(_ i: Int) -> String {
         let j = negative(i, self.count)
         let idx1 = index(startIndex, offsetBy: j)
@@ -113,11 +115,13 @@ public extension String {
         let endIndex = self.index(startIndex, offsetBy: upper - lower)
         return String(self[startIndex...endIndex])
     }
-
-    /// Simplfies regular expressions
-    /// Usage: String.regex(pattern)
-    /// - Parameter regex: regular expression pattern
-    /// - Returns: an array of matches or nil if none were found
+    
+    /**
+     Simplfies regular expressions
+     Usage: String.regex(pattern)
+     - Parameter regex: regular expression pattern
+     - Returns: an array of matches or nil if none were found
+     */
     func regex(_ regex: String) -> [[String]]? {
         guard let regex = try? NSRegularExpression(pattern: regex, options: []) else {
             return nil
@@ -241,4 +245,27 @@ public struct InvalidChars {
     }
 
 
+}
+
+
+extension Color {
+
+    public init(hex: String) {
+
+        var hex = hex
+        if hex.hasPrefix("#") { hex.removeFirst() }
+        
+        let r, g, b, a: CGFloat
+        var hexNumber: UInt64 = 0
+        let scanner = Scanner(string: hex)
+
+        scanner.scanHexInt64(&hexNumber)
+        r = CGFloat((hexNumber & 0xff000000) >> 24) / 255
+        g = CGFloat((hexNumber & 0x00ff0000) >> 16) / 255
+        b = CGFloat((hexNumber & 0x0000ff00) >> 8) / 255
+        a = CGFloat(hexNumber & 0x000000ff) / 255
+
+        let color = UIColor(red: r, green: g, blue: b, alpha: a)
+        self.init(color)
+        }
 }
