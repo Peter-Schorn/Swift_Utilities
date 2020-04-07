@@ -1,7 +1,7 @@
 
 import Foundation
 
-// I added this from within the ListView SwiftUI project
+// new version
 
 public func UtilitiesTest() {
     print("hello from the utilities package!")
@@ -247,7 +247,7 @@ public struct InvalidChars {
 
 }
 
-
+#if os(iOS)
 extension Color {
 
     public init(hex: String) {
@@ -269,3 +269,4 @@ extension Color {
         self.init(color)
         }
 }
+#endif
