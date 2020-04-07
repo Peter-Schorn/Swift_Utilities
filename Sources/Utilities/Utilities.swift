@@ -38,6 +38,7 @@ public func currentTime() -> String {
 ///   - args: a list of arguments to run
 ///   - launchPath: the path from which to launch the script. Default is /usr/bin/env
 /// - Returns: the output as String?
+#if os(macOS)
 func runShellScript(args: [String], launchPath: String = "/usr/bin/env") -> String? {
     
     // Create a Task instance
@@ -63,6 +64,8 @@ func runShellScript(args: [String], launchPath: String = "/usr/bin/env") -> Stri
     
 
 }
+#endif
+
 
 // #################################################################
 
@@ -143,6 +146,7 @@ public extension String {
         )
     }
     
+    /// see regexSub
     mutating func regexSubInplace(_ pattern: String, with: String) -> String {
         self = self.regexSub(pattern, with: with)
         return self
@@ -192,31 +196,35 @@ public extension Array {
 
 extension Double {
     
-    /// Strips trailing zeros and returns the string representation.
-    ///
-    /// Equivalent to
-    /// ```
-    /// String(format: "%g", self)
-    /// ```
+    /**
+     Strips trailing zeros and returns the string representation.
+     
+     Equivalent to
+     ```
+     String(format: "%g", self)
+     ```
+     */
     var stripTrailingZeros: String {
         return String(format: "%g", self)
     }
 }
 
 
-/// propertyWrapper that removes characters that match a regular expression pattern
-///
-/// This example will remove all non-word characters from a string
-/// ```
-/// struct User {
-///
-///     @InvalidChars(regex: #"\W+"#) var username: String
-///
-///     init(username: String) {
-///         self.username = username
-///     }
-///
-/// }
+/**
+ Property Wrapper that removes characters that match a regular expression pattern
+
+ This example will remove all non-word characters from a string
+ ```
+ struct User {
+
+     @InvalidChars(regex: #"\W+"#) var username: String
+
+     init(username: String) {
+         self.username = username
+     }
+
+ }
+ */
 @propertyWrapper
 public struct InvalidChars {
     
