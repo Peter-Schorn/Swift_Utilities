@@ -11,17 +11,6 @@ public func UtilitiesTest() {
 /// does nothing
 public func pass() { }
 
-infix operator ≥: ComparisonPrecedence
-public func ≥ <N: Comparable>(lhs: N, rhs: N) -> Bool {
-    return lhs >= rhs
-}
-
-infix operator ≤: ComparisonPrecedence
-public func ≤ <N: Comparable>(lhs: N, rhs: N) -> Bool {
-    return lhs <= rhs
-}
-
-// #################################################################
 
 public func currentTime() -> String {
     let date = Date()
