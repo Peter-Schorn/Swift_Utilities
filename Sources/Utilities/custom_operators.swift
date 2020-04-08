@@ -1,11 +1,6 @@
-//
-//  custom_operators.swift
-//  
-//
-//  Created by Peter Schorn on 4/8/20.
-//
-
 import Foundation
+
+// test
 
 infix operator ≥: ComparisonPrecedence
 
