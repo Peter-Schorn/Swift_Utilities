@@ -1,7 +1,7 @@
 
 import Foundation
+import SwiftUI
 
-// new version
 
 public func UtilitiesTest() {
     print("hello from the utilities package!")
@@ -65,7 +65,6 @@ func runShellScript(args: [String], launchPath: String = "/usr/bin/env") -> Stri
 
 }
 #endif
-
 
 // #################################################################
 
@@ -221,52 +220,67 @@ extension Double {
  ```
  struct User {
 
-     @InvalidChars(regex: #"\W+"#) var username: String
+     @InvalidChars(#"\W+"#) var username: String
 
      init(username: String) {
          self.username = username
      }
 
  }
+ ```
  */
 @propertyWrapper
 public struct InvalidChars {
     
-    private var value: String = ""
-    public  let regex: String
+    private var value = ""
+    public let regex: String
     
     public init(_ regex: String) {
         self.regex = regex
     }
     
+    public init(wrappedValue: String, _ regex: String) {
+        self.regex = regex
+        self.value = wrappedValue
+    }
+    
+    
     public var wrappedValue: String {
         get { return value }
-        set { value = newValue.regexSub(regex, with: "") }
+        set { value = newValue.regexSub(regex) }
     }
 
+}
+extension Sequence where Element: Numeric {
+    
+    /// return the sum of the elements in a sequence
+    var sum: Element { self.reduce(0, +) }
 
 }
 
-// #if os(iOS)
-// extension Color {
-//
-//     public init(hex: String) {
-//
-//         var hex = hex
-//         if hex.hasPrefix("#") { hex.removeFirst() }
-//
-//         let r, g, b, a: CGFloat
-//         var hexNumber: UInt64 = 0
-//         let scanner = Scanner(string: hex)
-//
-//         scanner.scanHexInt64(&hexNumber)
-//         r = CGFloat((hexNumber & 0xff000000) >> 24) / 255
-//         g = CGFloat((hexNumber & 0x00ff0000) >> 16) / 255
-//         b = CGFloat((hexNumber & 0x0000ff00) >> 8) / 255
-//         a = CGFloat(hexNumber & 0x000000ff) / 255
-//
-//         let color = UIColor(red: r, green: g, blue: b, alpha: a)
-//         self.init(color)
-//         }
-// }
-// #endif
+
+#if os(iOS)
+extension Color {
+
+    public init(hex: String) {
+
+        var hex = hex
+        if hex.hasPrefix("#") { hex.removeFirst() }
+
+        let r, g, b, a: CGFloat
+        var hexNumber: UInt64 = 0
+        let scanner = Scanner(string: hex)
+
+        scanner.scanHexInt64(&hexNumber)
+        
+        r = CGFloat((hexNumber & 0xff000000) >> 24) / 255
+        g = CGFloat((hexNumber & 0x00ff0000) >> 16) / 255
+        b = CGFloat((hexNumber & 0x0000ff00) >> 8) / 255
+        a = CGFloat(hexNumber & 0x000000ff) / 255
+
+        let color = UIColor(red: r, green: g, blue: b, alpha: a)
+        self.init(color)
+    }
+    
+}
+#endif
