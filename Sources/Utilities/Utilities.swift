@@ -28,7 +28,7 @@ public func currentTime() -> String {
 ///   - launchPath: the path from which to launch the script. Default is /usr/bin/env
 /// - Returns: the output as String?
 #if os(macOS)
-func runShellScript(args: [String], launchPath: String = "/usr/bin/env") -> String? {
+public func runShellScript(args: [String], launchPath: String = "/usr/bin/env") -> String? {
     
     // Create a Task instance
     let task = Process()
@@ -186,7 +186,7 @@ public extension Array {
 }
 
 
-extension Double {
+public extension Double {
     
     /**
      Strips trailing zeros and returns the string representation.
@@ -240,7 +240,7 @@ public struct InvalidChars {
     }
 
 }
-extension Sequence where Element: Numeric {
+public extension Sequence where Element: Numeric {
     
     /// return the sum of the elements in a sequence
     var sum: Element { self.reduce(0, +) }
