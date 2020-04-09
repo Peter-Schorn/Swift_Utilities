@@ -1,4 +1,3 @@
-
 import Foundation
 import SwiftUI
 
@@ -8,10 +7,8 @@ public func UtilitiesTest() {
     print("hello from the utilities package!")
 }
 
-
 /// does nothing
 public func pass() { }
-
 
 public func currentTime() -> String {
     let date = Date()
@@ -23,13 +20,15 @@ public func currentTime() -> String {
 
 // #################################################################
 
-/// runs a shell script and returns the output with the trailing new line stripped
-/// - Parameters:
-///   - args: a list of arguments to run
-///   - launchPath: the path from which to launch the script. Default is /usr/bin/env
-/// - Returns: the output as String?
+/**
+ runs a shell script and returns the output with the trailing new line stripped
+ - Parameters:
+   - args: a list of arguments to run
+   - launchPath: the path from which to launch the script. Default is /usr/bin/env
+ - Returns: the output as String?
+ */
 #if os(macOS)
-func runShellScript(args: [String], launchPath: String = "/usr/bin/env") -> String? {
+public func runShellScript(args: [String], launchPath: String = "/usr/bin/env") -> String? {
     
     // Create a Task instance
     let task = Process()
@@ -78,7 +77,7 @@ public extension String {
      access singe characters and slices of strings
      as if they were an array of characters
      Usage: string[n] or string[n...n] or string[n..<n]
-     where n is an integer
+     where n is an integer. Supports negative indexing!
      */
     subscript(_ i: Int) -> String {
         let j = negative(i, self.count)
@@ -128,11 +127,13 @@ public extension String {
         
     }
 
-    /// performs a regular expression replacement
-    /// - Parameters:
-    ///   - pattern: regular expression patter
-    ///   - with: the string to replace matching patterns with
-    /// - Returns: the new string
+    /**
+     performs a regular expression replacement
+     - Parameters:
+       - pattern: regular expression patter
+       - with: the string to replace matching patterns with
+     - Returns: the new string
+     */
     func regexSub(_ pattern: String, with: String = "") -> String {
         return self.replacingOccurrences(
             of: pattern, with: with, options: [.regularExpression]
@@ -187,7 +188,7 @@ public extension Array {
 }
 
 
-extension Double {
+public extension Double {
     
     /**
      Strips trailing zeros and returns the string representation.
@@ -241,7 +242,7 @@ public struct InvalidChars {
     }
 
 }
-extension Sequence where Element: Numeric {
+public extension Sequence where Element: Numeric {
     
     /// return the sum of the elements in a sequence
     var sum: Element { self.reduce(0, +) }
