@@ -7,7 +7,6 @@ public func UtilitiesTest() {
     print("hello from the utilities package!")
 }
 
-
 /// does nothing
 public func pass() { }
 
