@@ -1,6 +1,5 @@
 import Foundation
 
-// test
 
 infix operator ≥ : ComparisonPrecedence
 
