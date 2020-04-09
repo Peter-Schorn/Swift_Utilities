@@ -2,7 +2,7 @@ import Foundation
 
 // test
 
-infix operator ≥: ComparisonPrecedence
+infix operator ≥ : ComparisonPrecedence
 
 public func ≥ <N: Comparable>(lhs: N, rhs: N) -> Bool {
     return lhs >= rhs
@@ -15,7 +15,7 @@ public func ≤ <N: Comparable>(lhs: N, rhs: N) -> Bool {
 
 
 precedencegroup Exponentiative {
-  associativity: left
+  associativity: right
   higherThan: MultiplicationPrecedence
 }
 
@@ -23,22 +23,16 @@ infix operator ** : Exponentiative
 
 /// exponent operator
 public func ** <N: BinaryInteger>(base: N, power: N) -> N {
-    return N.self( pow(Double(base), Double(power)) )
+    return N.self(pow(Double(base), Double(power)))
 }
 
 /// exponent operator
 public func ** <N: BinaryFloatingPoint>(base: N, power: N) -> N {
-    return N.self ( pow(Double(base), Double(power)) )
+    return N.self(pow(Double(base), Double(power)))
 }
 
 
-precedencegroup ExponentiativeAssignment {
-  associativity: right
-  higherThan: MultiplicationPrecedence
-}
-
-
-infix operator **= : ExponentiativeAssignment
+infix operator **= : Exponentiative
 
 /**
  exponent assignment operator
