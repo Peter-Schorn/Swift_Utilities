@@ -117,6 +117,7 @@ public extension String {
     
 }
 
+// MARK: - String interpolations
 
 public extension String.StringInterpolation {
     
