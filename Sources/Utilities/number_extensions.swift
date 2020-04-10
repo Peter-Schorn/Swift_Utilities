@@ -12,8 +12,8 @@ public extension Double {
     
    
     /**
-     Alias for `String(format: specifier, self)`
-     see [String ForSpecifiers](https://developer.a.com/library/archive/documentation/Cocoa/Conceptual/Strings/Articles/formatSpecifiers.html)
+     Alias for `String(format: specifier, self)`.
+     see [String Format Specifiers](https://developer.a.com/library/archive/documentation/Cocoa/Conceptual/Strings/Articles/formatSpecifiers.html)
      - Parameter specifier: string format specifier.
      - Returns: formatted string
      */
@@ -24,13 +24,15 @@ public extension Double {
     enum FormatOption {
         case currency, stripTrailingZeros
     }
-    /// Formats string according to specifier
+    /// Formats double according to specifier
     ///
-    /// FormatOptions: currency, stripTrailingZeros
+    /// FormatOptions:
+    /// - currency: prints dollar sign and two digits after decimal; e.g., $5.99
+    /// - stripTrailingZeros: removes insignificant trailing zeros
     func format(_ specifier: FormatOption) -> String {
         switch specifier {
             case .currency:
-                return "$" + self.format("%.2f")
+                return self.format("$%.2f")
             case .stripTrailingZeros:
                 return self.format("%g")
             

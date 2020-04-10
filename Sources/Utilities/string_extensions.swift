@@ -115,6 +115,17 @@ public extension String {
         return self.components(separatedBy: separator)
     }
     
+}
+
+
+public extension String.StringInterpolation {
     
+    mutating func appendInterpolation(_ value: Double, format: String) {
+        appendInterpolation(value.format(format))
+    }
     
+    mutating func appendInterpolation(_ value: Double, format: Double.FormatOption) {
+           appendInterpolation(value.format(format))
+    }
+
 }
