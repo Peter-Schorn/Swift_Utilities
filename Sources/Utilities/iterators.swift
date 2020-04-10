@@ -7,7 +7,7 @@ import Foundation
 struct Exponetiate<N: BinaryFloatingPoint>:
     Sequence, IteratorProtocol
 {
-    
+
     var start: N
     let power: N
     let max: N

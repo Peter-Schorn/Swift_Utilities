@@ -11,10 +11,7 @@ import Foundation
 /// enables passing in negative indices to access characters
 /// starting from the end and going backwards
 func negative(_ num: Int, _ count: Int) -> Int {
-    if num < 0 {
-        return num + count
-    }
-    return num
+    return num < 0 ? num + count : num
 }
 
 /// Adds the ability to throw an error with a custom message
@@ -92,7 +89,10 @@ public extension String {
     }
     
     /// see regexSub
-    mutating func regexSubInplace(_ pattern: String, with: String = "") -> String {
+    mutating func regexSubInplace(
+        _ pattern: String, with: String = ""
+    ) -> String {
+    
         self = self.regexSub(pattern, with: with)
         return self
     }

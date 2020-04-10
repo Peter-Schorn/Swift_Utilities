@@ -55,43 +55,6 @@ public func runShellScript(args: [String], launchPath: String = "/usr/bin/env") 
 #endif
 
 
-public extension Array {
-    
-    /// Splits array into array of arrays with specified size
-    func chunked(into size: Int) -> [[Element]] {
-        return stride(from: 0, to: count, by: size).map {
-            Array(self[$0 ..< Swift.min($0 + size, count)])
-        }
-    }
-    
-    /// Enables accessing elemnts from the end backwards
-    /// [back: 1] returns the last element,
-    /// [back: 2] returns the second last, and so on
-    subscript(back i: Int) -> Element {
-        
-        get { return self[self.count - i] }
-        set { self[self.count - i] = newValue }
-    }
- 
-}
-
-
-public extension Double {
-    
-    /**
-     Strips trailing zeros and returns the string representation.
-     
-     Equivalent to
-     ```
-     String(format: "%g", self)
-     ```
-     */
-    var stripTrailingZeros: String {
-        return String(format: "%g", self)
-    }
-}
-
-
 /**
  Property Wrapper that removes characters that match a regular expression pattern
 
