@@ -106,7 +106,7 @@ public extension String {
 
     /// Strips trailing and leading white space **in place**
     mutating func stripInPlace() -> String {
-        self = self.stripped()
+        self = self.strip()
         return self
     }
 

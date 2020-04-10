@@ -34,11 +34,11 @@ public extension Double {
         
         switch specifier {
             case .currency:
-                return self.format(.currency)
+                return self.format("$%.2f")
             case .stripTrailingZeros:
-                return self.format(.stripTrailingZeros)
-            
+                return self.format("%g")
         }
+
     }
 
 

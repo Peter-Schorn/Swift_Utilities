@@ -48,7 +48,7 @@ public func runShellScript(args: [String], launchPath: String = "/usr/bin/env") 
     let data = pipe.fileHandleForReading.readDataToEndOfFile()
     let NSoutput = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
     let output = NSoutput as String?
-    return output?.stripped()
+    return output?.strip()
     
 
 }
