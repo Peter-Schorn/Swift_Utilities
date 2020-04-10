@@ -24,17 +24,19 @@ public extension Double {
     enum FormatOption {
         case currency, stripTrailingZeros
     }
+    
     /// Formats double according to specifier
     ///
     /// FormatOptions:
     /// - currency: prints dollar sign and two digits after decimal; e.g., $5.99
     /// - stripTrailingZeros: removes insignificant trailing zeros
     func format(_ specifier: FormatOption) -> String {
+        
         switch specifier {
             case .currency:
-                return self.format("$%.2f")
+                return self.format(.currency)
             case .stripTrailingZeros:
-                return self.format("%g")
+                return self.format(.stripTrailingZeros)
             
         }
     }

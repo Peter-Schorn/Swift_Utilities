@@ -100,12 +100,12 @@ public extension String {
     
     /// Removes trailing and leading white space.
     /// Alias for self.trimmingCharacters(in: .whitespacesAndNewlines)
-    func stripped() -> String {
+    func strip() -> String {
         return self.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
     /// Strips trailing and leading white space **in place**
-    mutating func strip() -> String {
+    mutating func stripInPlace() -> String {
         self = self.stripped()
         return self
     }
@@ -125,7 +125,7 @@ public extension String.StringInterpolation {
     }
     
     mutating func appendInterpolation(_ value: Double, format: Double.FormatOption) {
-           appendInterpolation(value.format(format))
+        appendInterpolation(value.format(format))
     }
 
 }
