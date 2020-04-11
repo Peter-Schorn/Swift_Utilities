@@ -41,7 +41,5 @@ public extension Double {
 
     }
 
-
-
-
 }
+

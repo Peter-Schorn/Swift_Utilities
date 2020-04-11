@@ -26,4 +26,14 @@ public extension Array {
         set { self[self.count - i] = newValue }
     }
  
+    subscript(safe i: Int) -> Element? {
+        
+        get {
+            if 0..<self.count ~= i {
+                return Optional(self[i])
+            }
+            return nil
+        }
+    }
+    
 }
