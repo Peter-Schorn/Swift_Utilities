@@ -43,3 +43,6 @@ public extension Double {
 
 }
 
+func factorial<N: Numeric>(_ x: N) -> N {
+    x == 0 ? 1 : x * factorial(x - 1)
+}

@@ -7,6 +7,12 @@
 
 import Foundation
 
+public extension Sequence where Element: Numeric {
+    
+    /// returns the sum of the elements in a sequence
+    var sum: Element { self.reduce(0, +) }
+
+}
 
 public extension Array {
     
@@ -36,4 +42,22 @@ public extension Array {
         }
     }
     
+}
+
+public extension Array where Element: BinaryInteger {
+    
+    var average: Double {
+        let total = self.reduce(Double(0), { $0 + Double($1) })
+        return total / Double(self.count)
+    }
+    
+}
+
+public extension Array where Element: BinaryFloatingPoint {
+    
+    var average: Double {
+        let total = self.reduce(Double(0), { $0 + Double($1) })
+        return total / Double(self.count)
+    }
+
 }

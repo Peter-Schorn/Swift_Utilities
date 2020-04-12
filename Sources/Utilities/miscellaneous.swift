@@ -18,6 +18,17 @@ public func currentTime() -> String {
     return dateTimeString + "\n"
 }
 
+extension Date {
+    /// Alias for `timeIntervalSince1970`
+    var unixTime: Double {
+        return self.timeIntervalSince1970
+    }
+}
+
+func sleep<N: BinaryInteger>(_ interval: N) {
+    sleep(UInt32(interval))
+}
+
 
 /**
  runs a shell script and returns the output with the trailing new line stripped
@@ -91,12 +102,6 @@ public struct InvalidChars {
         get { return value }
         set { value = newValue.regexSub(regex) }
     }
-
-}
-public extension Sequence where Element: Numeric {
-    
-    /// return the sum of the elements in a sequence
-    var sum: Element { self.reduce(0, +) }
 
 }
 
