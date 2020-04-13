@@ -89,7 +89,7 @@ public extension String {
     }
     
     /// see regexSub
-    mutating func regexSubInplace(
+    mutating func regexSubInPlace(
         _ pattern: String, with: String = ""
     ) -> String {
     
@@ -97,6 +97,7 @@ public extension String {
         return self
     }
     
+    // enum Side { case left, right }
     
     /// Removes trailing and leading white space.
     /// Alias for self.trimmingCharacters(in: .whitespacesAndNewlines)

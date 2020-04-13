@@ -22,12 +22,12 @@ infix operator ** : Exponentiative
 
 /// exponent operator
 public func ** <N: BinaryInteger>(base: N, power: N) -> N {
-    return N.self( pow(Double(base), Double(power)) )
+    return N.self(pow(Double(base), Double(power)))
 }
 
 /// exponent operator
 public func ** <N: BinaryFloatingPoint>(base: N, power: N) -> N {
-    return N.self ( pow(Double(base), Double(power)) )
+    return N.self(pow(Double(base), Double(power)))
 }
 
 

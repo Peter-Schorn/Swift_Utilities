@@ -8,6 +8,8 @@
 import Foundation
 
 
+let π = Double.pi
+
 public extension Double {
     
    
