@@ -29,7 +29,18 @@ func sleep<N: BinaryInteger>(_ interval: N) {
     sleep(UInt32(interval))
 }
 
+/// Accepts a sequence as input and forwards it to the print function
+/// as a variadic parameter.
+func unpackPrint(
+    _ items: [Any], separator: String = " ", terminator: String = "\n"
+) {
+    unsafeBitCast(
+        print, to: (([Any], String, String) -> Void).self
+    )(items, separator, terminator)
+}
 
+
+#if os(macOS)
 /**
  runs a shell script and returns the output with the trailing new line stripped
  - Parameters:
@@ -37,8 +48,9 @@ func sleep<N: BinaryInteger>(_ interval: N) {
    - launchPath: the path from which to launch the script. Default is /usr/bin/env
  - Returns: the output as String?
  */
-#if os(macOS)
-public func runShellScript(args: [String], launchPath: String = "/usr/bin/env") -> String? {
+public func runShellScript(
+    args: [String], launchPath: String = "/usr/bin/env"
+) -> String? {
     
     // Create a Task instance
     let task = Process()
@@ -57,8 +69,8 @@ public func runShellScript(args: [String], launchPath: String = "/usr/bin/env") 
 
     // Get the data
     let data = pipe.fileHandleForReading.readDataToEndOfFile()
-    let NSoutput = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
-    let output = NSoutput as String?
+    let nsOutput = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
+    let output = nsOutput as String?
     return output?.strip()
     
 
@@ -66,44 +78,7 @@ public func runShellScript(args: [String], launchPath: String = "/usr/bin/env") 
 #endif
 
 
-/**
- Property Wrapper that removes characters that match a regular expression pattern
 
- This example will remove all non-word characters from a string
- ```
- struct User {
-
-     @InvalidChars(#"\W+"#) var username: String
-
-     init(username: String) {
-         self.username = username
-     }
-
- }
- ```
- */
-@propertyWrapper
-public struct InvalidChars {
-    
-    private var value = ""
-    public let regex: String
-    
-    public init(_ regex: String) {
-        self.regex = regex
-    }
-    
-    public init(wrappedValue: String, _ regex: String) {
-        self.regex = regex
-        self.value = wrappedValue
-    }
-    
-    
-    public var wrappedValue: String {
-        get { return value }
-        set { value = newValue.regexSub(regex) }
-    }
-
-}
 
 
 #if os(iOS)
