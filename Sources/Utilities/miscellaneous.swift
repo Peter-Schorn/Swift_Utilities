@@ -41,16 +41,13 @@ public func unpackPrint(
 
 
 public enum TimeUnits {
-    
-    
     case minute(Double)
     case hour(Double)
     case day(Double)
     case week(Double)
     case year(Double)
     
-    case month(Double, length: Int)
-    
+    case month(Double, days: Int)
 }
 
 /**
@@ -83,6 +80,8 @@ public func timeUnit(_ unit: TimeUnits) -> Double {
             return t * 604_800
         case .year(let t):
             return t * 31_536_000
+        case .month(let t, days: let d):
+        return t * Double(d) * 86_400
     }
 }
 
