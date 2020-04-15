@@ -18,20 +18,20 @@ public func currentTime() -> String {
     return dateTimeString + "\n"
 }
 
-extension Date {
+public extension Date {
     /// Alias for `timeIntervalSince1970`
     var unixTime: Double {
         return self.timeIntervalSince1970
     }
 }
 
-func sleep<N: BinaryInteger>(_ interval: N) {
+public func sleep<N: BinaryInteger>(_ interval: N) {
     sleep(UInt32(interval))
 }
 
 /// Accepts a sequence as input and forwards it to the print function
 /// as a variadic parameter.
-func unpackPrint(
+public func unpackPrint(
     _ items: [Any], separator: String = " ", terminator: String = "\n"
 ) {
     unsafeBitCast(
@@ -44,7 +44,7 @@ func unpackPrint(
 /// - Parameters:
 ///   - delay: The delay after which to execute the closure
 ///   - work: The closure to execute
-func asyncAfter(delay: Double, _ work: @escaping () -> Void) {
+public func asyncAfter(delay: Double, _ work: @escaping () -> Void) {
     DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: work)
 }
 
