@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+import SwiftUI
 
 /// enables passing in negative indices to access characters
 /// starting from the end and going backwards
@@ -130,4 +130,15 @@ public extension String.StringInterpolation {
         appendInterpolation(value.format(format))
     }
 
+}
+
+public extension LocalizedStringKey.StringInterpolation {
+
+    mutating func appendInterpolation(_ value: Double, format: String) {
+        appendInterpolation(value.format(format))
+    }
+
+    mutating func appendInterpolation(_ value: Double, format: Double.FormatOption) {
+        appendInterpolation(value.format(format))
+    }
 }
