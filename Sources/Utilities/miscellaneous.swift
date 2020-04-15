@@ -40,6 +40,15 @@ func unpackPrint(
 }
 
 
+/// Wrapper for DispatchQueue.main.asyncAfter
+/// - Parameters:
+///   - delay: The delay after which to execute the closure
+///   - work: The closure to execute
+func asyncAfter(delay: Double, _ work: @escaping () -> Void) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: work)
+}
+
+
 #if os(macOS)
 /**
  runs a shell script and returns the output with the trailing new line stripped
@@ -76,8 +85,6 @@ public func runShellScript(
 
 }
 #endif
-
-
 
 
 
