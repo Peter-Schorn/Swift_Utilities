@@ -40,6 +40,54 @@ public func unpackPrint(
 }
 
 
+public enum TimeUnits {
+    
+    
+    case minute(Double)
+    case hour(Double)
+    case day(Double)
+    case week(Double)
+    case year(Double)
+    
+    case month(Double, length: Int)
+    
+}
+
+/**
+ Converts a time unit to seconds
+ 
+ For example:
+     
+     timeUnit(.hour(2)) == 7200
+ 
+ Accepts this enum:
+
+     enum TimeUnits {
+         case minute(Double)
+         case hour(Double)
+         case day(Double)
+         case week(Double)
+         case year(Double)
+     }
+
+ */
+public func timeUnit(_ unit: TimeUnits) -> Double {
+    switch unit {
+        case .minute(let t):
+            return t * 60
+        case .hour(let t):
+            return t * 3600
+        case .day(let t):
+            return t * 86_400
+        case .week(let t):
+            return t * 604_800
+        case .year(let t):
+            return t * 31_536_000
+    }
+}
+
+
+
 /// Wrapper for DispatchQueue.main.asyncAfter
 /// - Parameters:
 ///   - delay: The delay after which to execute the closure
