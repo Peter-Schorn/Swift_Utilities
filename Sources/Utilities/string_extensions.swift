@@ -120,25 +120,19 @@ public extension String {
 
 // MARK: - String interpolations
 
-public extension String.StringInterpolation {
-    
-    mutating func appendInterpolation(_ value: Double, format: String) {
-        appendInterpolation(value.format(format))
-    }
-    
-    mutating func appendInterpolation(_ value: Double, format: Double.FormatOption) {
-        appendInterpolation(value.format(format))
-    }
 
+protocol CustomStringInterpolation {
+    mutating func appendInterpolation(_: String)
 }
 
-public extension LocalizedStringKey.StringInterpolation {
-
-    mutating func appendInterpolation(_ value: Double, format: String) {
-        appendInterpolation(value.format(format))
+extension CustomStringInterpolation {
+    mutating func appendInterpolation(_ value: Double, numFormat: String) {
+        appendInterpolation(value.format(numFormat))
     }
-
-    mutating func appendInterpolation(_ value: Double, format: Double.FormatOption) {
-        appendInterpolation(value.format(format))
+    mutating func appendInterpolation(_ value: Double, numFormat: Double.FormatOption) {
+        appendInterpolation(value.format(numFormat))
     }
 }
+
+extension LocalizedStringKey.StringInterpolation: CustomStringInterpolation {}
+extension String.StringInterpolation: CustomStringInterpolation {}

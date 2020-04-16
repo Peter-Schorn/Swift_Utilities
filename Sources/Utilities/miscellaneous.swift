@@ -46,7 +46,6 @@ public enum TimeUnits {
     case day(Double)
     case week(Double)
     case year(Double)
-    
     case month(Double, days: Int)
 }
 
@@ -81,7 +80,7 @@ public func timeUnit(_ unit: TimeUnits) -> Double {
         case .year(let t):
             return t * 31_536_000
         case .month(let t, days: let d):
-        return t * Double(d) * 86_400
+            return t * Double(d) * 86_400
     }
 }
 
