@@ -121,11 +121,11 @@ public extension String {
 // MARK: - String interpolations
 
 
-protocol CustomStringInterpolation {
+public protocol CustomStringInterpolation {
     mutating func appendInterpolation(_: String)
 }
 
-extension CustomStringInterpolation {
+public extension CustomStringInterpolation {
     mutating func appendInterpolation(_ value: Double, numFormat: String) {
         appendInterpolation(value.format(numFormat))
     }
