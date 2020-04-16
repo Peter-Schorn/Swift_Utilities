@@ -91,7 +91,7 @@ public extension Array where Element: BinaryFloatingPoint {
  }
  ```
  */
-protocol ArrayClass: AnyObject {
+public protocol ArrayClass: AnyObject {
     
     associatedtype T: Equatable
     var items: [T] { get set }
@@ -100,7 +100,7 @@ protocol ArrayClass: AnyObject {
     func remove(_ item: T)
 }
 
-extension ArrayClass {
+public extension ArrayClass {
     
     func add(_ item: T) {
         items.append(item)
