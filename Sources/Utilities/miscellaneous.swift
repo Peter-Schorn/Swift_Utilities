@@ -50,7 +50,8 @@ public enum TimeUnits {
 }
 
 /**
- Converts a time unit to seconds
+ Converts a time unit to seconds.
+ Allows for representing them in a more human-readable manner
  
  For example:
      
@@ -64,8 +65,8 @@ public enum TimeUnits {
          case day(Double)
          case week(Double)
          case year(Double)
+         case month(Double, days: Int)
      }
-
  */
 public func timeUnit(_ unit: TimeUnits) -> Double {
     switch unit {
