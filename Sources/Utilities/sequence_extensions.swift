@@ -109,7 +109,11 @@ public protocol ArrayClass: AnyObject {
     func remove(_ item: T)
     func contains(_ item: T) -> Bool
     subscript(_ i: Int) -> T { get set }
+    subscript(back i: Int) -> T { get set }
+
     
+    var count: Int { get }
+    var isEmpty: Bool { get }
 }
 
 public extension ArrayClass {
@@ -132,6 +136,15 @@ public extension ArrayClass {
         get { return items[i] }
         set { items[i] = newValue }
     }
+    
+    subscript(back i: Int) -> T {
+        get { return items[back: i] }
+        set { items[back: i] = newValue }
+    }
+    
+    var count: Int { items.count }
+    var isEmpty: Bool { items.isEmpty }
+    
     
     
 }
