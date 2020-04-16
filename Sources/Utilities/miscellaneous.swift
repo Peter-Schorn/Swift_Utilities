@@ -59,7 +59,7 @@ public enum TimeUnits {
  
  Accepts this enum:
 
-     enum TimeUnits {
+     public enum TimeUnits {
          case minute(Double)
          case hour(Double)
          case day(Double)

@@ -61,3 +61,55 @@ public extension Array where Element: BinaryFloatingPoint {
     }
 
 }
+
+
+/**
+ Used for classes that hold an array of objects.
+ Synthesizes add and remove methods for the array.
+ ```
+ protocol ArrayClass: AnyObject {
+     
+     associatedtype T: Equatable
+     var items: [T] { get set }
+     
+     func add(_ item: T)
+     func remove(_ item: T)
+ }
+
+ extension ArrayObject {
+     
+     func add(_ item: T) {
+         items.append(item)
+     }
+ 
+     func remove(_ item: T) {
+         if let index = items.firstIndex(of: item) {
+             items.remove(at: index)
+         }
+     }
+ 
+ }
+ ```
+ */
+protocol ArrayClass: AnyObject {
+    
+    associatedtype T: Equatable
+    var items: [T] { get set }
+    
+    func add(_ item: T)
+    func remove(_ item: T)
+}
+
+extension ArrayClass {
+    
+    func add(_ item: T) {
+        items.append(item)
+    }
+    
+    func remove(_ item: T) {
+        if let index = items.firstIndex(of: item) {
+            items.remove(at: index)
+        }
+    }
+    
+}
