@@ -64,8 +64,8 @@ public extension Array where Element: BinaryFloatingPoint {
 
 
 /**
- Used for classes that hold an array of objects.
- Synthesizes add and remove methods for the array.
+ Useful for classes that hold an array of objects.
+ Synthesizes add, remove, contains, and subscript methods for the array.
  ```
  protocol ArrayClass: AnyObject {
      
@@ -88,6 +88,15 @@ public extension Array where Element: BinaryFloatingPoint {
          }
      }
  
+    func contains(_ item: T) -> Bool {
+        return items.contains(item)
+    }
+ 
+    subscript(_ i: Int) -> T {
+        get { return items[i] }
+        set { items[i] = newValue }
+    }
+ 
  }
  ```
  */
@@ -98,6 +107,9 @@ public protocol ArrayClass: AnyObject {
     
     func add(_ item: T)
     func remove(_ item: T)
+    func contains(_ item: T) -> Bool
+    subscript(_ i: Int) -> T { get set }
+    
 }
 
 public extension ArrayClass {
@@ -111,5 +123,15 @@ public extension ArrayClass {
             items.remove(at: index)
         }
     }
+    
+    func contains(_ item: T) -> Bool {
+        return items.contains(item)
+    }
+    
+    subscript(_ i: Int) -> T {
+        get { return items[i] }
+        set { items[i] = newValue }
+    }
+    
     
 }
