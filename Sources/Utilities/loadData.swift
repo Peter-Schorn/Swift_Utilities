@@ -13,6 +13,11 @@ public extension Bundle {
     
     /**
      Loads Json data from bundle.
+     - Parameters:
+       - file: File name excluding extension
+       - ext: The extension of the file
+       - type: The type that the json will be converted to
+     - Returns: The object initialized according to the specified type
      
      Example:
      ```
@@ -20,8 +25,8 @@ public extension Bundle {
      ```
      `menu` is now an array of strings loaded from the Json file
      */
-    func decode<T: Decodable>(_ file: String, type: T.Type) -> T {
-        guard let url = self.url(forResource: file, withExtension: nil) else {
+    func decode<T: Decodable>(_ file: String, ext: String? = nil, type: T.Type) -> T {
+        guard let url = self.url(forResource: file, withExtension: ext) else {
             fatalError("Failed to locate \(file) in bundle.")
         }
 
@@ -52,7 +57,7 @@ public extension Bundle {
  ```
  `git_repos` is now an array of strings loaded from the Json file
  */
-public func LoadJson<T: Decodable>(
+public func loadJson<T: Decodable>(
     file: String,
     encoding: String.Encoding = .utf8,
     type typ: T.Type
