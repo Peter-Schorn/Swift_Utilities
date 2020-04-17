@@ -73,7 +73,7 @@ public func timeUnit(_ unit: TimeUnits) -> Double {
         case .minute(let t):
             return t * 60
         case .hour(let t):
-            return t * 3600
+            return t * 3_600
         case .day(let t):
             return t * 86_400
         case .week(let t):
