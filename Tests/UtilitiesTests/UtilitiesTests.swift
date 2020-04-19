@@ -115,6 +115,19 @@ final class UtilitiesTests: XCTestCase {
         string13[..<2] = "ab"
         XCTAssert(string13 == "ab23")
         
+        var string14 = "0123"
+        string14[..<(-1)] = "abc"
+        XCTAssert(string14 == "abc3")
+        
+        var string15 = "0123"
+        string15[...(-1)] = "abcd"
+        XCTAssert(string15 == "abcd")
+        
+        
+        var string16 = "012345"
+        string16[(-3)...] = "abc"
+        XCTAssert(string16 == "012abc")
+        
     }
     
     
