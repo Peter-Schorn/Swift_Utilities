@@ -130,11 +130,30 @@ final class UtilitiesTests: XCTestCase {
         
     }
     
+    func testExtendedGraphemeClusters() {
+                  // "0 1 2 3 4"
+        var string = "🦧🔥🎭🚅î"
+        XCTAssert(string[0] == "🦧")
+        XCTAssert(string[1] == "🔥")
+        XCTAssert(string[2] == "🎭")
+        XCTAssert(string[3] == "🚅")
+        XCTAssert(string[4] == "î")
+        
+        string[2] = "a"
+        string[-4] = "நி"
+        
+        XCTAssert(string == "🦧நிa🚅î")
+        
+        let string2 = "🇺🇸🇸🇾🇧🇱🇱🇰"
+        XCTAssert(string2[(-2)...] == "🇧🇱🇱🇰")
+    }
+    
     
     static var allTests = [
         ("testOperators", testOperators),
         ("testGetStringByIndex", testGetStringByIndex),
         ("testSetStringByIndex", testSetStringByIndex),
+        ("testSpecialCharacterSubscript", testExtendedGraphemeClusters),
     ]
 }
 

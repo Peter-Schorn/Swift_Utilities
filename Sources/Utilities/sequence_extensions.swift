@@ -44,6 +44,34 @@ public extension Array {
     
 }
 
+
+extension Array where Element == Character {
+
+    /// Join array of characters into String with separator
+    func joined(separator: String = "") -> String {
+        var string = ""
+        for (indx, char) in self.enumerated() {
+            if indx > 0 {
+                string.append(separator)
+            }
+            string.append(char)
+        }
+        return string
+    }
+
+}
+
+extension Array where Element == String {
+    
+    /// Creates an array of single-character Strings,
+    /// whereas the default behavior is to create an array of
+    /// Characters from a string.
+    init(asStrings string: String) {
+        self = string.map { String($0) }
+    }
+}
+
+
 public extension Array where Element: BinaryInteger {
     
     var average: Double {

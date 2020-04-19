@@ -72,7 +72,12 @@ public extension String {
     /**
      Gets and sets a character at a given index.
      Negative indices are added to the length so that
-     characters can be accessed from the end backwards
+     characters can be accessed from the end backwards.
+     
+     - Attention: The time complexity of this and the below subscripts is O(n).
+     Convert the string to an Array of characters for maximum performance,
+     although this will, of course, require more memory.
+    
      
      Usage: `string[n]`
      */
@@ -88,7 +93,7 @@ public extension String {
     
     
     /**
-     Gets and sets characters in an open range.
+     Gets and sets characters in a half-open range.
      Supports negative indexing.
      
      Usage: `string[n..<n]`
