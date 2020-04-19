@@ -49,6 +49,12 @@ final class UtilitiesTests: XCTestCase {
         XCTAssert("123"[(-1)..<(-1)] == "")
         XCTAssert("123"[(-3)..<(-1)] == "12")
         
+        
+        
+        XCTAssert("0123"[..<2] == "01")
+        XCTAssert("0123"[...2] == "012")
+        XCTAssert("0123"[2...] == "23")
+        
     }
     
     func testSetStringByIndex() {
@@ -95,6 +101,19 @@ final class UtilitiesTests: XCTestCase {
         var string10 = "123"
         string10[(-2)..<(-2)] = ""
         XCTAssert(string10 == "123")
+        
+        
+        var string11 = "0123"
+        string11[...2] = "abc"
+        XCTAssert(string11 == "abc3")
+        
+        var string12 = "0123"
+        string12[2...] = "cd"
+        XCTAssert(string12 == "01cd")
+        
+        var string13 = "0123"
+        string13[..<2] = "ab"
+        XCTAssert(string13 == "ab23")
         
     }
     

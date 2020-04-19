@@ -31,7 +31,9 @@ public extension String {
         return strOpenRange(j..<(j + 1), checkNegative: false)
     }
     
-    func strOpenRange(_ range: Range<Int>, checkNegative: Bool = true) -> Range<String.Index> {
+    func strOpenRange(
+        _ range: Range<Int>, checkNegative: Bool = true
+    ) -> Range<String.Index> {
 
         var lower = range.lowerBound
         var upper = range.upperBound
@@ -40,7 +42,7 @@ public extension String {
             lower = negativeIndex(lower)
             upper = negativeIndex(upper)
         }
-            
+        
         let idx1 = index(self.startIndex, offsetBy: lower)
         let idx2 = index(self.startIndex, offsetBy: upper)
         
@@ -48,11 +50,16 @@ public extension String {
     }
     
     func strClosedRange(
-        _ range: CountableClosedRange<Int>
+        _ range: CountableClosedRange<Int>, checkNegative: Bool = true
     ) -> ClosedRange<String.Index> {
         
-        let lower = negativeIndex(range.lowerBound)
-        let upper = negativeIndex(range.upperBound)
+        var lower = range.lowerBound
+        var upper = range.upperBound
+
+        if checkNegative {
+            lower = negativeIndex(lower)
+            upper = negativeIndex(upper)
+        }
         
         let start = self.index(self.startIndex, offsetBy: lower)
         let end = self.index(start, offsetBy: upper - lower)
@@ -60,6 +67,7 @@ public extension String {
         return start...end
     }
     
+    // MARK: - Subscripts
     
     /**
      Gets and sets a character at a given index.
@@ -81,11 +89,11 @@ public extension String {
     
     /**
      Gets and sets characters in an open range.
-     Supports negative indexing
+     Supports negative indexing.
      
      Usage: `string[n..<n]`
      */
-    subscript (_ r: Range<Int>) -> String {
+    subscript(_ r: Range<Int>) -> String {
         get {
             return String(self[strOpenRange(r)])
         }
@@ -100,7 +108,7 @@ public extension String {
      
      Usage: `string[n...n]`
      */
-    subscript (r: CountableClosedRange<Int>) -> String {
+    subscript(_ r: CountableClosedRange<Int>) -> String {
         get {
             return String(self[strClosedRange(r)])
         }
@@ -108,6 +116,50 @@ public extension String {
             replaceSubrange(strClosedRange(r), with: newValue)
         }
     }
+    
+    /// `string[n...]`. See PartialRangeFrom
+    subscript(r: PartialRangeFrom<Int>) -> String {
+        
+        get {
+            return String(self[strOpenRange(r.lowerBound..<self.count)])
+        }
+        set {
+            replaceSubrange(strOpenRange(r.lowerBound..<self.count), with: newValue)
+        }
+    }
+    
+    /// `string[...n]`. See PartialRangeThrough
+    subscript(r: PartialRangeThrough<Int>) -> String {
+        
+        get {
+            let upper = negativeIndex(r.upperBound)
+            return String(self[strClosedRange(0...upper, checkNegative: false)])
+        }
+        set {
+            let upper = negativeIndex(r.upperBound)
+            replaceSubrange(
+                strClosedRange(0...upper, checkNegative: false), with: newValue
+            )
+        }
+    }
+    
+    /// `string[...<n]`. See PartialRangeUpTo
+    subscript(r: PartialRangeUpTo<Int>) -> String {
+        
+        get {
+            let upper = negativeIndex(r.upperBound)
+            return String(self[strOpenRange(0..<upper, checkNegative: false)])
+        }
+        set {
+            let upper = negativeIndex(r.upperBound)
+            replaceSubrange(
+                strOpenRange(0..<upper, checkNegative: false), with: newValue
+            )
+        }
+    }
+    
+    
+    // MARK: - Regex
     
     /**
      Simplfies regular expressions
@@ -179,7 +231,6 @@ public extension String {
 }
 
 // MARK: - String interpolations
-
 
 public protocol CustomStringInterpolation {
     mutating func appendInterpolation(_: String)
