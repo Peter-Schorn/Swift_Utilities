@@ -8,11 +8,7 @@
 import Foundation
 import SwiftUI
 
-/// enables passing in negative indices to access characters
-/// starting from the end and going backwards
-func negative(_ num: Int, _ count: Int) -> Int {
-    return num < 0 ? num + count : num
-}
+
 
 /// Adds the ability to throw an error with a custom message
 /// Usage: `throw "There was an error"`
@@ -21,35 +17,106 @@ extension String: Error { }
 public extension String {
     
     /**
+     Enables passing in negative indices to access characters
+     starting from the end and going backwards.
+     if num is negative, then it is added to the
+     length of the string to retrieve the true index.
+     */
+    func negativeIndex(_ num: Int) -> Int {
+        return num < 0 ? num + self.count : num
+    }
+    
+    /**
      the following three subscripts add the ability to
      access singe characters and slices of strings
      as if they were an array of characters
      Usage: string[n] or string[n...n] or string[n..<n]
      where n is an integer. Supports negative indexing!
      */
-    subscript(_ i: Int) -> String {
-        let j = negative(i, self.count)
-        let idx1 = index(startIndex, offsetBy: j)
-        let idx2 = index(idx1, offsetBy: 1)
-        return String(self[idx1..<idx2])
+
+ 
+    func strOpenRange(index i: Int) -> Range<String.Index> {
+        let j = negativeIndex(i)
+        return strOpenRange(j..<(j + 1), checkNegative: false)
     }
+    
+    func strOpenRange(_ range: Range<Int>, checkNegative: Bool = true) -> Range<String.Index> {
 
-    subscript (r: Range<Int>) -> String {
-        let lower = negative(r.lowerBound, self.count)
-        let upper = negative(r.upperBound, self.count)
 
-        let start = index(startIndex, offsetBy: lower)
-        let end = index(startIndex, offsetBy: upper)
-        return String(self[start ..< end])
-    }
+        var lower = range.lowerBound
+        var upper = range.upperBound
 
-    subscript (r: CountableClosedRange<Int>) -> String {
-        let lower = negative(r.lowerBound, self.count)
-        let upper = negative(r.upperBound, self.count)
+        if checkNegative {
+            lower = negativeIndex(lower)
+            upper = negativeIndex(upper)
+        }
+            
+        let idx1 = index(self.startIndex, offsetBy: lower)
+        let idx2 = index(self.startIndex, offsetBy: upper)
         
-        let startIndex =  self.index(self.startIndex, offsetBy: lower)
-        let endIndex = self.index(startIndex, offsetBy: upper - lower)
-        return String(self[startIndex...endIndex])
+        return idx1..<idx2
+    }
+    
+    func strClosedRange(
+        _ range: CountableClosedRange<Int>
+    ) -> ClosedRange<String.Index> {
+        
+        let lower = negativeIndex(range.lowerBound)
+        let upper = negativeIndex(range.upperBound)
+        
+        let start = self.index(self.startIndex, offsetBy: lower)
+        let end = self.index(start, offsetBy: upper - lower)
+        
+        return start...end
+    }
+    
+    
+    /**
+     Gets and sets a character at a given index.
+     Negative indices are added to the length so that
+     characters can be accessed from the end backwards
+     
+     Usage: `string[n]`
+     */
+    subscript(_ i: Int) -> String {
+        get {
+            return String(self[strOpenRange(index: i)])
+        }
+        set {
+            let range = strOpenRange(index: i)
+            replaceSubrange(range, with: newValue)
+        }
+    }
+    
+    
+    /**
+     Gets and sets characters in an open range.
+     Supports negative indexing
+     
+     Usage: `string[n..<n]`
+     */
+    subscript (_ r: Range<Int>) -> String {
+        get {
+            return String(self[strOpenRange(r)])
+        }
+        set {
+            replaceSubrange(strOpenRange(r), with: newValue)
+        }
+    }
+
+    /**
+     Gets and sets characters in a closed range.
+     Supports negative indexing
+     
+     Usage: `string[n...n]`
+     */
+    subscript (r: CountableClosedRange<Int>) -> String {
+        get {
+            return String(self[strClosedRange(r)])
+        }
+        set {
+            replaceSubrange(strClosedRange(r), with: newValue)
+        }
     }
     
     /**
@@ -75,25 +142,28 @@ public extension String {
         
     }
 
+    
     /**
      performs a regular expression replacement
      - Parameters:
-       - pattern: regular expression patter
-       - with: the string to replace matching patterns with
+       - pattern: regular expression pattern.
+       - with:
+             the string to replace matching patterns with.
+             defaults to an empty string.
      - Returns: the new string
      */
-    func regexSub(_ pattern: String, with: String = "") -> String {
+    func regexSub(_ pattern: String, with replacement: String = "") -> String {
         return self.replacingOccurrences(
-            of: pattern, with: with, options: [.regularExpression]
+            of: pattern, with: replacement, options: [.regularExpression]
         )
     }
     
     /// see regexSub
     mutating func regexSubInPlace(
-        _ pattern: String, with: String = ""
+        _ pattern: String, with replacement: String = ""
     ) -> String {
     
-        self = self.regexSub(pattern, with: with)
+        self = self.regexSub(pattern, with: replacement)
         return self
     }
     
