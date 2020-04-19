@@ -26,22 +26,12 @@ public extension String {
         return num < 0 ? num + self.count : num
     }
     
-    /**
-     the following three subscripts add the ability to
-     access singe characters and slices of strings
-     as if they were an array of characters
-     Usage: string[n] or string[n...n] or string[n..<n]
-     where n is an integer. Supports negative indexing!
-     */
-
- 
     func strOpenRange(index i: Int) -> Range<String.Index> {
         let j = negativeIndex(i)
         return strOpenRange(j..<(j + 1), checkNegative: false)
     }
     
     func strOpenRange(_ range: Range<Int>, checkNegative: Bool = true) -> Range<String.Index> {
-
 
         var lower = range.lowerBound
         var upper = range.upperBound
