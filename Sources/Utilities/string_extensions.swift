@@ -252,5 +252,5 @@ public extension CustomStringInterpolation {
     }
 }
 
-extension LocalizedStringKey.StringInterpolation: CustomStringInterpolation {}
-extension String.StringInterpolation: CustomStringInterpolation {}
+extension LocalizedStringKey.StringInterpolation: CustomStringInterpolation { }
+extension String.StringInterpolation: CustomStringInterpolation { }

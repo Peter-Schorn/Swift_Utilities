@@ -6,34 +6,31 @@ import Foundation
 ///
 /// if range == .open (default) then the loop continues until n `<` max.
 /// if range == .closed then the loop continues until n `<=` max
-struct exponetiate<N: BinaryFloatingPoint>:
+public struct exponetiate<N: BinaryFloatingPoint>:
     Sequence, IteratorProtocol
 {
 
-    enum RangeType { case open, closed }
+    public enum RangeType { case open, closed }
     
-    var start: N
+    var value: N
     let power: N
     let max: N
     let cond: (N, N) -> Bool
     
-    init(start: N, power: N, max: N, range: RangeType = .open) {
+    public init(start: N, power: N, max: N, range: RangeType = .open) {
 
-        self.start = start
+        self.value = start
         self.power = power
         self.max   = max
-        self.cond = range == .open ? { $0 < $1} : { $0 ≤ $1 }
+        self.cond  = range == .open ? { $0 < $1 } : { $0 ≤ $1 }
         
     }
-
     
-    
-    mutating func next() -> N? {
+    public mutating func next() -> N? {
         
-        if cond(start, max) {
-            let current = start
-            start **= power
-            return current
+        if cond(value, max) {
+            defer { value **= power }
+            return value
         }
         return nil
         
@@ -60,7 +57,7 @@ struct exponetiate<N: BinaryFloatingPoint>:
  }
  ```
  */
-struct c_iterator<N: Numeric>:
+public struct c_iterator<N: Numeric>:
     Sequence, IteratorProtocol
 {
 
@@ -68,7 +65,7 @@ struct c_iterator<N: Numeric>:
     let cond: (N) -> Bool
     let update: (N) -> N
     
-    init(
+    public init(
         init value: N,
         while cond: @escaping (N) -> Bool,
         update: @escaping (N) -> N
@@ -78,12 +75,11 @@ struct c_iterator<N: Numeric>:
         self.update = update
     }
     
-    mutating func next() -> N? {
+    public mutating func next() -> N? {
         
         if cond(value) {
-            let current = value
-            value = update(value)
-            return current
+            defer { value = update(value) }
+            return value
         }
         return nil
     }

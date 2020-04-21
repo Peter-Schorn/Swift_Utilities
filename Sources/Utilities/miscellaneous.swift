@@ -6,7 +6,7 @@ public func UtilitiesTest() {
     print("hello from the utilities package!")
 }
 
-/// does nothing
+/// Does nothing
 public func pass() { }
 
 public func currentTime() -> String {
@@ -96,7 +96,7 @@ public func asyncAfter(delay: Double, _ work: @escaping () -> Void) {
 
 
 
-/// returns true if any of the arguments are true
+/// Returns true if any of the arguments are true
 public func any(_ expressions: Bool...) -> Bool {
     for i in expressions {
         if i { return true }
@@ -104,7 +104,7 @@ public func any(_ expressions: Bool...) -> Bool {
     return false
 }
 
-/// returns true if all of the arguments are true
+/// Returns true if all of the arguments are true
 public func all(_ expressions: Bool...) -> Bool {
     for i in expressions {
         if !i { return false }
