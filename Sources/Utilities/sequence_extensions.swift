@@ -42,6 +42,30 @@ public extension Array {
         }
     }
     
+    /// Returns true if the closure returns true for any of the elements
+    /// in the sequence. Else false.
+    func any(_ closure: (Element) -> Bool ) -> Bool {
+        
+        for element in self {
+            if closure(element) { return true }
+        }
+        return false
+    
+    }
+    
+    /// Returns true if the closure returns true for all of the elements
+    /// in the sequence. Else false.
+    func all(_ closure: (Element) -> Bool ) -> Bool {
+        
+        for element in self {
+            if !closure(element) { return false }
+        }
+        return true
+    
+    }
+    
+    
+    
 }
 
 
@@ -83,96 +107,12 @@ public extension Array where Element: BinaryInteger {
 
 public extension Array where Element: BinaryFloatingPoint {
     
-    var average: Double {
-        let total = self.reduce(Double(0), { $0 + Double($1) })
-        return total / Double(self.count)
+    
+    var average: Element {
+        let total = self.reduce(0, { $0 + $1 })
+        return total / Element(self.count)
     }
 
 }
 
 
-/**
- Useful for classes that hold an array of objects.
- Synthesizes add, remove, contains, and subscript methods for the array.
- ```
- protocol ArrayClass: AnyObject {
-     
-     associatedtype T: Equatable
-     var items: [T] { get set }
-     
-     func add(_ item: T)
-     func remove(_ item: T)
- }
-
- extension ArrayObject {
-     
-     func add(_ item: T) {
-         items.append(item)
-     }
- 
-     func remove(_ item: T) {
-         if let index = items.firstIndex(of: item) {
-             items.remove(at: index)
-         }
-     }
- 
-    func contains(_ item: T) -> Bool {
-        return items.contains(item)
-    }
- 
-    subscript(_ i: Int) -> T {
-        get { return items[i] }
-        set { items[i] = newValue }
-    }
- 
- }
- ```
- */
-public protocol ArrayClass: AnyObject {
-    
-    associatedtype T: Equatable
-    var items: [T] { get set }
-    
-    func add(_ item: T)
-    func remove(_ item: T)
-    func contains(_ item: T) -> Bool
-    subscript(_ i: Int) -> T { get set }
-    subscript(back i: Int) -> T { get set }
-
-    
-    var count: Int { get }
-    var isEmpty: Bool { get }
-}
-
-public extension ArrayClass {
-    
-    func add(_ item: T) {
-        items.append(item)
-    }
-    
-    func remove(_ item: T) {
-        if let index = items.firstIndex(of: item) {
-            items.remove(at: index)
-        }
-    }
-    
-    func contains(_ item: T) -> Bool {
-        return items.contains(item)
-    }
-    
-    subscript(_ i: Int) -> T {
-        get { return items[i] }
-        set { items[i] = newValue }
-    }
-    
-    subscript(back i: Int) -> T {
-        get { return items[back: i] }
-        set { items[back: i] = newValue }
-    }
-    
-    var count: Int { items.count }
-    var isEmpty: Bool { items.isEmpty }
-    
-    
-    
-}
