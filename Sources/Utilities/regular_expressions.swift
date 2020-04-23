@@ -34,7 +34,7 @@ public extension String {
             
             if let result = regex.firstMatch(in: self, range: NSMakeRange(0, self.count)) {
                 
-                let match = String(text[Range(result.range, in: text)!])
+                let match = String(self[Range(result.range, in: self)!])
                 let range = strOpenRange(Range(result.range)!)
                 return (match: match, range: range)
             }

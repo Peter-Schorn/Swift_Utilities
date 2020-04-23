@@ -149,11 +149,25 @@ final class UtilitiesTests: XCTestCase {
     }
     
     
+    func testRegexMatch() {
+        
+        let text = "The Greatest Language is Swift"
+        
+        if let result = text.regexMatch("swift", [.caseInsensitive]) {
+            XCTAssert(result.match == text[result.range])
+            XCTAssert(result.match == "Swift")
+        }
+        else {
+            XCTFail("Should've found match in string")
+        }
+    }
+    
     static var allTests = [
         ("testOperators", testOperators),
         ("testGetStringByIndex", testGetStringByIndex),
         ("testSetStringByIndex", testSetStringByIndex),
         ("testSpecialCharacterSubscript", testExtendedGraphemeClusters),
+        ("testRegexMatch", testRegexMatch)
     ]
 }
 
