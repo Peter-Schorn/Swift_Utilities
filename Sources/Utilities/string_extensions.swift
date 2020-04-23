@@ -9,6 +9,26 @@ import Foundation
 import SwiftUI
 
 
+public func offsetStrRange(
+    _ string: String, range: Range<String.Index>, by num: Int
+) -> Range<String.Index> {
+    
+    return string.index(range.lowerBound, offsetBy: num)
+           ..<
+           string.index(range.upperBound, offsetBy: num)
+
+}
+
+public func offsetStrRange(
+    _ string: String, range: ClosedRange<String.Index>, by num: Int
+) -> ClosedRange<String.Index> {
+    
+    return string.index(range.lowerBound, offsetBy: num)
+           ...
+           string.index(range.upperBound, offsetBy: num)
+
+}
+
 
 /// Adds the ability to throw an error with a custom message
 /// Usage: `throw "There was an error"`

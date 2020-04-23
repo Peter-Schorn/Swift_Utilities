@@ -62,3 +62,60 @@ x **= 2
 public func **= <N: BinaryFloatingPoint>(lhs: inout N, rhs: N) {
     lhs = lhs ** rhs
 }
+
+
+
+
+/// Offsets a range by a given amount.
+func +=<Bound: Numeric>(range: inout Range<Bound>, offset: Bound) {
+    range = (range.lowerBound + offset)..<(range.upperBound + offset)
+}
+
+/// Offsets a range by a given amount.
+func -=<Bound: Numeric>(range: inout Range<Bound>, offset: Bound) {
+    range = (range.lowerBound - offset)..<(range.upperBound - offset)
+}
+
+
+/// Offsets a range by a given amount.
+func +=<Bound: Numeric>(range: inout ClosedRange<Bound>, offset: Bound) {
+    range = (range.lowerBound + offset)...(range.upperBound + offset)
+}
+
+/// Offsets a range by a given amount.
+func -=<Bound: Numeric>(range: inout ClosedRange<Bound>, offset: Bound) {
+    range = (range.lowerBound - offset)...(range.upperBound - offset)
+}
+
+
+/// Offsets a range by a given amount.
+func +=<Bound: Numeric>(range: inout PartialRangeFrom<Bound>, offset: Bound) {
+    range = (range.lowerBound + offset)...
+}
+
+/// Offsets a range by a given amount.
+func -=<Bound: Numeric>(range: inout PartialRangeFrom<Bound>, offset: Bound) {
+    range = (range.lowerBound - offset)...
+}
+
+
+/// Offsets a range by a given amount.
+func +=<Bound: Numeric>(range: inout PartialRangeThrough<Bound>, offset: Bound) {
+    range = ...(range.upperBound + offset)
+}
+
+/// Offsets a range by a given amount.
+func -=<Bound: Numeric>(range: inout PartialRangeThrough<Bound>, offset: Bound) {
+    range = ...(range.upperBound - offset)
+}
+
+
+/// Offsets a range by a given amount.
+func +=<Bound: Numeric>(range: inout PartialRangeUpTo<Bound>, offset: Bound) {
+    range = ..<(range.upperBound + offset)
+}
+
+/// Offsets a range by a given amount.
+func -=<Bound: Numeric>(range: inout PartialRangeUpTo<Bound>, offset: Bound) {
+    range = ..<(range.upperBound - offset)
+}
