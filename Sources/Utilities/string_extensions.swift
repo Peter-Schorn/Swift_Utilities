@@ -43,8 +43,8 @@ public extension String {
             upper = negativeIndex(upper)
         }
         
-        let idx1 = index(self.startIndex, offsetBy: lower)
-        let idx2 = index(self.startIndex, offsetBy: upper)
+        let idx1 = self.index(self.startIndex, offsetBy: lower)
+        let idx2 = self.index(self.startIndex, offsetBy: upper)
         
         return idx1..<idx2
     }
@@ -87,7 +87,7 @@ public extension String {
         }
         set {
             let range = strOpenRange(index: i)
-            replaceSubrange(range, with: newValue)
+            self.replaceSubrange(range, with: newValue)
         }
     }
     
@@ -103,7 +103,7 @@ public extension String {
             return String(self[strOpenRange(r)])
         }
         set {
-            replaceSubrange(strOpenRange(r), with: newValue)
+            self.replaceSubrange(strOpenRange(r), with: newValue)
         }
     }
 
@@ -118,7 +118,7 @@ public extension String {
             return String(self[strClosedRange(r)])
         }
         set {
-            replaceSubrange(strClosedRange(r), with: newValue)
+            self.replaceSubrange(strClosedRange(r), with: newValue)
         }
     }
     
@@ -129,7 +129,7 @@ public extension String {
             return String(self[strOpenRange(r.lowerBound..<self.count)])
         }
         set {
-            replaceSubrange(strOpenRange(r.lowerBound..<self.count), with: newValue)
+            self.replaceSubrange(strOpenRange(r.lowerBound..<self.count), with: newValue)
         }
     }
     
@@ -142,7 +142,7 @@ public extension String {
         }
         set {
             let upper = negativeIndex(r.upperBound)
-            replaceSubrange(
+            self.replaceSubrange(
                 strClosedRange(0...upper, checkNegative: false), with: newValue
             )
         }
@@ -157,7 +157,7 @@ public extension String {
         }
         set {
             let upper = negativeIndex(r.upperBound)
-            replaceSubrange(
+            self.replaceSubrange(
                 strOpenRange(0..<upper, checkNegative: false), with: newValue
             )
         }
@@ -165,58 +165,6 @@ public extension String {
         
     }
     
-    
-    // MARK: - Regex
-    
-    /**
-     Simplfies regular expressions
-     Usage: String.regex(pattern)
-     - Parameter regex: regular expression pattern
-     - Returns: an array of matches or nil if none were found
-     */
-    func regex(_ regex: String) -> [[String]]? {
-        guard let regex = try? NSRegularExpression(pattern: regex, options: []) else {
-            return nil
-        }
-        let nsString = self as NSString
-        let results  = regex.matches(in: self, options: [], range: NSMakeRange(0, nsString.length))
-        let matches = results.map { result in
-            (0..<result.numberOfRanges).map {
-                result.range(at: $0).location != NSNotFound
-                    ? nsString.substring(with: result.range(at: $0))
-                    : ""
-            }
-        }
-        return matches == [] ? nil : Optional(matches)
-        
-    }
-
-    
-    /**
-     performs a regular expression replacement
-     - Parameters:
-       - pattern: regular expression pattern.
-       - with:
-             the string to replace matching patterns with.
-             defaults to an empty string.
-     - Returns: the new string
-     */
-    func regexSub(_ pattern: String, with replacement: String = "") -> String {
-        return self.replacingOccurrences(
-            of: pattern, with: replacement, options: [.regularExpression]
-        )
-    }
-    
-    /// see regexSub
-    mutating func regexSubInPlace(
-        _ pattern: String, with replacement: String = ""
-    ) -> String {
-    
-        self = self.regexSub(pattern, with: replacement)
-        return self
-    }
-    
-    // enum Side { case left, right }
     
     /// Removes trailing and leading white space.
     /// Alias for self.trimmingCharacters(in: .whitespacesAndNewlines)
