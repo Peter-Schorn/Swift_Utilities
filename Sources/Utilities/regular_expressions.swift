@@ -9,8 +9,38 @@ import Foundation
 
 public extension String {
     
-
     
+        /**
+         Finds the first match for a regular expression patter in a string.
+         
+         - Parameters:
+             - pattern: Regular expression pattern.
+             - options: Regular expression options, such as .caseInsensitive
+         - Returns: A tuple containing the match and the range of the match
+           in the original string.
+        
+         See also String.regexFindAll
+         */
+        func regexMatch(
+            _ pattern: String,
+            _ options: NSRegularExpression.Options = []
+        ) -> (match: String, range: Range<String.Index>)? {
+            
+            guard let regex = try? NSRegularExpression(
+                pattern: pattern, options: options
+            ) else {
+                fatalError("invalid regex")
+            }
+            
+            if let result = regex.firstMatch(in: self, range: NSMakeRange(0, self.count)) {
+                
+                let match = String(text[Range(result.range, in: text)!])
+                let range = strOpenRange(Range(result.range)!)
+                return (match: match, range: range)
+            }
+            return nil
+        }
+
     
     /**
      Finds all matches for a regular expression pattern in a string.
@@ -19,14 +49,15 @@ public extension String {
         - pattern: Regular expression pattern.
         - options: Regular expression options, such as .caseInsensitive
      - Returns: An array of tuples containing the match and
-       the range of the match, Or nil if no matches are found
+       the range of the match in the original string, or nil if no matches are found
      
      Usage:
      ```
-     let text = "one, two, three"
+     var text = "one, two, three"
      if let results = text.regexFindAll(#"\w+"#, [.caseInsensitive]) {
          for result in results {
              print(result.match)
+             text.replaceSubrange(result.range, with: "new value")
          }
      }
      ```
@@ -91,6 +122,8 @@ public extension String {
         self = self.regexSub(pattern, with: replacement, options)
         return self
     }
+    
+    
     
     
     
