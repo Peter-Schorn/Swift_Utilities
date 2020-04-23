@@ -97,17 +97,28 @@ public func asyncAfter(delay: Double, _ work: @escaping () -> Void) {
 
 
 /// Returns true if any of the arguments are true
-public func any(_ expressions: Bool...) -> Bool {
+public func any(_ expressions: [Bool]) -> Bool {
     for i in expressions {
         if i { return true }
     }
     return false
 }
 
+/// Returns true if any of the arguments are true
+public func any(_ expressions: Bool...) -> Bool {
+    return any(expressions)
+}
+
+
 /// Returns true if all of the arguments are true
-public func all(_ expressions: Bool...) -> Bool {
+public func all(_ expressions: [Bool]) -> Bool {
     for i in expressions {
         if !i { return false }
     }
     return true
+}
+
+/// Returns true if all of the arguments are true
+public func all(_ expressions: Bool...) -> Bool {
+    return all(expressions)
 }
