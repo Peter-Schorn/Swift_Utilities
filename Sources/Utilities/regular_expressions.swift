@@ -19,7 +19,11 @@ public extension String {
      Finds the first match for a regular expression pattern in a string.
      
      - Attention: Same as String.regexFindAll but only returns the first match.
-       See String.regexFindAll for example usage.
+       See String.regexFindAll for example usage and full discussion.
+     
+     - Parameters:
+        - pattern: Regular expression pattern.
+        - options: Regular expression options, such as .caseInsensitive
         
      */
     func regexMatch(
@@ -69,6 +73,11 @@ public extension String {
        the range of the full match, and an array of the capture groups.
        Returns nil if no matches were found.
      
+     ```
+     public typealias RegexTuple = (
+         fullMatch: String, range: Range<String.Index>, groups: [String]
+     )
+     ```
      Example Usage:
      ```
      var text = "season 8, episode 5; season 5, episode 20"
