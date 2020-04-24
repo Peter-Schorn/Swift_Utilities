@@ -149,7 +149,7 @@ final class UtilitiesTests: XCTestCase {
     }
     
     
-    func testRegexMatch() {
+    func testRegexFindAll() {
         
         var text = "season 8, episode 5; season 5, episode 20"
 
@@ -171,11 +171,62 @@ final class UtilitiesTests: XCTestCase {
         
     }
     
+    func testRegexMatch() {
+        // print("\n\n")
+        
+        let url = "https://www.sitepoint.com/demystifying-regex-with-practical-examples/"
+        let pattern = #"^(http|https|ftp):[\/]{2}([a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,4})(:[0-9]+)?\/?([a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~]*)"#
+        
+        if let result = url.regexMatch(pattern) {
+            XCTAssert(result.fullMatch == "https://www.sitepoint.com/demystifying-regex-with-practical-examples/")
+            XCTAssert(result.groups == ["https", "www.sitepoint.com", "demystifying-regex-with-practical-examples/"])
+        }
+        else {
+            XCTFail("should've found regex match")
+        }
+        
+        
+        // print("\n\n")
+    }
+    
+    
+    func testPythonStringFormat() {
+        
+        let name = "Peter Schorn"
+        let age  = 21
+        let gender = "Male"
+        let country = "The United States of America"
+        
+        let text_1 = "my name is '{{}}', age: '{3}', gender: '{2}' country: '{1}'"
+        
+        let formmated_1 = text_1.format(name, age, gender, country)
+        
+        XCTAssert(formmated_1 ==
+            "my name is '{}', age: 'The United States of America', gender: 'Male' country: '21'"
+        )
+        
+        let text_2 = "my name is '{{}}', age: '{}', country: '{{}}' gender: '{}'"
+            .format(age, gender, country)
+        
+        print(text_2)
+        XCTAssert(text_2 == "my name is '{}', age: '21', country: '{}' gender: 'Male'")
+        
+        
+        let text_3 = "name: {first}, age: {old}, {{abc}}".format(dict: ["first": name, "old": age])
+        XCTAssert(text_3 == "name: Peter Schorn, age: 21, {abc}")
+        
+        
+    }
+    
+    
+    
     static var allTests = [
         ("testOperators", testOperators),
         ("testGetStringByIndex", testGetStringByIndex),
         ("testSetStringByIndex", testSetStringByIndex),
         ("testSpecialCharacterSubscript", testExtendedGraphemeClusters),
+        ("testRegexFindAll", testRegexFindAll),
+        ("testPythonStringFormat", testPythonStringFormat),
         ("testRegexMatch", testRegexMatch)
     ]
 }

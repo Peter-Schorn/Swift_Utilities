@@ -49,7 +49,9 @@ public extension String {
             regexTuple.groups = []
             
             for match in 1..<result.numberOfRanges {
-                regexTuple.groups.append(nsString.substring(with: result.range(at: match)))
+                let range = result.range(at: match)
+                if range.location == NSNotFound { continue }
+                regexTuple.groups.append(nsString.substring(with: range ))
                 
             }
             
@@ -127,7 +129,9 @@ public extension String {
             regexTuple.groups = []
             
             for match in 1..<result.numberOfRanges {
-                regexTuple.groups.append(nsString.substring(with: result.range(at: match)))
+                let range = result.range(at: match)
+                if range.location == NSNotFound { continue }
+                regexTuple.groups.append(nsString.substring(with: range ))
                 
             }
             fullMatches.append(regexTuple)
@@ -138,6 +142,25 @@ public extension String {
         return Optional(fullMatches)
     }
         
+    func regexOLD(_ regex: String) -> [[String]]? {
+        guard let regex = try? NSRegularExpression(pattern: regex, options: []) else {
+            return nil
+        }
+        let nsString = self as NSString
+        let results  = regex.matches(in: self, options: [], range: NSMakeRange(0, nsString.length))
+        let matches = results.map { result in
+            (0..<result.numberOfRanges).map {
+                result.range(at: $0).location != NSNotFound
+                    ? nsString.substring(with: result.range(at: $0))
+                    : ""
+            }
+        }
+        return matches == [] ? nil : Optional(matches)
+        
+    }
+    
+    
+    
     
     /**
      Performs a regular expression replacement
@@ -163,15 +186,14 @@ public extension String {
         )
     }
     
-    /// see regexSub
+    /// See regexSub
     mutating func regexSubInPlace(
         _ pattern: String,
         with replacement: String = "",
         _ options: NSString.CompareOptions = []
-    ) -> String {
+    ) {
     
         self = self.regexSub(pattern, with: replacement, options)
-        return self
     }
     
     
