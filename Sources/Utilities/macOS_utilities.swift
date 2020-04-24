@@ -8,6 +8,8 @@
 import Foundation
 
 #if os(macOS)
+
+
 /// Wrapper for FileManager.default.createDirectory
 func makeFolder(
     _ path: String,
@@ -57,4 +59,6 @@ public func runShellScript(
     
 
 }
+
+
 #endif

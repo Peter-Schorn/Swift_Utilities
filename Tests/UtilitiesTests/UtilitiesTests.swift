@@ -151,15 +151,24 @@ final class UtilitiesTests: XCTestCase {
     
     func testRegexMatch() {
         
-        let text = "The Greatest Language is Swift"
-        
-        if let result = text.regexMatch("swift", [.caseInsensitive]) {
-            XCTAssert(result.match == text[result.range])
-            XCTAssert(result.match == "Swift")
+        var text = "season 8, episode 5; season 5, episode 20"
+
+        if let results = text.regexFindAll(#"season (\d+), episode (\d+)"#) {
+       
+            XCTAssert(results[0].fullMatch == "season 8, episode 5")
+            XCTAssert(results[0].groups == ["8", "5"])
+            
+            XCTAssert(results[1].fullMatch == "season 5, episode 20")
+            XCTAssert(results[1].groups == ["5", "20"])
+            
+            text.replaceSubrange(results[0].range, with: "new value")
+            print("replaced text:", text)
+            
         }
         else {
-            XCTFail("Should've found match in string")
+            XCTFail("should've found match")
         }
+        
     }
     
     static var allTests = [

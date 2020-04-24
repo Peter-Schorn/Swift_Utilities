@@ -19,7 +19,7 @@ public extension String {
      Finds the first match for a regular expression pattern in a string.
      
      - Attention: Same as String.regexFindAll but only returns the first match.
-       See String.regexFindAll for a full explanation.
+       See String.regexFindAll for example usage.
         
      */
     func regexMatch(
@@ -71,7 +71,26 @@ public extension String {
      
      Example Usage:
      ```
-     
+     var text = "season 8, episode 5; season 5, episode 20"
+
+     if let results = text.regexFindAll(#"season (\d+), episode (\d+)"#) {
+         for result in results {
+             print("fullMatch: \"\(result.fullMatch)\", groups: \(result.groups)")
+         }
+
+         text.replaceSubrange(results[0].range, with: "new value")
+         print("replaced text:", text)
+         
+     }
+     else {
+         print("no matches")
+     }
+     ```
+     Output:
+     ```
+     // fullMatch: "season 8, episode 5", groups: ["8", "5"]
+     // fullMatch: "season 5, episode 20", groups: ["5", "20"]
+     // replaced text: new value; season 5, episode 20
      ```
      */
     func regexFindAll(
