@@ -9,7 +9,7 @@ import Foundation
 
 
 public typealias RegexTuple = (
-    fullMatch: String, range: Range<String.Index>, groups: [String]
+    fullMatch: String, range: Range<String.Index>, groups: [String?]
 )
 
 public extension String {
@@ -50,8 +50,13 @@ public extension String {
             
             for match in 1..<result.numberOfRanges {
                 let range = result.range(at: match)
-                if range.location == NSNotFound { continue }
-                regexTuple.groups.append(nsString.substring(with: range ))
+                
+                if range.location == NSNotFound {
+                    regexTuple.groups.append(nil)
+                }
+                else {
+                    regexTuple.groups.append(nsString.substring(with: range ))
+                }
                 
             }
             
@@ -72,12 +77,15 @@ public extension String {
         - options: Regular expression options, such as .caseInsensitive
      
      - Returns: An array of tuples, each of which contains the full match,
-       the range of the full match, and an array of the capture groups.
+       the range of the full match, and an array of the capture groups [String?].
+       If one of the capture groups was not matched, then it will be nil.
        Returns nil if no matches were found.
      
      ```
      public typealias RegexTuple = (
-         fullMatch: String, range: Range<String.Index>, groups: [String]
+         fullMatch: String,
+         range: Range<String.Index>,
+         groups: [String?]
      )
      ```
      Example Usage:
@@ -89,7 +97,7 @@ public extension String {
              print("fullMatch: \"\(result.fullMatch)\", groups: \(result.groups)")
          }
 
-         text.replaceSubrange(results[0].range, with: "new value")
+         text.replaceSubrange(results[0]!.range, with: "new value")
          print("replaced text:", text)
          
      }
@@ -99,8 +107,8 @@ public extension String {
      ```
      Output:
      ```
-     // fullMatch: "season 8, episode 5", groups: ["8", "5"]
-     // fullMatch: "season 5, episode 20", groups: ["5", "20"]
+     // fullMatch: "season 8, episode 5", groups: [Optional("8"), Optional("5")]
+     // fullMatch: "season 5, episode 20", groups: [Optional("5"), Optional("20")]
      // replaced text: new value; season 5, episode 20
      ```
      */
@@ -130,8 +138,13 @@ public extension String {
             
             for match in 1..<result.numberOfRanges {
                 let range = result.range(at: match)
-                if range.location == NSNotFound { continue }
-                regexTuple.groups.append(nsString.substring(with: range ))
+                
+                if range.location == NSNotFound {
+                    regexTuple.groups.append(nil)
+                }
+                else {
+                    regexTuple.groups.append(nsString.substring(with: range ))
+                }
                 
             }
             fullMatches.append(regexTuple)

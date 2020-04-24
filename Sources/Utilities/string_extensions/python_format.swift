@@ -5,20 +5,18 @@
 //  Created by Peter Schorn on 4/23/20.
 //
 
-// Adds python-style format for strings
+// Adds python-style format method for strings
 
 import Foundation
 
 
+/// replaces double brackets with single brackets
 func removeDoubleBrackets(_ string: inout String) {
     string.regexSubInPlace(#"\{\{"#, with: "{")
     string.regexSubInPlace(#"\}\}"#, with: "}")
 }
 
 public extension String {
-    
-    /// replaces double brackets with single brackets
-    
     
     
     func format(dict: [String: Any]) -> String {
@@ -35,7 +33,7 @@ public extension String {
         for key in keys {
             
             // the keyword inside the curly bracket
-            let kwarg = key.groups[0]
+            let kwarg = key.groups[0]!
             
             guard let item = items[kwarg] else {
                 fatalError("couldn't find key in dictionary")
@@ -61,7 +59,7 @@ public extension String {
         }
 
         // if all the curly brackets have numbers in them
-        if matches.all({ $0.groups[0].regexMatch(#"\d+"#) != nil }) {
+        if matches.all({ $0.groups[0]!.regexMatch(#"\d+"#) != nil }) {
             // print("all numbers")
             return formatNum(items, matches)
         }
@@ -113,7 +111,7 @@ public extension String {
         for match in matches {
     
             // the number inside the brackets
-            let num = Int(match.groups[0])!
+            let num = Int(match.groups[0]!)!
             
             guard let item = items[safe: num] else {
                 fatalError("item \(num) specified in curly brackets not found")

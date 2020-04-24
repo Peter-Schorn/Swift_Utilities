@@ -7,12 +7,7 @@
 
 import Foundation
 
-public extension Sequence where Element: Numeric {
-    
-    /// returns the sum of the elements in a sequence
-    var sum: Element { self.reduce(0, +) }
 
-}
 
 public extension Array {
     
@@ -64,6 +59,20 @@ public extension Array {
     
     }
     
+    
+    /// Similar to map, except if the closure returns nil,
+    /// then the element is not added to the new array.
+    /// This is modeled after Python's list comprehension.
+    func filterMap(_ closure: (Element) -> Element?) -> [Element] {
+        
+        var newArray: [Element] = []
+        for item in self {
+            if let result = closure(item) {
+                newArray.append(result)
+            }
+        }
+        return newArray
+    }
     
     
 }
