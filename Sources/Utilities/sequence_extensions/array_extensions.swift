@@ -59,13 +59,32 @@ public extension Array {
     
     }
     
-    
-    /// Similar to map, except if the closure returns nil,
-    /// then the element is not added to the new array.
-    /// This is modeled after Python's list comprehension.
-    func filterMap(_ closure: (Element) -> Element?) -> [Element] {
+
+    /**
+     Similar to map, except if the closure returns nil,
+     then the element is not added to the new array.
+     This is modeled after Python's list comprehension.
+     
+     Usage:
+     ```
+     let items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+     let newItems = items.filterMap { item in
+         if item < 5 {
+             return item * 2
+         }
+         return nil
+     }
+     // newitems = [2, 4, 6, 8]
+     ```
+     In this example, if the item is less than five, then it is multiplied
+     by two and then added to the array. If the item is not less than five,
+     then the closure returns nil, which indicates that the item should not
+     be added to the new array.
+     */
+    func filterMap<T>(_ closure: (Element) -> T?) -> [T] {
         
-        var newArray: [Element] = []
+        var newArray: [T] = []
         for item in self {
             if let result = closure(item) {
                 newArray.append(result)
