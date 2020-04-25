@@ -79,10 +79,11 @@ public extension Array {
      // newitems = ["2", "4", "6", "8"]
      ```
      In this example, if the item is less than five, then it is multiplied
-     by two and then added to the array. If the item is not less than five,
-     then the closure returns nil, which indicates that the item should not
-     be added to the new array. The new array does not have to be the same type
-     as the original array, as shown above, and just like the map method.
+     by two, converted to a string, and then added to the array.
+     If the item is not less than five, then the closure returns nil,
+     which indicates that the item should not be added to the new array.
+     The new array does not have to be the same type as the original array,
+     as shown above, and just like the map method.
      */
     func filterMap<T>(_ closure: (Element) -> T?) -> [T] {
         
