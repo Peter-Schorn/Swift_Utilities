@@ -69,18 +69,20 @@ public extension Array {
      ```
      let items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-     let newItems = items.filterMap { item in
+     let newItems: [String] = items.filterMap { item in
          if item < 5 {
-             return item * 2
+             return String(item * 2)
          }
          return nil
      }
-     // newitems = [2, 4, 6, 8]
+     
+     // newitems = ["2", "4", "6", "8"]
      ```
      In this example, if the item is less than five, then it is multiplied
      by two and then added to the array. If the item is not less than five,
      then the closure returns nil, which indicates that the item should not
-     be added to the new array.
+     be added to the new array. The new array does not have to be the same type
+     as the original array, as shown above, and just like the map method.
      */
     func filterMap<T>(_ closure: (Element) -> T?) -> [T] {
         
