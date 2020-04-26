@@ -148,7 +148,6 @@ final class UtilitiesTests: XCTestCase {
         XCTAssert(string2[(-2)...] == "🇧🇱🇱🇰")
     }
     
-    
     func testRegexFindAll() {
         print("\n\n")
         
@@ -212,7 +211,6 @@ final class UtilitiesTests: XCTestCase {
         print("\n\n")
     }
     
-    
     func testPythonStringFormat() {
         
         let name = "Peter Schorn"
@@ -241,7 +239,6 @@ final class UtilitiesTests: XCTestCase {
         
     }
     
-    
     func testArrayFilterMap() {
         
         let items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -259,6 +256,29 @@ final class UtilitiesTests: XCTestCase {
         XCTAssert(newItems_2 == ["2", "4", "6", "8"])
         // XCTAssert(newItems_2 == [2, 4, 6, 8])
     }
+
+    func testShellScripting() {
+                
+        runShellScriptAsync(args: ["echo", "hello"]) { process, stdout, stderror in
+            XCTAssert(stdout == Optional("hello"))
+            XCTAssert(stderror == Optional(""))
+            XCTAssert(process.terminationStatus == 0)
+        }
+        
+        let output = runShellScript(args: ["echo", "hello"])
+        XCTAssert(output.stdout == Optional("hello"))
+        XCTAssert(output.stderror == Optional(""))
+        XCTAssert(output.exitCode == 0)
+        
+        
+        runShellScriptAsync(args: ["echo", "hello"]) { process, stdout, stderror in
+            XCTAssert(stdout == Optional("hello"))
+            XCTAssert(stderror == Optional(""))
+            XCTAssert(process.terminationStatus == 0)
+        }
+        
+        
+    }
     
     
     static var allTests = [
@@ -269,7 +289,8 @@ final class UtilitiesTests: XCTestCase {
         ("testRegexFindAll", testRegexFindAll),
         ("testPythonStringFormat", testPythonStringFormat),
         ("testRegexMatch", testRegexMatch),
-        ("testArrayFilterMap", testArrayFilterMap)
+        ("testArrayFilterMap", testArrayFilterMap),
+        ("testShellScripting", testShellScripting)
     ]
 }
 
