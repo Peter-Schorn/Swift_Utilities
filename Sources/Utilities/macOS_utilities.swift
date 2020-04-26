@@ -9,22 +9,6 @@ import Foundation
 
 #if os(macOS)
 
-
-/// Wrapper for FileManager.default.createDirectory
-func makeFolder(
-    _ path: String,
-    makeIntermediates: Bool = true,
-    attributes: [FileAttributeKey:Any]? = nil
-) throws {
-
-    try FileManager.default.createDirectory(
-        atPath: path,
-        withIntermediateDirectories: makeIntermediates,
-        attributes: attributes
-    )
-}
-
-
 /**
  runs a shell script and returns the output with the trailing new line stripped
  - Parameters:
@@ -59,6 +43,5 @@ public func runShellScript(
     
 
 }
-
 
 #endif
