@@ -34,12 +34,14 @@ public func makeFolder(
  See `FileManager.default.url(for:in:appropriateFor:create:)` for
  a disucssion of the parameters.
  */
+@discardableResult
 public func withTempDirectory(
    for directory: FileManager.SearchPathDirectory = .itemReplacementDirectory,
    in domain: FileManager.SearchPathDomainMask = .userDomainMask,
    appropriateFor url: URL = FileManager.default.homeDirectoryForCurrentUser,
+   shouldDelete: Bool = true
    closure: (URL) -> Void
-) throws {
+) throws -> URL {
 
     let tempDir = try FileManager.default.url(
         for: directory,
@@ -50,11 +52,14 @@ public func withTempDirectory(
     
     closure(tempDir)
     
-    do {
-        try FileManager.default.removeItem(at: tempDir)
-    
-    } catch let e as NSError where e.code == 4 {
-        // code 4 indicates that the directory couldn't be found.
+    if shouldDelete {
+        do {
+            try FileManager.default.removeItem(at: tempDir)
+        
+        } catch let e as NSError where e.code == 4 {
+            // code 4 indicates that the directory couldn't be found.
+        }
     }
-
+    
+    return tempDir
 }
