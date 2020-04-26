@@ -185,19 +185,42 @@ public extension String {
         
     }
     
+    enum StripOptions {
+        case fileExt
+    }
     
-    /// Removes trailing and leading white space.
-    /// Alias for self.trimmingCharacters(in: .whitespacesAndNewlines)
-    func strip() -> String {
-        return self.trimmingCharacters(in: .whitespacesAndNewlines)
+    func strip(_ stripOptions: StripOptions) -> String {
+        switch stripOptions {
+            case .fileExt:
+                return self.regexSub(#"\.([^\.]*)$"#)
+        }
+    }
+    
+    
+    /**
+     ```
+     func strip(_ characterSet: CharacterSet = .whitespacesAndNewlines) -> String {
+         return self.trimmingCharacters(in: characterSet)
+     }
+     ```
+     */
+    func strip(_ characterSet: CharacterSet = .whitespacesAndNewlines) -> String {
+        return self.trimmingCharacters(in: characterSet)
     }
 
-    /// Strips trailing and leading white space **in place**
-    mutating func stripInPlace() -> String {
-        self = self.strip()
+    /// see String.strip
+    mutating func stripInPlace(_ characterSet: CharacterSet = .whitespacesAndNewlines) -> String {
+        self = self.strip(characterSet)
         return self
     }
 
+    /// see String.strip
+    mutating func stripInPlace(_ stripOptions: StripOptions) -> String {
+        self = self.strip(stripOptions)
+        return self
+    }
+    
+    
     /// alias for .components(separatedBy: separator)
     func split(_ separator: String) -> [String] {
         return self.components(separatedBy: separator)
