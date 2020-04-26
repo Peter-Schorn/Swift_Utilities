@@ -27,8 +27,9 @@ public func makeFolder(
  Creates a temporary directory, passes the URL for it into a closure,
  and then deletes the directory after executing the closure.
  
- If the directory can't be found because, e.g., it was already
- deleted from within the closure, then this error is silently ignored.
+ When the directory is being deleted, if it can't be found because, e.g.,
+ it was already deleted from within the closure,
+ then this error is silently ignored.
  All other errors are propogated back to the caller.
  See `FileManager.default.url(for:in:appropriateFor:create:)` for
  a disucssion of the parameters.

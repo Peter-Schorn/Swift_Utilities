@@ -109,7 +109,7 @@ public func runShellScriptAsync(
     launchPath: String = "/usr/bin/env",
     stdout: Pipe = Pipe(),
     stderror: Pipe = Pipe(),
-    terminationHandler: ((Process, _ stdout: String?, _ stdout: String?) -> Void)? = nil
+    terminationHandler: ((Process, _ stdout: String?, _ stderror: String?) -> Void)? = nil
 ) {
     
     let terminationHandlerWrapper = { (process: Process) -> Void  in
@@ -131,11 +131,8 @@ public func runShellScriptAsync(
     task.arguments = args
      
     // Create Pipes
-    let standardOutput  = stdout
-    task.standardOutput = standardOutput
-    
-    let standardError   = stderror
-    task.standardError  = standardError
+    task.standardOutput = stdout
+    task.standardError  = stderror
 
     task.terminationHandler = terminationHandlerWrapper
     
