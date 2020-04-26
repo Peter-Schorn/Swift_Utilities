@@ -22,6 +22,19 @@ public func makeFolder(
     )
 }
 
+/// Renames a file or folder.
+/// Equivalent to calling FileManager.default.moveItem(at:to:),
+/// but only changing the last component of the path.
+public func renameFile(_ path: URL, to newName: String) throws {
+    
+    var newPath = path.deletingLastPathComponent()
+    newPath.appendPathComponent(newName)
+    
+    try FileManager.default.moveItem(at: path, to: newPath)
+    
+}
+
+
 
 public enum DeleteOptions {
     case afterClosure
