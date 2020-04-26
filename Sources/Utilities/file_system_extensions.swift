@@ -39,7 +39,7 @@ public func withTempDirectory(
    for directory: FileManager.SearchPathDirectory = .itemReplacementDirectory,
    in domain: FileManager.SearchPathDomainMask = .userDomainMask,
    appropriateFor url: URL = FileManager.default.homeDirectoryForCurrentUser,
-   shouldDelete: Bool = true
+   delete: Bool = true,
    closure: (URL) -> Void
 ) throws -> URL {
 
@@ -52,7 +52,7 @@ public func withTempDirectory(
     
     closure(tempDir)
     
-    if shouldDelete {
+    if delete {
         do {
             try FileManager.default.removeItem(at: tempDir)
         
