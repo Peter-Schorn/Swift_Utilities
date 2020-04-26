@@ -57,7 +57,7 @@ public func withTempDirectory(
             try FileManager.default.removeItem(at: tempDir)
         
         } catch let e as NSError where e.code == 4 {
-            // code 4 indicates that the directory couldn't be found.
+            // code 4 indicates that the directory couldn't be found
             print("WARNING: couldn't delete temp directory")
         }
     }
