@@ -7,6 +7,22 @@
 
 import Foundation
 
+public func isExistingDirectory(_ path: URL) -> Bool {
+    
+    return (try? path.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory ?? false
+    
+}
+
+public func isExistingFile(_ path: URL) -> Bool {
+    
+    if FileManager.default.fileExists(atPath: path.path) {
+        let isDir = (try? path.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory
+        return !(isDir ?? false)
+        
+    }
+    return false
+}
+
 
 /// Wrapper for FileManager.default.createDirectory
 public func makeFolder(
@@ -33,7 +49,6 @@ public func renameFile(_ path: URL, to newName: String) throws {
     try FileManager.default.moveItem(at: path, to: newPath)
     
 }
-
 
 
 public enum DeleteOptions {
