@@ -33,7 +33,7 @@ public extension Date {
      Alias for
      `.init(timeIntervalSince1970: Double)`
      */
-    public init(unixTime: Double) {
+    init(unixTime: Double) {
         self.init(timeIntervalSince1970: unixTime)
     }
     

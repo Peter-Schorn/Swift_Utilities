@@ -26,16 +26,17 @@ public func isExistingFile(_ path: URL) -> Bool {
 
 /// Wrapper for FileManager.default.createDirectory
 public func makeFolder(
-    _ path: String,
+    _ path: URL,
     makeIntermediates: Bool = true,
     attributes: [FileAttributeKey:Any]? = nil
 ) throws {
 
     try FileManager.default.createDirectory(
-        atPath: path,
+        at: path,
         withIntermediateDirectories: makeIntermediates,
         attributes: attributes
     )
+    
 }
 
 /// Renames a file or folder.
@@ -111,4 +112,16 @@ public func withTempDirectory(
     }
     
     return tempDir
+}
+
+/// Creates a Temporary directory for the current user.
+public func createTempDirectory() throws -> URL {
+ 
+    return try FileManager.default.url(
+        for: .itemReplacementDirectory,
+        in: .userDomainMask,
+        appropriateFor: FileManager.default.homeDirectoryForCurrentUser,
+        create: true
+    )
+    
 }
