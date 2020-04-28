@@ -14,3 +14,4 @@ public extension Sequence where Element: Numeric {
     var sum: Element { self.reduce(0, +) }
 
 }
+
