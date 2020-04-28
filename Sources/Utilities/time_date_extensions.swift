@@ -115,7 +115,7 @@ public class Timer {
     /// Returns the amount of time on the timer.
     /// This method can be called when the timer is running
     /// and when it is paused.
-    var timeElapsed: Double {
+    public var timeElapsed: Double {
         if self.isPaused {
             return self._timeElapsed
         }
@@ -129,7 +129,7 @@ public class Timer {
     /// in a paused state. Calling resume for the first time
     /// starts the timer. If the timer was not paused, then
     /// this method has no effect.
-    func resume() {
+    public func resume() {
         if self.isPaused {
             self.startTime = Date().unixTime
             self.isPaused = false
@@ -138,7 +138,7 @@ public class Timer {
     
     /// Pauses the timer. If the timer was already paused,
     /// then this method has no effect.
-    func pause() {
+    public func pause() {
         if !self.isPaused {
             if let start = self.startTime {
                 self._timeElapsed += Date().unixTime - start
@@ -148,7 +148,7 @@ public class Timer {
     }
     
     /// Toggles the timer between paused and unpaused.
-    func toggle() {
+    public func toggle() {
         if self.isPaused {
             self.resume()
         }
@@ -158,7 +158,7 @@ public class Timer {
     }
     
     /// sets timeElapsed to 0 and pauses the timer.
-    func reset() {
+    public func reset() {
         self.startTime = nil
         self._timeElapsed = 0
         self.isPaused = true

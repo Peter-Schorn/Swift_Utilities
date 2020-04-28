@@ -9,13 +9,13 @@ import Foundation
 import SwiftUI
 
 
-struct CenterInForm<V: View>: View {
+public struct CenterInForm<V: View>: View {
     
-    var content: V
+    public var content: V
     
-    init(_ content: V) { self.content = content }
+    public init(_ content: V) { self.content = content }
     
-    var body: some View {
+    public var body: some View {
         HStack {
             Spacer()
             content
