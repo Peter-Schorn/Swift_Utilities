@@ -57,6 +57,9 @@ public enum DeleteOptions {
     case useHandler
 }
 
+// MARK: - macOS -
+#if os(macOS)
+
 /**
  Creates a temporary directory and passes the URL for it into a closure.
  
@@ -115,13 +118,19 @@ public func withTempDirectory(
 }
 
 /// Creates a Temporary directory for the current user.
-public func createTempDirectory() throws -> URL {
+public func createTempDirectory(
+    for directory: FileManager.SearchPathDirectory = .itemReplacementDirectory,
+    in domain: FileManager.SearchPathDomainMask = .userDomainMask,
+    appropriateFor url: URL = FileManager.default.homeDirectoryForCurrentUser
+) throws -> URL {
  
     return try FileManager.default.url(
-        for: .itemReplacementDirectory,
-        in: .userDomainMask,
-        appropriateFor: FileManager.default.homeDirectoryForCurrentUser,
+        for: .directory,
+        in: domain,
+        appropriateFor: url,
         create: true
     )
     
 }
+
+#endif
