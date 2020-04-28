@@ -8,7 +8,7 @@
 import Foundation
 
 
-extension Dictionary {
+public extension Dictionary {
     
     func valuesArray() -> [Dictionary.Value] {
         return self.values.map { $0 }
