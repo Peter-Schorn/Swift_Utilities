@@ -98,13 +98,13 @@ public func timeUnit(_ unit: TimeUnits) -> Double {
 
 
 
-public class Timer {
+public class StopWatch {
 
     private(set) var startTime: Double?
     private(set) var isPaused = true
     private var _timeElapsed: Double = 0
     
-    /// if startNow is set to true, then the timer
+    /// if startNow is set to true, then the stopWatch
     /// is started upon instantiation.
     public init(startNow: Bool = false) {
         if startNow {
@@ -112,8 +112,8 @@ public class Timer {
         }
     }
     
-    /// Returns the amount of time on the timer.
-    /// This method can be called when the timer is running
+    /// Returns the amount of time on the stopWatch.
+    /// This method can be called when the stopWatch is running
     /// and when it is paused.
     public var timeElapsed: Double {
         if self.isPaused {
@@ -125,9 +125,9 @@ public class Timer {
         return 0
     }
     
-    /// Resumes the timer. By default, the timer is instantiated
+    /// Resumes the stopWatch. By default, the stopWatch is instantiated
     /// in a paused state. Calling resume for the first time
-    /// starts the timer. If the timer was not paused, then
+    /// starts the stopWatch. If the stopWatch was not paused, then
     /// this method has no effect.
     public func resume() {
         if self.isPaused {
@@ -136,7 +136,7 @@ public class Timer {
         }
     }
     
-    /// Pauses the timer. If the timer was already paused,
+    /// Pauses the stopWatch. If the stopWatch was already paused,
     /// then this method has no effect.
     public func pause() {
         if !self.isPaused {
@@ -147,7 +147,7 @@ public class Timer {
         }
     }
     
-    /// Toggles the timer between paused and unpaused.
+    /// Toggles the stopWatch between paused and unpaused.
     public func toggle() {
         if self.isPaused {
             self.resume()
@@ -157,7 +157,7 @@ public class Timer {
         }
     }
     
-    /// sets timeElapsed to 0 and pauses the timer.
+    /// sets timeElapsed to 0 and pauses the stopWatch.
     public func reset() {
         self.startTime = nil
         self._timeElapsed = 0
