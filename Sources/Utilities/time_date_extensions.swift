@@ -106,7 +106,7 @@ public class Timer {
     
     /// if startNow is set to true, then the timer
     /// is started upon instantiation.
-    init(startNow: Bool = false) {
+    public init(startNow: Bool = false) {
         if startNow {
             self.resume()
         }
@@ -167,10 +167,3 @@ public class Timer {
     
 }
 
-func test2() {
-    
-    let timer = Timer()
-    
-    
-    
-}
