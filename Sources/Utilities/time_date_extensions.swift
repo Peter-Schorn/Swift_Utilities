@@ -37,10 +37,12 @@ public extension Date {
         self.init(timeIntervalSince1970: unixTime)
     }
     
+    /// Returns the difference between the dates in seconds
     static func - (lhs: Date, rhs: Date) -> Double {
         return lhs.unixTime - rhs.unixTime
     }
     
+    /// Adds the unix time for the dates together
     static func + (lhs: Date, rhs: Date) -> Double {
         return lhs.unixTime - rhs.unixTime
     }
@@ -92,4 +94,83 @@ public func timeUnit(_ unit: TimeUnits) -> Double {
         case .month(let t, days: let d):
             return t * Double(d) * 86_400
     }
+}
+
+
+
+public class Timer {
+
+    private(set) var startTime: Double?
+    private(set) var isPaused = true
+    private var _timeElapsed: Double = 0
+    
+    /// if startNow is set to true, then the timer
+    /// is started upon instantiation.
+    init(startNow: Bool = false) {
+        if startNow {
+            self.resume()
+        }
+    }
+    
+    /// Returns the amount of time on the timer.
+    /// This method can be called when the timer is running
+    /// and when it is paused.
+    var timeElapsed: Double {
+        if self.isPaused {
+            return self._timeElapsed
+        }
+        if let start = self.startTime {
+            return Date().unixTime - start + self._timeElapsed
+        }
+        return 0
+    }
+    
+    /// Resumes the timer. By default, the timer is instantiated
+    /// in a paused state. Calling resume for the first time
+    /// starts the timer. If the timer was not paused, then
+    /// this method has no effect.
+    func resume() {
+        if self.isPaused {
+            self.startTime = Date().unixTime
+            self.isPaused = false
+        }
+    }
+    
+    /// Pauses the timer. If the timer was already paused,
+    /// then this method has no effect.
+    func pause() {
+        if !self.isPaused {
+            if let start = self.startTime {
+                self._timeElapsed += Date().unixTime - start
+            }
+            self.isPaused = true
+        }
+    }
+    
+    /// Toggles the timer between paused and unpaused.
+    func toggle() {
+        if self.isPaused {
+            self.resume()
+        }
+        else {
+            self.pause()
+        }
+    }
+    
+    /// sets timeElapsed to 0 and pauses the timer.
+    func reset() {
+        self.startTime = nil
+        self._timeElapsed = 0
+        self.isPaused = true
+    }
+    
+    
+}
+
+func test2() {
+    
+    let timer = Timer()
+    
+    
+    
 }
