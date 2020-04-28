@@ -29,6 +29,27 @@ public func asyncAfter(delay: Double, _ work: @escaping () -> Void) {
     DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: work)
 }
 
+/**
+ See Hasher
+ ```
+ var hasher = Hasher()
+ for i in object {
+     hasher.combine(i)
+ }
+ return hasher.finalize()
+ ```
+ */
+func makeHash<H: Hashable>(_ object: H...) -> Int {
+    
+    var hasher = Hasher()
+    for i in object {
+        hasher.combine(i)
+    }
+    return hasher.finalize()
+    
+}
+
+
 
 
 /// Returns true if any of the arguments are true
