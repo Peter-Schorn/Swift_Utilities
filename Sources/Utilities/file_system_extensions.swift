@@ -125,7 +125,7 @@ public func createTempDirectory(
 ) throws -> URL {
  
     return try FileManager.default.url(
-        for: .directory,
+        for: directory,
         in: domain,
         appropriateFor: url,
         create: true
