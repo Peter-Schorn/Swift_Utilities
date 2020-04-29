@@ -78,8 +78,8 @@ public enum DeleteOptions {
            This is useful for asynchronous code.
    - closure: Executes after the temporary directory is created.
          If deleteOptions == .afterClosure, then `delelteClosure` is nil
-   - tempDir: Executes after the directory is created.
-   - delelteClosure: Deletes the directory when called.
+   - tempDir: The URL for the temporary directory
+   - delelteClosure: Deletes the directory when called. `() -> Void`
  - Returns: The URL of the directory, which may have already been deleted,
        depending on the options specified above.
  */

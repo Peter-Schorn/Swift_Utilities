@@ -1,10 +1,13 @@
-import XCTest
 import Foundation
+import XCTest
 
 @testable import Utilities
 
 final class UtilitiesTests: XCTestCase {
 
+    let separator =
+    "------------------------------------------------------------------------"
+    
     func testOperators() {
         XCTAssert(1 ≤ 2)
         XCTAssert(1 ≤ 1)
@@ -13,7 +16,7 @@ final class UtilitiesTests: XCTestCase {
         
         XCTAssert(5 ** 2 == 25) // Ints
         XCTAssert(5.0 ** 2.0 == 25.0) // Doubles
-        
+                
     }
 
     func testStringFormatting() {
@@ -149,13 +152,13 @@ final class UtilitiesTests: XCTestCase {
     }
     
     func testRegexFindAll() {
-        print("\n\n")
+        // print("\n\n")
         
         var text = "season 8, episode 5; season 5, episode 20"
 
         if let results = text.regexFindAll(#"season (\d+), episode (\d+)"#) {
        
-            print(results[0].groups)
+            // print(results[0].groups)
             
             XCTAssert(results[0].fullMatch == "season 8, episode 5")
             XCTAssert(results[0].groups == [Optional("8"), Optional("5")])
@@ -166,25 +169,25 @@ final class UtilitiesTests: XCTestCase {
             XCTAssert(results[1].groups == [Optional("5"), Optional("20")])
             
             text.replaceSubrange(results[0].range, with: "new value")
-            print("replaced text:", text)
+            // print("replaced text:", text)
 
         }
         else {
             XCTFail("should've found match")
         }
         
-        print("\n\n")
+        // print("\n\n")
     }
     
     func testRegexMatch() {
-        print("\n\n")
+        // print("\n\n")
         
         let url = "https://www.sitepoint.com/demystifying-regex-with-practical-examples/"
         let pattern = #"^(http|https|ftp):[\/]{2}([a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,4})(:[0-9]+)?\/?([a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~]*)"#
         
         if let result = url.regexMatch(pattern) {
             XCTAssert(result.fullMatch == "https://www.sitepoint.com/demystifying-regex-with-practical-examples/")
-            print(result.groups)
+            // print(result.groups)
             XCTAssert(result.groups == [Optional("https"), Optional("www.sitepoint.com"), nil, Optional("demystifying-regex-with-practical-examples/")])
         }
         else {
@@ -195,20 +198,21 @@ final class UtilitiesTests: XCTestCase {
         var text = "season 8, episode 5; season 5, episode 20"
 
         if let results = text.regexFindAll(#"season (\d+), episode (\d+)"#) {
-            for result in results {
-                print("fullMatch: \"\(result.fullMatch)\", groups: \(result.groups)")
-            }
+            // for result in results {
+            //     // print("fullMatch: \"\(result.fullMatch)\", groups: \(result.groups)")
+            // }
 
             text.replaceSubrange(results[0].range, with: "new value")
-            print("replaced text:", text)
+            XCTAssert(text == "new value; season 5, episode 20")
+            // print("replaced text:", text)
             
         }
         else {
-            print("no matches")
+            XCTFail("should've found match")
         }
         
         
-        print("\n\n")
+        // print("\n\n")
     }
     
     func testPythonStringFormat() {
@@ -229,7 +233,7 @@ final class UtilitiesTests: XCTestCase {
         let text_2 = "my name is '{{}}', age: '{}', country: '{{}}' gender: '{}'"
             .format(age, gender, country)
         
-        print(text_2)
+        // print(text_2)
         XCTAssert(text_2 == "my name is '{}', age: '21', country: '{}' gender: 'Male'")
         
         
@@ -275,10 +279,36 @@ final class UtilitiesTests: XCTestCase {
             XCTAssert(stdout == Optional("hello"))
             XCTAssert(stderror == Optional(""))
             XCTAssert(process.terminationStatus == 0)
+            
         }
         
         
     }
+    
+    func testJSONFiles() {
+        
+        try! withTempDirectory { tempDir, _ in
+            let jsonPath = tempDir.appendingPathComponent("dictionary.json")
+            
+            let data = ["name": "peter", "age": "21", "sex": "male"]
+            do {
+                try saveJson(file: jsonPath, data: data)
+                
+                var loadedData = try loadJson(file: jsonPath, type: [String: String].self)
+                loadedData["height"] = "67"
+
+                try saveJson(file: jsonPath, data: loadedData)
+                
+                let moreData = try loadJson(file: jsonPath, type: [String: String].self)
+                XCTAssert(moreData == loadedData)
+
+            } catch {
+                XCTFail("\(error)")
+            }
+        }
+        
+    }
+    
     
     
     static var allTests = [
@@ -290,9 +320,9 @@ final class UtilitiesTests: XCTestCase {
         ("testPythonStringFormat", testPythonStringFormat),
         ("testRegexMatch", testRegexMatch),
         ("testArrayFilterMap", testArrayFilterMap),
-        ("testShellScripting", testShellScripting)
+        ("testShellScripting", testShellScripting),
+        ("testJSONFiles", testJSONFiles)
     ]
 }
-
 
 

@@ -46,35 +46,22 @@ public extension Bundle {
 }
 
 
-/**
- Loads Json data from an external file path
- 
- Example:
- ```
- let git_repos = LoadJson(
-    file: "/Users/john/Desktop/git_repos.json",
-    type: [String].self
- )
- ```
- `git_repos` is now an array of strings loaded from the Json file
- */
 public func loadJson<T: Decodable>(
-    file: URL,
-    encoding: String.Encoding = .utf8,
-    type typ: T.Type
-) -> T {
+    file: URL, type typ: T.Type
+) throws -> T {
     
-    guard let rawText = try? String(contentsOf: file, encoding: encoding) else {
-        fatalError("Failed to find file at \(file)")
-    }
+    let data = try Data(contentsOf: file)
     
-    guard let jsonData = rawText.data(using: encoding) else {
-        fatalError("Failed to load data from \(file)")
-    }
-    
-    guard let loadedData = try? JSONDecoder().decode(T.self, from: jsonData) else {
-        fatalError("failed to decode json data from \(file)")
-    }
+    let loadedData = try JSONDecoder().decode(T.self, from: data)
     
     return loadedData
+}
+
+public func saveJson<T: Encodable>(
+    file: URL, data: T
+) throws {
+    
+    let data = try JSONEncoder().encode(data)
+    try data.write(to: file)
+    
 }
