@@ -2,10 +2,10 @@ import Foundation
 import XCTest
 import Utilities
 
+let separator =
+"------------------------------------------------------------------------"
+
 final class TestBench: XCTestCase {
-    
-    let separator =
-    "------------------------------------------------------------------------"
     
     func testBenchFunction() {
         print(separator + "\n")

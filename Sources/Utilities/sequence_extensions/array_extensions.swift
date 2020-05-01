@@ -100,7 +100,7 @@ public extension Array {
 }
 
 
-extension Array where Element == Character {
+public extension Array where Element == Character {
 
     /// Join array of characters into String with separator
     func joined(separator: String = "") -> String {
@@ -116,7 +116,7 @@ extension Array where Element == Character {
 
 }
 
-extension Array where Element == String {
+public extension Array where Element == String {
     
     /// Creates an array of single-character Strings,
     /// whereas the default behavior is to create an array of
