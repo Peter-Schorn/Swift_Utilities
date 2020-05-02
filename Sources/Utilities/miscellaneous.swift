@@ -3,12 +3,8 @@ import Foundation
 import SwiftUI
 
 
-public func UtilitiesTest() {
-    print("hello from the utilities package!")
-}
-
-func IgnoreMePlease() {
-    print("ignore me")
+public func whateverMan() {
+    print("I just changed this")
 }
 
 /// Does nothing
