@@ -27,15 +27,15 @@ let package = Package(
             dependencies: []
         ),
         
-        // .testTarget(
-        //     name: "UtilitiesTests",
-        //     dependencies: ["Utilities"]
-        // ),
-        
         .testTarget(
-            name: "TestBench",
+            name: "UtilitiesTests",
             dependencies: ["Utilities"]
-        )
+        ),
+        
+        // .testTarget(
+        //     name: "TestBench",
+        //     dependencies: ["Utilities"]
+        // )
         
     ]
 )
