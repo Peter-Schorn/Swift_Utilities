@@ -3,9 +3,12 @@ import Foundation
 import SwiftUI
 
 
-
 public func UtilitiesTest() {
     print("hello from the utilities package!")
+}
+
+func IgnoreMePlease() {
+    print("ignore me")
 }
 
 /// Does nothing
