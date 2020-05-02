@@ -3,10 +3,6 @@ import Foundation
 import SwiftUI
 
 
-public func whateverMan() {
-    print("I just changed this")
-}
-
 /// Does nothing
 public func pass() { }
 
