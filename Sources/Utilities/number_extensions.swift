@@ -10,6 +10,7 @@ import Foundation
 
 public let π = Double.pi
 
+
 public extension Double {
     
    
@@ -75,11 +76,18 @@ public func %<N: BinaryFloatingPoint>(lhs: N, rhs: N) -> N {
  but not the absolute tolerance, or vice-versa, then this function returns true.
  This function is identical to Python's [math.isclose](https://docs.python.org/3/library/math.html?highlight=isclose#math.isclose)
  */
-public func numsAreClose<N: BinaryFloatingPoint>(
+public func numsAreClose<N: FloatingPoint>(
     _ a: N, _ b: N, rel_tol: N = 0, abs_tol: N = 0
 ) -> Bool {
-    assert((0...1).contains(rel_tol), "relative tolerance must be between zero and one (got \(rel_tol))")
-    assert(abs_tol ≥ 0, "absolute tolerance must be greater than zero (got \(abs_tol))")
+    assert(
+        (0...1).contains(rel_tol),
+        "relative tolerance must be between zero and one (got \(rel_tol))"
+    )
+    assert(
+        abs_tol ≥ 0,
+        "absolute tolerance must be greater than zero (got \(abs_tol))"
+    )
+    
     return abs(a - b) ≤ max(rel_tol * max(abs(a), abs(b)), abs_tol)
     
 }
