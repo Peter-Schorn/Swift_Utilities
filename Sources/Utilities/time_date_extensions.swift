@@ -1,13 +1,8 @@
-//
-//  File.swift
-//  
-//
-//  Created by Peter Schorn on 4/26/20.
-//
 
 import Foundation
 
 
+/// Wraps around the sleep function.
 public func sleep<N: BinaryInteger>(_ interval: N) {
     sleep(UInt32(interval))
 }
@@ -97,11 +92,11 @@ public func timeUnit(_ unit: TimeUnits) -> Double {
 }
 
 
+/// keeps track of the time elapsed
+open class StopWatch {
 
-public class StopWatch {
-
-    private(set) var startTime: Double?
-    private(set) var isPaused = true
+    public private(set) var startTime: Double?
+    public private(set) var isPaused = true
     private var _timeElapsed: Double = 0
     
     /// if startNow is set to true, then the stopWatch
@@ -162,6 +157,11 @@ public class StopWatch {
         self.startTime = nil
         self._timeElapsed = 0
         self.isPaused = true
+    }
+    
+    /// Adds the specified number of seconds to the stopWatch
+    public func addTime(_ seconds: Double) {
+        self._timeElapsed += seconds
     }
     
     
