@@ -3,6 +3,11 @@ import Foundation
 import SwiftUI
 
 
+public func UtilitiesTest() {
+    print("hello from the Utilities package!")
+}
+
+
 /// Does nothing
 public func pass() { }
 
