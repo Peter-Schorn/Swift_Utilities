@@ -2,13 +2,13 @@ import Foundation
 
 // MARK: - Comparison Operators -
 
-infix operator ≥: ComparisonPrecedence
+infix operator ≥ : ComparisonPrecedence
 
 public func ≥ <N: Comparable>(lhs: N, rhs: N) -> Bool {
     return lhs >= rhs
 }
 
-infix operator ≤: ComparisonPrecedence
+infix operator ≤ : ComparisonPrecedence
 
 public func ≤ <N: Comparable>(lhs: N, rhs: N) -> Bool {
     return lhs <= rhs
@@ -59,6 +59,14 @@ x **= 2
 */
 public func **= <N: BinaryFloatingPoint>(lhs: inout N, rhs: N) {
     lhs = lhs ** rhs
+}
+
+// MARK: - Square Root Operator -
+
+prefix operator √
+
+prefix func √ <N: FloatingPoint>(_ radicand: N) -> N {
+    return sqrt(radicand)
 }
 
 
