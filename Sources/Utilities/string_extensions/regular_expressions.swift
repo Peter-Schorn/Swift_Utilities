@@ -45,7 +45,7 @@ public extension String {
             var regexTuple: RegexTuple
             
             regexTuple.fullMatch = nsString.substring(with: result.range(at: 0))
-            regexTuple.range = self.strOpenRange(Range(result.range)!, checkNegative: false)
+            regexTuple.range = self.openRange(Range(result.range)!, checkNegative: false)
             regexTuple.groups = []
             
             for match in 1..<result.numberOfRanges {
@@ -133,7 +133,7 @@ public extension String {
             
             var regexTuple: RegexTuple
             regexTuple.fullMatch = nsString.substring(with: result.range(at: 0))
-            regexTuple.range = self.strOpenRange(Range(result.range)!, checkNegative: false)
+            regexTuple.range = self.openRange(Range(result.range)!, checkNegative: false)
             regexTuple.groups = []
             
             for match in 1..<result.numberOfRanges {

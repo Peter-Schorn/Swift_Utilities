@@ -30,11 +30,12 @@ public extension Array {
     subscript(safe i: Int) -> Element? {
         
         get {
-            if 0..<self.count ~= i {
-                return Optional(self[i])
+            if (0..<self.count).contains(i) {
+                return self[i]
             }
             return nil
         }
+
     }
     
     /// Returns true if the closure returns true for any of the elements

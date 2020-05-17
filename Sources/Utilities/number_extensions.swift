@@ -84,11 +84,11 @@ public func numsAreClose<N: FloatingPoint>(
     
     assert(
         (0...1).contains(rel_tol),
-        "relative tolerance must be between zero and one (got \(rel_tol))"
+        "relative tolerance must be between zero and one (received \(rel_tol))"
     )
     assert(
         absTol ≥ 0,
-        "absolute tolerance must be greater than zero (got \(absTol))"
+        "absolute tolerance must be greater than zero (received \(absTol))"
     )
     
     return abs(a - b) ≤ max(rel_tol * max(abs(a), abs(b)), absTol)

@@ -306,7 +306,9 @@ final class UtilitiesTests: XCTestCase {
         
     }
     
-    
+    func testTimeUnits() {
+        XCTAssertEqual(timeUnit(.hour(1), .minute(2), .second(5)), 3725.0)
+    }
     
     static var allTests = [
         ("testOperators", testOperators),

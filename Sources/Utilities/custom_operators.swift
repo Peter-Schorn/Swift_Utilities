@@ -1,5 +1,6 @@
-
 import Foundation
+
+// MARK: - Comparison Operators -
 
 infix operator ≥: ComparisonPrecedence
 
@@ -8,17 +9,19 @@ public func ≥ <N: Comparable>(lhs: N, rhs: N) -> Bool {
 }
 
 infix operator ≤: ComparisonPrecedence
+
 public func ≤ <N: Comparable>(lhs: N, rhs: N) -> Bool {
     return lhs <= rhs
 }
 
+// MARK: - Exponent Operator -
 
-precedencegroup Exponentiative {
-  associativity: left
+precedencegroup ExponentiativePrecedence {
+  associativity: right
   higherThan: MultiplicationPrecedence
 }
 
-infix operator ** : Exponentiative
+infix operator ** : ExponentiativePrecedence
 
 /// exponent operator
 public func ** <N: BinaryInteger>(base: N, power: N) -> N {
@@ -30,14 +33,9 @@ public func ** <N: BinaryFloatingPoint>(base: N, power: N) -> N {
     return N.self(pow(Double(base), Double(power)))
 }
 
+// MARK: - Exponent Assignment Operator -
 
-precedencegroup ExponentiativeAssignment {
-  associativity: right
-  higherThan: MultiplicationPrecedence
-}
-
-
-infix operator **= : ExponentiativeAssignment
+infix operator **= : ExponentiativePrecedence
 
 /**
  exponent assignment operator
@@ -64,7 +62,7 @@ public func **= <N: BinaryFloatingPoint>(lhs: inout N, rhs: N) {
 }
 
 
-
+// MARK: - Range Offset Operators -
 
 /// Offsets a range by a given amount.
 func +=<Bound: Numeric>(range: inout Range<Bound>, offset: Bound) {

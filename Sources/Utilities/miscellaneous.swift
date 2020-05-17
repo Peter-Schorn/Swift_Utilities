@@ -23,16 +23,10 @@ public func unpackPrint(
 }
 
 
-/// Wrapper for DispatchQueue.main.asyncAfter
-/// - Parameters:
-///   - delay: The delay after which to execute the closure
-///   - work: The closure to execute
-public func asyncAfter(delay: Double, _ work: @escaping () -> Void) {
-    DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: work)
-}
-
 /**
  See Hasher
+ 
+ Body of function:
  ```
  var hasher = Hasher()
  for i in object {
