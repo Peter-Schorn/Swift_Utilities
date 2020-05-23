@@ -45,6 +45,16 @@ public extension Date {
 }
 
 
+
+public func timeTrial(repeat r: Int, _ trial: () -> Void) -> Double {
+    let stopWatch = StopWatch(startNow: true)
+    for _ in 0..<r {
+        trial()
+    }
+    return stopWatch.timeElapsed
+}
+
+
 public enum TimeUnit {
     case second(Double)
     case minute(Double)
@@ -121,7 +131,7 @@ public func timeUnit(_ timeUnits: TimeUnit...) -> Double {
 }
 
 
-// MARK: About to change
+// MARK: - StopWatch -
 
 open class StopWatch {
 

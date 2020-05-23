@@ -57,25 +57,25 @@ public struct exponetiate<N: BinaryFloatingPoint>:
  }
  ```
  */
-public struct c_iterator<N: Numeric>:
+public struct c_iterator<T>:
     Sequence, IteratorProtocol
 {
 
-    var value: N
-    let cond: (N) -> Bool
-    let update: (N) -> N
+    var value: T
+    let cond: (T) -> Bool
+    let update: (T) -> T
     
     public init(
-        init value: N,
-        while cond: @escaping (N) -> Bool,
-        update: @escaping (N) -> N
+        init value: T,
+        while cond: @escaping (T) -> Bool,
+        update: @escaping (T) -> T
     ) {
         self.value = value
         self.cond = cond
         self.update = update
     }
     
-    public mutating func next() -> N? {
+    public mutating func next() -> T? {
         
         if cond(value) {
             defer { value = update(value) }
