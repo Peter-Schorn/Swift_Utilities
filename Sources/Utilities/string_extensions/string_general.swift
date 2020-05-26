@@ -55,6 +55,42 @@ public extension String {
         return self.components(separatedBy: separator)
     }
     
+    enum PercentEncodingOptions {
+        case query
+        case host
+        case path
+        case user
+        case fragment
+        case password
+    }
+       
+   /// Thin wrapper for self.addingPercentEncoding(
+   /// withAllowedCharacters: CharacterSet)
+    func percentEncoded(for option: PercentEncodingOptions) -> String? {
+       
+        let encodingOption: CharacterSet
+        switch option {
+            case .query:
+                encodingOption = .urlQueryAllowed
+            case .host:
+                encodingOption = .urlHostAllowed
+            case .path:
+                encodingOption = .urlPathAllowed
+            case .user:
+                encodingOption = .urlUserAllowed
+            case .fragment:
+                encodingOption = .urlFragmentAllowed
+            case .password:
+                encodingOption = .urlPasswordAllowed
+        }
+       
+        return self.addingPercentEncoding(
+            withAllowedCharacters: encodingOption
+        )
+       
+    }
+    
+    
 }
 
 // MARK: - String interpolations

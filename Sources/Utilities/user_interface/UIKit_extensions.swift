@@ -43,5 +43,21 @@ func makeAlert(
     return alert
 }
 
+extension UIScrollView {
+    
+    func isNearBottom(tolerance: CGFloat) -> Bool {
+        
+        let height = self.frame.size.height
+        let contentYoffset = self.contentOffset.y
+        let distanceFromBottom = self.contentSize.height - contentYoffset
+        
+        return distanceFromBottom - height <= height * tolerance
+    }
+
+}
+
 
 #endif
+
+
+
