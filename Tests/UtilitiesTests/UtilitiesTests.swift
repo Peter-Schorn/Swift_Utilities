@@ -269,7 +269,7 @@ final class UtilitiesTests: XCTestCase {
         let output = runShellScript(args: ["echo", "hello"])
         XCTAssert(output.stdout == Optional("hello"))
         XCTAssert(output.stderror == Optional(""))
-        XCTAssert(output.exitCode == 0)
+        XCTAssert(output.process.terminationStatus == 0)
         
         
         runShellScriptAsync(args: ["echo", "hello"]) { process, stdout, stderror in

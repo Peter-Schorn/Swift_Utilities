@@ -40,15 +40,13 @@ public extension String {
     }
 
     /// see String.strip
-    mutating func stripInPlace(_ characterSet: CharacterSet = .whitespacesAndNewlines) -> String {
+    mutating func stripInPlace(_ characterSet: CharacterSet = .whitespacesAndNewlines) {
         self = self.strip(characterSet)
-        return self
     }
 
     /// see String.strip
-    mutating func stripInPlace(_ stripOptions: StripOptions) -> String {
+    mutating func stripInPlace(_ stripOptions: StripOptions) {
         self = self.strip(stripOptions)
-        return self
     }
     
     

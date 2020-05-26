@@ -30,18 +30,6 @@ public extension Sequence {
     
     }
     
-    /// Returns true if the closure returns true for all of the elements
-    /// in the sequence. Else false.
-    func all(_ closure: (Element) throws -> Bool ) rethrows -> Bool {
-        
-        for element in self {
-            if try !closure(element) { return false }
-        }
-        return true
-    
-    }
-    
-
     /**
      Similar to map, except if the closure returns nil,
      then the element is not added to the new array.
@@ -79,3 +67,9 @@ public extension Sequence {
     }
     
 }
+
+
+
+
+
+

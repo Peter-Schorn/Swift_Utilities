@@ -39,7 +39,26 @@ public extension Array {
     }
     
     
+}
+
+
+extension Array where Element: Hashable {
     
+    /// Removes duplicates and returns true if their were
+    /// duplicates in the array. Else returns false
+    @discardableResult
+    mutating func removeDuplicates() -> Bool {
+        
+        var hadDuplicates = false
+        var seen: Set<Element> = []
+        for item in self {
+            if !seen.insert(item).inserted {
+                hadDuplicates = true
+                self.remove(at: self.firstIndex(of: item)!)
+            }
+        }
+        return hadDuplicates
+    }
     
 }
 

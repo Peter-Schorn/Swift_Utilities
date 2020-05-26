@@ -9,6 +9,7 @@ import Foundation
 
 #if os(macOS)
 
+
 public extension Pipe {
     
     func asString(encoding: String.Encoding = .utf8) -> String? {
@@ -20,6 +21,28 @@ public extension Pipe {
 }
 
 
+public func setupShellScript(
+    args: [String],
+    launchPath: String = "/usr/bin/env",
+    stdout: Pipe = Pipe(),
+    stderror: Pipe = Pipe()
+) -> Process {
+    
+    // Create a Task instance
+    let task = Process()
+
+    // Set the task parameters
+    task.launchPath = launchPath
+    task.arguments = args
+     
+    // Create Pipes
+    task.standardOutput = stdout
+    task.standardError  = stderror
+    
+    return task
+}
+
+
 /**
  Runs a shell script and returns the output.
  
@@ -28,11 +51,10 @@ public extension Pipe {
    - launchPath: the path from which to launch the script. Default is /usr/bin/env
    - stdout: Pipe for the standard output. Default is a new pipe.
    - stderror: Pipe for standard error. Default is a new pipe.
- - Returns: A tuple containing String? for the output and for the error,
-     and the exit code.
+ - Returns: A tuple containing the process, stdout as String?, and stderror as String?
  
  - Warning: Stdout and stderror are more likely to be empty strings than nil if no
- output is expected.
+ output is expected. Use process.terminationStatus to access the exit code.
  
  Usage:
  ```
@@ -46,32 +68,23 @@ public func runShellScript(
     launchPath: String = "/usr/bin/env",
     stdout: Pipe = Pipe(),
     stderror: Pipe = Pipe()
-) -> (stdout: String?, stderror: String?, exitCode: Int) {
+) -> (process: Process, stdout: String?, stderror: String?) {
 
-    // Create a Task instance
-    let task = Process()
-
-    // Set the task parameters
-    task.launchPath = launchPath
-    task.arguments = args
-     
-    // Create Pipes
-    let standardOutput  = stdout
-    task.standardOutput = standardOutput
-    
-    let standardError   = stderror
-    task.standardError  = standardError
+    let task = setupShellScript(
+        args: args,
+        launchPath: launchPath,
+        stdout: stdout,
+        stderror: stderror
+    )
 
     // Launch the task
     task.launch()
     task.waitUntilExit()
     
-    let status = Int(task.terminationStatus)
-    
     return (
-        stdout: standardOutput.asString(),
-        stderror: standardError.asString(),
-        exitCode: status
+        process: task,
+        stdout: (task.standardOutput as! Pipe).asString(),
+        stderror: (task.standardError as! Pipe).asString()
     )
     
 }
@@ -85,7 +98,7 @@ public func runShellScript(
    - stdout: Pipe for the standard output. Default is a new pipe.
    - stderror: Pipe for standard error. Default is a new pipe.
    - terminationHandler: Passes in the process, stdout as String?, and stderror as
-       as String?. Executed upon completion of the process.
+       as String?. Executed upon completion of the process. Can be nil.
  
  - Warning: Stdout and stderror are more likely to be empty strings than nil if no
      output is expected. Use process.terminationStatus from within the
@@ -109,32 +122,23 @@ public func runShellScriptAsync(
     launchPath: String = "/usr/bin/env",
     stdout: Pipe = Pipe(),
     stderror: Pipe = Pipe(),
-    terminationHandler: ((Process, _ stdout: String?, _ stderror: String?) -> Void)? = nil
+    terminationHandler: ((Process, _ stdout: String?, _ stderror: String?) -> Void)?
 ) {
-    
-    let terminationHandlerWrapper = { (process: Process) -> Void  in
-        
-        if let handler = terminationHandler {
-            
+
+    let task = setupShellScript(
+        args: args,
+        launchPath: launchPath,
+        stdout: stdout,
+        stderror: stderror
+    )
+
+    if let hanlder = terminationHandler {
+        task.terminationHandler = { process in
             let stdout   = (process.standardOutput as! Pipe).asString()
             let stderror = (process.standardError  as! Pipe).asString()
-
-            handler(process, stdout, stderror)
+            hanlder(process, stdout, stderror)
         }
     }
-    
-    // Create a Task instance
-    let task = Process()
-
-    // Set the task parameters
-    task.launchPath = launchPath
-    task.arguments = args
-     
-    // Create Pipes
-    task.standardOutput = stdout
-    task.standardError  = stderror
-
-    task.terminationHandler = terminationHandlerWrapper
     
     // Launch the task
     task.launch()

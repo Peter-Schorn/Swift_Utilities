@@ -59,13 +59,13 @@ public extension String {
         }
 
         // if all the curly brackets have numbers in them
-        if matches.all({ $0.groups[0]!.regexMatch(#"\d+"#) != nil }) {
+        if matches.allSatisfy({ $0.groups[0]!.regexMatch(#"\d+"#) != nil }) {
             // print("all numbers")
             return formatNum(items, matches)
         }
         
         // if all the curly brackets are empty
-        if matches.all({ $0.fullMatch == "{}" }) {
+        if matches.allSatisfy({ $0.fullMatch == "{}" }) {
             // print("all empty brackets")
             return formatPos(items, matches)
         }
