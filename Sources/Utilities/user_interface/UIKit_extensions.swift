@@ -5,6 +5,7 @@
 //  Created by Peter Schorn on 5/23/20.
 //
 
+// MARK: - If Not macOS -
 #if !os(macOS)
 
 
@@ -45,11 +46,13 @@ func makeAlert(
 
 extension UIScrollView {
     
+    /// determines whether the user has scrolled near the bottom
+    /// of the scroll view within the given tolerance.
     func isNearBottom(tolerance: CGFloat) -> Bool {
         
-        let height = self.frame.size.height
-        let contentYoffset = self.contentOffset.y
-        let distanceFromBottom = self.contentSize.height - contentYoffset
+        
+        let height: CGFloat = self.frame.size.height
+        let distanceFromBottom: CGFloat = self.contentSize.height - self.contentOffset.y
         
         return distanceFromBottom - height <= height * tolerance
     }
@@ -58,6 +61,3 @@ extension UIScrollView {
 
 
 #endif
-
-
-

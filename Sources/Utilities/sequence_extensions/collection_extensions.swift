@@ -8,9 +8,9 @@
 import Foundation
 
 
-extension Collection where Element: Hashable  {
+public extension Collection where Element: Hashable  {
     
-    func hasDuplicates() -> Bool {
+    var hasDuplicates: Bool {
         
         var seen: Set<Element> = []
         

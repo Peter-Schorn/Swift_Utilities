@@ -89,11 +89,10 @@ public extension String {
      Gets and sets a character at a given index.
      Negative indices are added to the length so that
      characters can be accessed from the end backwards.
+     [-1] accesses the last character, [-2] the second last,
+     and so on.
      
      - Attention: The time complexity of this and the below subscripts is O(n).
-     Convert the string to an Array of characters for maximum performance,
-     although this will, of course, require more memory.
-
      
      Usage: `string[n]`
      */

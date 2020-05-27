@@ -1,11 +1,12 @@
 import Foundation
 import XCTest
 
-@testable import Utilities
+import Utilities
 
 final class UtilitiesTests: XCTestCase {
 
     func testOperators() {
+        
         XCTAssert(1 ≤ 2)
         XCTAssert(1 ≤ 1)
         XCTAssert(2 ≥ 1)
@@ -310,6 +311,23 @@ final class UtilitiesTests: XCTestCase {
         XCTAssertEqual(timeUnit(.hour(1), .minute(2), .second(5)), 3725.0)
     }
     
+    func testCollectionDuplicatesAndAppendUnique() {
+        
+        var myList = [1, 2, 3, 4, 5, 1]
+        XCTAssert(myList.hasDuplicates)
+        myList.removeDuplicates()
+        XCTAssert(!myList.hasDuplicates)
+        
+        var myList_2 = [1, 2, 3, 4, 5]
+        myList_2.appendUnique(contentsOf: [4, 5, 5, 6, 7, 7])
+        XCTAssert(!myList_2.hasDuplicates)
+        
+        
+    }
+    
+    
+    
+    
     static var allTests = [
         ("testOperators", testOperators),
         ("testGetStringByIndex", testGetStringByIndex),
@@ -320,7 +338,8 @@ final class UtilitiesTests: XCTestCase {
         ("testRegexMatch", testRegexMatch),
         ("testArrayFilterMap", testArrayFilterMap),
         ("testShellScripting", testShellScripting),
-        ("testJSONFiles", testJSONFiles)
+        ("testJSONFiles", testJSONFiles),
+        ("testCollectionDuplicatesAndAppendUnique", testCollectionDuplicatesAndAppendUnique)
     ]
 }
 

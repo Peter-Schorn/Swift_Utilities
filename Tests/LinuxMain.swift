@@ -1,5 +1,4 @@
 import XCTest
-
 import UtilitiesTests
 
 var tests: [XCTestCaseEntry] = []

@@ -51,7 +51,7 @@ public func factorial<N: Numeric>(_ x: N) -> N {
 }
 
 /// performs modulo division on floating point numbers
-public func %<N: BinaryFloatingPoint>(lhs: N, rhs: N) -> N {
+public func % <N: BinaryFloatingPoint>(lhs: N, rhs: N) -> N {
     lhs.truncatingRemainder(dividingBy: rhs)
 }
 

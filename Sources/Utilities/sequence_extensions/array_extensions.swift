@@ -38,11 +38,26 @@ public extension Array {
 
     }
     
+}
+
+public extension Array where Element: Equatable {
+    
+    /// Only appends the elements of the new array
+    /// that are not contained in self. Duplicate elements
+    /// of the new array will also not be appended.
+    mutating func appendUnique(contentsOf newArray: Self) {
+        
+        for newItem in newArray {
+            if !self.contains(newItem) {
+                self.append(newItem)
+            }
+        }
+        
+    }
     
 }
 
-
-extension Array where Element: Hashable {
+public extension Array where Element: Hashable {
     
     /// Removes duplicates and returns true if their were
     /// duplicates in the array. Else returns false
@@ -57,6 +72,7 @@ extension Array where Element: Hashable {
                 self.remove(at: self.firstIndex(of: item)!)
             }
         }
+        
         return hadDuplicates
     }
     
