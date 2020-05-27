@@ -97,8 +97,8 @@ public func runShellScript(
    - launchPath: the path from which to launch the script. Default is /usr/bin/env
    - stdout: Pipe for the standard output. Default is a new pipe.
    - stderror: Pipe for standard error. Default is a new pipe.
-   - terminationHandler: Passes in the process, stdout as String?, and stderror as
-       as String?. Executed upon completion of the process. Can be nil.
+   - terminationHandler: Passes in the process, stdout as String?, and stderror
+         as String?. Executed upon completion of the process. Can be set to nil.
  
  - Warning: Stdout and stderror are more likely to be empty strings than nil if no
      output is expected. Use process.terminationStatus from within the

@@ -30,10 +30,7 @@ public extension Array {
     subscript(safe i: Int) -> Element? {
         
         get {
-            if (0..<self.count).contains(i) {
-                return self[i]
-            }
-            return nil
+            return self.indices.contains(i) ? self[i] : nil
         }
 
     }

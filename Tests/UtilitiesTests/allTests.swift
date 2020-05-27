@@ -17,7 +17,8 @@ final class UtilitiesTests: XCTestCase {
         ("testJSONFiles", testJSONFiles),
         ("testCollectionDuplicatesAndAppendUnique", testCollectionDuplicatesAndAppendUnique),
         ("testEquatableArrayDuplicates", testEquatableArrayDuplicates),
-        ("testAnySequence", testAnySequence)
+        ("testAnySequence", testAnySequence),
+        ("testSafeIndexing", testSafeIndexing)
     ]
 
 }

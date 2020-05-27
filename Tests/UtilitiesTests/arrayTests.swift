@@ -38,8 +38,6 @@ extension UtilitiesTests {
     
     func testEquatableArrayDuplicates() {
         
-        print("\ntestEquatableArrayDuplicates\n")
-        
         struct Person: Equatable {
             var name = "Peter"
             var age = 21
@@ -66,6 +64,25 @@ extension UtilitiesTests {
         XCTAssert(!items.any( { $0 == 500 }))
         
     }
+    
+    func testSafeIndexing() {
+        
+        let items = [0, 1, 2, 3, 4]
+        
+        if let num = items[safe: 2] {
+            XCTAssertEqual(num, 2)
+        }
+        else {
+            XCTFail("index should be in bounds")
+        }
+        
+        if let _ = items[safe: 5] {
+            XCTFail("index should be OUT of bounds")
+        }
+        
+        
+    }
+    
     
     
     

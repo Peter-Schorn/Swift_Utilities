@@ -11,10 +11,10 @@ import Foundation
 public extension Dictionary {
     
     func valuesArray() -> [Dictionary.Value] {
-        return self.values.map { $0 }
+        return Array(self.values)
     }
     func keysArray() -> [Dictionary.Key] {
-        return self.keys.map { $0 }
+        return Array(self.keys)
     }
     
 }
