@@ -1,22 +1,10 @@
 import Foundation
 import XCTest
-
 import Utilities
 
-final class UtilitiesTests: XCTestCase {
 
-    func testOperators() {
-        
-        XCTAssert(1 ≤ 2)
-        XCTAssert(1 ≤ 1)
-        XCTAssert(2 ≥ 1)
-        XCTAssert(2 ≥ 2)
-        
-        XCTAssert(5 ** 2 == 25) // Ints
-        XCTAssert(5.0 ** 2.0 == 25.0) // Doubles
-                
-    }
-
+extension UtilitiesTests {
+    
     func testStringFormatting() {
         XCTAssert(String(format: "$%.2f", 5.4) == 5.4.format(.currency))
         XCTAssert(String(format: "$%.2f", 5.4) == 5.4.format("$%.2f"))
@@ -241,106 +229,6 @@ final class UtilitiesTests: XCTestCase {
         
     }
     
-    func testArrayFilterMap() {
-        
-        let items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-        let newItems_1: [String] = items.filterMap { item in
-            if item < 5 {
-                return String(item * 2)
-            }
-            return nil
-        }
-        
-        XCTAssert(newItems_1 == ["2", "4", "6", "8"])
-        
-        let newItems_2 = items.filterMap { $0 < 5 ? String($0 * 2) : nil }
-        XCTAssert(newItems_2 == ["2", "4", "6", "8"])
-        // XCTAssert(newItems_2 == [2, 4, 6, 8])
-    }
-
-    func testShellScripting() {
-                
-        runShellScriptAsync(args: ["echo", "hello"]) { process, stdout, stderror in
-            XCTAssert(stdout == Optional("hello"))
-            XCTAssert(stderror == Optional(""))
-            XCTAssert(process.terminationStatus == 0)
-        }
-        
-        let output = runShellScript(args: ["echo", "hello"])
-        XCTAssert(output.stdout == Optional("hello"))
-        XCTAssert(output.stderror == Optional(""))
-        XCTAssert(output.process.terminationStatus == 0)
-        
-        
-        runShellScriptAsync(args: ["echo", "hello"]) { process, stdout, stderror in
-            XCTAssert(stdout == Optional("hello"))
-            XCTAssert(stderror == Optional(""))
-            XCTAssert(process.terminationStatus == 0)
-            
-        }
-        
-        
-    }
-    
-    func testJSONFiles() {
-        
-        try! withTempDirectory { tempDir, _ in
-            let jsonPath = tempDir.appendingPathComponent("dictionary.json")
-            
-            let data = ["name": "peter", "age": "21", "sex": "male"]
-            do {
-                try saveJson(file: jsonPath, data: data)
-                
-                var loadedData = try loadJson(file: jsonPath, type: [String: String].self)
-                loadedData["height"] = "67"
-
-                try saveJson(file: jsonPath, data: loadedData)
-                
-                let moreData = try loadJson(file: jsonPath, type: [String: String].self)
-                XCTAssert(moreData == loadedData)
-
-            } catch {
-                XCTFail("\(error)")
-            }
-        }
-        
-    }
-    
-    func testTimeUnits() {
-        XCTAssertEqual(timeUnit(.hour(1), .minute(2), .second(5)), 3725.0)
-    }
-    
-    func testCollectionDuplicatesAndAppendUnique() {
-        
-        var myList = [1, 2, 3, 4, 5, 1]
-        XCTAssert(myList.hasDuplicates)
-        myList.removeDuplicates()
-        XCTAssert(!myList.hasDuplicates)
-        
-        var myList_2 = [1, 2, 3, 4, 5]
-        myList_2.appendUnique(contentsOf: [4, 5, 5, 6, 7, 7])
-        XCTAssert(!myList_2.hasDuplicates)
-        
-        
-    }
     
     
-    
-    
-    static var allTests = [
-        ("testOperators", testOperators),
-        ("testGetStringByIndex", testGetStringByIndex),
-        ("testSetStringByIndex", testSetStringByIndex),
-        ("testSpecialCharacterSubscript", testExtendedGraphemeClusters),
-        ("testRegexFindAll", testRegexFindAll),
-        ("testPythonStringFormat", testPythonStringFormat),
-        ("testRegexMatch", testRegexMatch),
-        ("testArrayFilterMap", testArrayFilterMap),
-        ("testShellScripting", testShellScripting),
-        ("testJSONFiles", testJSONFiles),
-        ("testCollectionDuplicatesAndAppendUnique", testCollectionDuplicatesAndAppendUnique)
-    ]
 }
-
-

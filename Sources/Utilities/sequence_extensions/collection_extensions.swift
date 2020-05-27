@@ -24,3 +24,23 @@ public extension Collection where Element: Hashable  {
     }
     
 }
+
+public extension Collection where Element: Equatable {
+    
+    var hasDuplicates: Bool {
+        
+        print("calling equatable version")
+        
+        var seen: [Element] = []
+        
+        for item in self {
+            if seen.contains(item) {
+                return true
+            }
+            seen.append(item)
+        }
+        
+        return false
+    }
+    
+}

@@ -78,6 +78,29 @@ public extension Array where Element: Hashable {
     
 }
 
+public extension Array where Element: Equatable {
+    
+    /// Removes duplicates and returns true if their were
+    /// duplicates in the array. Else returns false.
+    @discardableResult
+    mutating func removeDuplicates() -> Bool {
+        
+        
+        var hadDuplicates = false
+        var seen: [Element] = []
+        for item in self {
+            if seen.contains(item) {
+                self.remove(at: self.firstIndex(of: item)!)
+                hadDuplicates = true
+            }
+            seen.append(item)
+        }
+        
+        return hadDuplicates
+    }
+    
+}
+
 
 public extension Array where Element == Character {
 
