@@ -1,4 +1,4 @@
 # Utilities
 
-Miscellaneous helper functions, subscripts, and infix operators 
+Miscellaneous helper functions, subscripts, infix operators, and extensions
 
