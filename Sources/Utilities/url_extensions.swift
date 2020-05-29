@@ -8,7 +8,7 @@
 import Foundation
 
 
-extension URL {
+public extension URL {
 
     /// Returns a new url with the specified query item appended to it.
     func appending(
@@ -37,18 +37,26 @@ extension URL {
         return urlComponents.url!
     }
     
-    /// Returns a new url with the specified query item appended to it.
-    // func appending(
-    //     queryItem: String, value: String?
-    // ) -> URL {
-    //
-    //     return self.appending(URLQueryItem(name: queryItem, value: value))
-    // }
+    func appending(page: Int) -> URL {
+        return self.appending(URLQueryItem(name: "page", value: String(page)))
+    }
 
+    mutating func append(page: Int) {
+        self = self.appending(page: page)
+    }
     
     /// Appends a query item to the url
     mutating func append(_ queryItem: URLQueryItem) {
         self = self.appending(queryItem)
     }
+    
+    /// The last component of the path excluding the file extension.
+    /// Calls self.lastComponent and strips all text after the last period.
+    var lastPathName: String {
+        return self.lastPathComponent.strip(.fileExt)
+    }
+    
+    
+    
     
 }

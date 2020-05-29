@@ -29,8 +29,6 @@ public extension Collection where Element: Equatable {
     
     var hasDuplicates: Bool {
         
-        print("calling equatable version")
-        
         var seen: [Element] = []
         
         for item in self {
