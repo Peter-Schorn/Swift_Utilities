@@ -46,29 +46,7 @@ extension UtilitiesTests {
         
     }
     
-    func testJSONFiles() {
-        
-        try! withTempDirectory { tempDir, _ in
-            let jsonPath = tempDir.appendingPathComponent("dictionary.json")
-            
-            let data = ["name": "peter", "age": "21", "sex": "male"]
-            do {
-                try saveJson(file: jsonPath, data: data)
-                
-                var loadedData = try loadJson(file: jsonPath, type: [String: String].self)
-                loadedData["height"] = "67"
-
-                try saveJson(file: jsonPath, data: loadedData)
-                
-                let moreData = try loadJson(file: jsonPath, type: [String: String].self)
-                XCTAssert(moreData == loadedData)
-
-            } catch {
-                XCTFail("\(error)")
-            }
-        }
-        
-    }
+    
     
     func testTimeUnits() {
         XCTAssertEqual(timeUnit(.hour(1), .minute(2), .second(5)), 3725.0)

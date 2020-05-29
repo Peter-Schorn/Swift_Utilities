@@ -14,7 +14,7 @@ final class UtilitiesTests: XCTestCase {
         ("testRegexMatch", testRegexMatch),
         ("testArrayFilterMap", testArrayFilterMap),
         ("testShellScripting", testShellScripting),
-        ("testJSONFiles", testJSONFiles),
+        ("testJSONThings", testJSONThings),
         ("testCollectionDuplicatesAndAppendUnique", testCollectionDuplicatesAndAppendUnique),
         ("testEquatableArrayDuplicates", testEquatableArrayDuplicates),
         ("testAnySequence", testAnySequence),

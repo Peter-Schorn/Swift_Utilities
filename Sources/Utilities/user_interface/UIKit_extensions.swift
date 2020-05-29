@@ -5,7 +5,6 @@
 //  Created by Peter Schorn on 5/23/20.
 //
 
-// MARK: - If Not macOS -
 #if !os(macOS)
 
 

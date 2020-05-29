@@ -51,7 +51,7 @@ public extension URL {
     }
     
     /// The last component of the path excluding the file extension.
-    /// Calls self.lastComponent and strips all text after the last period.
+    /// Calls self.lastPathComponent and strips all text after the last period.
     var lastPathName: String {
         return self.lastPathComponent.strip(.fileExt)
     }

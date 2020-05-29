@@ -46,22 +46,22 @@ public extension Bundle {
 }
 
 
-public func loadJson<T: Decodable>(
-    file: URL, type typ: T.Type
+public func loadJSONFromFile<T: Decodable>(
+    url: URL, type typ: T.Type
 ) throws -> T {
     
-    let data = try Data(contentsOf: file)
+    let data = try Data(contentsOf: url)
     
     let loadedData = try JSONDecoder().decode(T.self, from: data)
     
     return loadedData
 }
 
-public func saveJson<T: Encodable>(
-    file: URL, data: T
+public func saveJSONToFile<T: Encodable>(
+    url: URL, data: T
 ) throws {
     
     let data = try JSONEncoder().encode(data)
-    try data.write(to: file)
+    try data.write(to: url)
     
 }
