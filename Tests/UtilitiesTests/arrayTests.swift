@@ -31,7 +31,15 @@ extension UtilitiesTests {
         
         var myList_2 = [1, 2, 3, 4, 5]
         myList_2.appendUnique(contentsOf: [4, 5, 5, 6, 7, 7])
+        
+        let mySet: Set = [100, 200, 300, 1, 2, 3, 4, 5]
+        
+        myList_2.appendUnique(contentsOf: mySet)
         XCTAssert(!myList_2.hasDuplicates)
+        
+        // XCTAssertEqual(myList_2, [1, 2, 3, 4, 5, 6, 7, 100, 200, 300])
+        // myList_2.elem
+        
         
         
     }

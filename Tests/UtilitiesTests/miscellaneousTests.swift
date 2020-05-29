@@ -12,8 +12,12 @@ extension UtilitiesTests {
         XCTAssert(2 ≥ 1)
         XCTAssert(2 ≥ 2)
         
-        XCTAssert(5 ** 2 == 25) // Ints
-        XCTAssert(5.0 ** 2.0 == 25.0) // Doubles
+        XCTAssert(5 ** 2 == 25)  // Ints
+        XCTAssert(5.0 ** 2.0 == 25.0)  // Doubles
+        
+        var x = 10
+        x **= 2
+        XCTAssertEqual(x, 100)
                 
     }
 

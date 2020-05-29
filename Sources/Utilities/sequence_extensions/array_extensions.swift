@@ -11,7 +11,7 @@ import Foundation
 
 public extension Array {
     
-    /// Splits array into array of arrays with specified size
+    /// Splits array into an array of arrays with specified size
     func chunked(into size: Int) -> [[Element]] {
         return stride(from: 0, to: count, by: size).map {
             Array(self[$0 ..< Swift.min($0 + size, count)])
@@ -41,14 +41,19 @@ public extension Array where Element: Equatable {
     
     /// Only appends the elements of the new array
     /// that are not contained in self. Duplicate elements
-    /// of the new array will also not be appended.
-    mutating func appendUnique(contentsOf newArray: Self) {
+    /// of the new array will also not be appended. Duplicate
+    /// elements of the original array will **NOT** be removed.
+    
+    mutating func appendUnique<C: Collection>(
+        contentsOf collection: C
+    ) where C.Element == Self.Element {
         
-        for newItem in newArray {
+        for newItem in collection {
             if !self.contains(newItem) {
                 self.append(newItem)
             }
         }
+        
         
     }
     
