@@ -2,6 +2,7 @@ import Foundation
 import XCTest
 import Utilities
 
+
 extension UtilitiesTests {
     
     func testArrayFilterMap() {
@@ -15,10 +16,10 @@ extension UtilitiesTests {
             return nil
         }
         
-        XCTAssert(newItems_1 == ["2", "4", "6", "8"])
+        XCTAssertEqual(newItems_1, ["2", "4", "6", "8"])
         
         let newItems_2 = items.filterMap { $0 < 5 ? String($0 * 2) : nil }
-        XCTAssert(newItems_2 == ["2", "4", "6", "8"])
+        XCTAssertEqual(newItems_2, ["2", "4", "6", "8"])
         // XCTAssert(newItems_2 == [2, 4, 6, 8])
     }
     
@@ -27,7 +28,7 @@ extension UtilitiesTests {
         var myList = [1, 2, 3, 4, 5, 1]
         XCTAssert(myList.hasDuplicates)
         myList.removeDuplicates()
-        XCTAssert(!myList.hasDuplicates)
+        XCTAssertFalse(myList.hasDuplicates)
         
         var myList_2 = [1, 2, 3, 4, 5]
         myList_2.appendUnique(contentsOf: [4, 5, 5, 6, 7, 7])
@@ -35,7 +36,7 @@ extension UtilitiesTests {
         let mySet: Set = [100, 200, 300, 1, 2, 3, 4, 5]
         
         myList_2.appendUnique(contentsOf: mySet)
-        XCTAssert(!myList_2.hasDuplicates)
+        XCTAssertFalse(myList_2.hasDuplicates)
         
         // XCTAssertEqual(myList_2, [1, 2, 3, 4, 5, 6, 7, 100, 200, 300])
         // myList_2.elem
@@ -58,8 +59,8 @@ extension UtilitiesTests {
         
         people.removeDuplicates()
         
-        XCTAssert(!people.hasDuplicates)
-        XCTAssert(people == [Person(), Person(name: "Eric", age: 50)])
+        XCTAssertFalse(people.hasDuplicates)
+        XCTAssertEqual(people, [Person(), Person(name: "Eric", age: 50)])
         
         
     }
@@ -69,11 +70,11 @@ extension UtilitiesTests {
         let items = [1, 2, 3, 4, 5]
         
         XCTAssert(items.any( { $0 == 5 }))
-        XCTAssert(!items.any( { $0 == 500 }))
+        XCTAssertFalse(items.any( { $0 == 500 }))
         
     }
     
-    func testSafeIndexing() {
+    func testArraySafeIndexing() {
         
         let items = [0, 1, 2, 3, 4]
         
@@ -84,13 +85,62 @@ extension UtilitiesTests {
             XCTFail("index should be in bounds")
         }
         
-        if let _ = items[safe: 5] {
-            XCTFail("index should be OUT of bounds")
+        if let x = items[safe: 5] {
+            XCTFail("index should be OUT of bounds (got \(x))")
         }
         
         
     }
     
+    func testArrayNegativeIndexing() {
+        
+        let letters = ["a", "b", "c", "d"]
+        XCTAssertEqual(letters[back: 1], "d")
+        XCTAssertEqual(letters[back: 2], "c")
+        XCTAssertEqual(letters[back: 3], "b")
+        XCTAssertEqual(letters[back: 4], "a")
+        
+        
+        var items = ["x", "y", "z"]
+        items[back: 1] = "new z"
+        items[back: 2] = "new y"
+        items[back: 3] = "new x"
+        XCTAssertEqual(items, ["new x", "new y", "new z"])
+        
+        
+    }
+    
+    
+    func testSequenceSum() {
+        
+        let items = [1, 2, 3, 4, 5]
+        XCTAssertEqual(items.sum, 15)
+        
+        let set: Set = [35, 67, 98, 3]
+        XCTAssertEqual(set.sum, 203)
+        
+    }
+    
+    func testArrayChunking() {
+        
+        let original = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+
+        let chunked = original.chunked(size: 3)
+
+        XCTAssertEqual(
+            chunked,
+            [
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9],
+                [10, 11, 12],
+                [13, 14, 15],
+                [16]
+            ]
+        )
+        
+        
+    }
     
     
     

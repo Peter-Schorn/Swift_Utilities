@@ -65,7 +65,7 @@ public func **= <N: BinaryFloatingPoint>(lhs: inout N, rhs: N) {
 
 prefix operator √
 
-prefix func √ <N: FloatingPoint>(_ radicand: N) -> N {
+public prefix func √ <N: FloatingPoint>(_ radicand: N) -> N {
     return sqrt(radicand)
 }
 

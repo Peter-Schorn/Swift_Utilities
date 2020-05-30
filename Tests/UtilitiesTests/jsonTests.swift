@@ -1,17 +1,11 @@
-//
-//  File.swift
-//  
-//
-//  Created by Peter Schorn on 5/28/20.
-//
-
 import Foundation
 import XCTest
 import Utilities
 
+
 extension UtilitiesTests {
 
-    func testJSONThings() {
+    func testJSONAndTempDir() {
         
         do {
             try withTempDirectory { tempDir, _ in
@@ -27,7 +21,7 @@ extension UtilitiesTests {
                     try saveJSONToFile(url: jsonPath, data: loadedData)
                     
                     let moreData = try loadJSONFromFile(url: jsonPath, type: [String: String].self)
-                    XCTAssert(moreData == loadedData)
+                    XCTAssertEqual(moreData, loadedData)
 
                 } catch {
                     XCTFail("\(error)")
@@ -38,5 +32,6 @@ extension UtilitiesTests {
         }
         
     }
+    
 
 }

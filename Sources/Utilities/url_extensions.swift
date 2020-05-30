@@ -57,6 +57,27 @@ public extension URL {
     }
     
     
-    
+    /// You tell me what the cannonical path is.
+    func cannonicalPath() throws -> URL? {
+        let resourceValues = try self.resourceValues(forKeys: [.canonicalPathKey])
+        if let path = resourceValues.canonicalPath {
+            return URL(fileURLWithPath: path)
+        }
+        return nil
+    }
     
 }
+
+
+/// If the url is an alias, returns the path that the alias points to.
+/// Throws an error if the file doesn't exist.
+public func resolveAlias(at url: URL) throws -> URL {
+
+    let resourceValues = try url.resourceValues(forKeys: [.isAliasFileKey])
+    if resourceValues.isAliasFile ?? false {
+        let original = try URL(resolvingAliasFileAt: url)
+        return original
+    }
+    return url
+}
+

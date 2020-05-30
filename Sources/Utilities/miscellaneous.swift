@@ -48,7 +48,7 @@ func makeHash<H: Hashable>(_ object: H...) -> Int {
 
 
 
-/// Returns true if any of the arguments are true
+/// Returns true if any of the arguments are true.
 public func any(_ expressions: [Bool]) -> Bool {
     for i in expressions {
         if i { return true }
@@ -56,13 +56,13 @@ public func any(_ expressions: [Bool]) -> Bool {
     return false
 }
 
-/// Returns true if any of the arguments are true
+/// Returns true if any of the arguments are true.
 public func any(_ expressions: Bool...) -> Bool {
     return any(expressions)
 }
 
 
-/// Returns true if all of the arguments are true
+/// Returns true if all of the arguments are true.
 public func all(_ expressions: [Bool]) -> Bool {
     for i in expressions {
         if !i { return false }

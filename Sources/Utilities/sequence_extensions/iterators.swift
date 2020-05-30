@@ -10,7 +10,9 @@ public struct exponetiate<N: BinaryFloatingPoint>:
     Sequence, IteratorProtocol
 {
 
-    public enum RangeType { case open, closed }
+    public enum RangeType {
+        case open, closed
+    }
     
     var value: N
     let power: N
@@ -39,15 +41,14 @@ public struct exponetiate<N: BinaryFloatingPoint>:
 
 
 /**
- Generates a C-style iterator.
+ A C-style iterator.
  In these closures, $0 is the current value of the iterator.
 
- # Parameters
- - init: The initial value
- - while:
-    Executes after each iteration of the loop.
-    the loop continues if it returns true and ends if it returns false
- - update: Used to update the value after each iteration
+ - Parameters:
+  - init: The initial value
+  - while: Executes after each iteration of the loop.
+        The loop continues if it returns true and ends if it returns false.
+  - update: Used to update the value after each iteration.
  
  In this example, i begins as 2 and is multiplied by two after each iteration.
  The iterator stops when i > 100

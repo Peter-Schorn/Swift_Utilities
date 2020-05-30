@@ -35,6 +35,7 @@ public struct InvalidChars {
     
     public init(wrappedValue: String, _ regex: String) {
         self.regex = regex
+        // self.value = wrappedValue.regexSub(regex)
         self.value = wrappedValue
     }
     

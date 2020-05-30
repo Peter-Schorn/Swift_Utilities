@@ -11,8 +11,8 @@ import Foundation
 
 public extension Array {
     
-    /// Splits array into an array of arrays with specified size
-    func chunked(into size: Int) -> [[Element]] {
+    /// Splits array into an array of arrays, each of which will have the specified size.
+    func chunked(size: Int) -> [[Element]] {
         return stride(from: 0, to: count, by: size).map {
             Array(self[$0 ..< Swift.min($0 + size, count)])
         }
