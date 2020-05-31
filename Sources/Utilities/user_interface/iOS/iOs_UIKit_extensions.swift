@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Peter Schorn on 5/23/20.
-//
-
 #if !os(macOS)
 
 

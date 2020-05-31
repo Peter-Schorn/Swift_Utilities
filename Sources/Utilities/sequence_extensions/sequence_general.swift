@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Peter Schorn on 4/24/20.
-//
-
 import Foundation
 
 
@@ -21,10 +14,10 @@ public extension Sequence {
     
     /// Returns true if the closure returns true for any of the elements
     /// in the sequence. Else false.
-    func any(_ closure: (Element) throws -> Bool ) rethrows -> Bool {
+    func any(_ predicate: (Element) throws -> Bool ) rethrows -> Bool {
         
         for element in self {
-            if try closure(element) { return true }
+            if try predicate(element) { return true }
         }
         return false
     

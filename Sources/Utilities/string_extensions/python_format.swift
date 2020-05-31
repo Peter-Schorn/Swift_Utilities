@@ -1,12 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Peter Schorn on 4/23/20.
-//
-
-// Adds python-style format method for strings
-
 import Foundation
 
 

@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Peter Schorn on 4/26/20.
-//
-
 import Foundation
 
 public func isExistingDirectory(_ path: URL) -> Bool {

@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Peter Schorn on 4/28/20.
-//
-
 import Foundation
 
 
