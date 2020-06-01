@@ -114,21 +114,6 @@ public extension RangeReplaceableCollection where Element: Equatable {
 }
 
 
-public extension Array where Element == Character {
-
-    /// Join array of characters into String with separator
-    func joined(separator: String = "") -> String {
-        var string = ""
-        for (indx, char) in self.enumerated() {
-            if indx > 0 {
-                string.append(separator)
-            }
-            string.append(char)
-        }
-        return string
-    }
-
-}
 
 public extension Array where Element == String {
     
