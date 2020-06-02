@@ -5,23 +5,7 @@ import Utilities
 
 extension UtilitiesTests {
     
-    func testArrayFilterMap() {
-        
-        let items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-        let newItems_1: [String] = items.filterMap { item in
-            if item < 5 {
-                return String(item * 2)
-            }
-            return nil
-        }
-        
-        XCTAssertEqual(newItems_1, ["2", "4", "6", "8"])
-        
-        let newItems_2 = items.filterMap { $0 < 5 ? String($0 * 2) : nil }
-        XCTAssertEqual(newItems_2, ["2", "4", "6", "8"])
-        // XCTAssert(newItems_2 == [2, 4, 6, 8])
-    }
+    
     
     func testCollectionDuplicatesAndAppendUnique() {
         

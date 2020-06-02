@@ -13,7 +13,6 @@ final class UtilitiesTests: XCTestCase {
         ("testRegexFindAll", testRegexFindAll),
         ("testPythonStringFormat", testPythonStringFormat),
         ("testRegexMatch", testRegexMatch),
-        ("testArrayFilterMap", testArrayFilterMap),
         ("testShellScripting", testShellScripting),
         ("testJSONAndTempDir", testJSONAndTempDir),
         ("testCollectionDuplicatesAndAppendUnique", testCollectionDuplicatesAndAppendUnique),

@@ -2,48 +2,22 @@ import Foundation
 
 
 
-public extension Array {
 
+public extension RangeReplaceableCollection {
 
-    /// Enables accessing elemnts from the end backwards
-    /// [back: 1] returns the last element,
-    /// [back: 2] returns the second last, and so on
-    subscript(back i: Int) -> Element {
-
-        get { return self[self.count - i] }
-        set { self[self.count - i] = newValue }
-    }
-
-    subscript(safe i: Int) -> Element? {
-        get {
-            return self.indices.contains(i) ? self[i] : nil
-        }
-    }
-
-}
-
-
-public extension RangeReplaceableCollection where Index == Int {
- 
     subscript(back i: Int) -> Element {
         get {
-            print("RangeReplaceableCollection back get")
-            return self[self.count - i]
+            let indx = self.index(self.endIndex, offsetBy: (-i))
+            return self[indx]
         }
 
         set {
-            print("RangeReplaceableCollection back set")
-            let range = (self.count - i)...(self.count - i)
-            self.replaceSubrange(range, with: [newValue])
+            let indx = self.index(self.endIndex, offsetBy: (-i))
+            self.replaceSubrange(indx...indx, with: [newValue])
         }
     }
-    
-}
 
-extension Collection where Index == Int {
-    subscript(back i: Int) -> Element {
-        return self[self.count - i]
-    }
+
 }
 
 
@@ -117,7 +91,7 @@ public extension RangeReplaceableCollection where Element: Equatable {
 
 public extension Array where Element == String {
     
-    /// Creates an array of single-character Strings,
+    /// Creates an array of single-character strings,
     /// whereas the default initializer for a string
     /// creates an array of characters.
     init(asStrings string: String) {

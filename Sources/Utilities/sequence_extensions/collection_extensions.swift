@@ -2,6 +2,36 @@ import Foundation
 
 
 
+public extension Collection {
+    
+    subscript(back i: Int) -> Element {
+        let indx = self.index(self.endIndex, offsetBy: (-i))
+        return self[indx]
+
+        
+    }
+    
+    subscript(safe i: Index) -> Element? {
+        get {
+            return self.indices.contains(i) ? self[i] : nil
+        }
+    }
+    
+    subscript(backSafe i: Int) -> Element? {
+        let indx = self.index(self.endIndex, offsetBy: (-i))
+        
+        if self.indices.contains(indx) {
+            return self[back: i]
+        }
+        
+        return nil
+    }
+    
+}
+
+
+
+
 public extension Collection where Element: BinaryInteger {
     
     var average: Double {
@@ -35,12 +65,15 @@ public extension Collection where Index == Int {
 }
 
 
-public extension Collection {
+
+
+func test() {
     
-    subscript(safe i: Index) -> Element? {
-        get {
-            return self.indices.contains(i) ? self[i] : nil
-        }
-    }
+    var x = 5
+    x = 10
+    x = 10
+    x = 10
     
+    
+
 }
