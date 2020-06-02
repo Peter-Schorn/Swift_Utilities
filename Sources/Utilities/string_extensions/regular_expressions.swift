@@ -10,20 +10,22 @@ public typealias RegexMatch = (
 public extension String {
     
         
-        func lines() -> [String] {
-            
-            return self.split(separator: "\n").map { String($0) }
-            
-        }
+    /// Returns an array of each line in the string
+    func lines() -> [String] {
         
-        func words() -> [String] {
-            
-            if let matches = self.regexFindAll(#"\w+"#) {
-                return matches.map { $0.fullMatch }
-            }
-            return []
-
+        return self.split(separator: "\n").map { String($0) }
+        
+    }
+    
+    /// Returns an array of each word in the string
+    func words() -> [String] {
+        
+        if let matches = self.regexFindAll(#"\w+"#) {
+            return matches.map { $0.fullMatch }
         }
+        return []
+
+    }
         
         
     /**
