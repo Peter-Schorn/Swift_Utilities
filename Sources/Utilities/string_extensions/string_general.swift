@@ -7,6 +7,11 @@ import SwiftUI
 /// Usage: `throw "There was an error"`
 extension String: Error { }
 
+
+
+
+
+
 public extension String {
     
     

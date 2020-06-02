@@ -36,7 +36,7 @@ public extension String {
 
     func openRange(index i: Int) -> Range<String.Index> {
         let j = negativeIndex(i)
-        return openRange(j..<(j + 1), checkNegative: false)
+        return self.openRange(j..<(j + 1), checkNegative: false)
     }
 
     func openRange(
