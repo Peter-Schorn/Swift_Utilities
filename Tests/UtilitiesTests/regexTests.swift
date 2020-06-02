@@ -109,6 +109,15 @@ extension UtilitiesTests {
         let newText = text.regexSub(#"\d+$"#, with: "unknown")
         XCTAssertEqual(newText, "John Doe, age unknown")
         
+        print("\n")
+        let text2 = "/one two:,three. four;'%^&five six."
+        
+        for word in text2.words() {
+            print("[\(word)]")
+        }
+        print("\n")
+
+        
     }
     
     

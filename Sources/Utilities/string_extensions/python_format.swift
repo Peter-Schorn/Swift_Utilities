@@ -69,7 +69,7 @@ public extension String {
     /// formats based on empty curly brackets
     private func formatPos(
         _ items: [String],
-        _ matches: [RegexTuple]
+        _ matches: [RegexMatch]
     ) -> String {
         
         var formattedStr = self
@@ -93,7 +93,7 @@ public extension String {
     /// formats based on curly brackets with numbers inside them
     private func formatNum(
         _ items: [String],
-        _ matches: [RegexTuple]
+        _ matches: [RegexMatch]
     ) -> String {
     
         var formattedStr = self

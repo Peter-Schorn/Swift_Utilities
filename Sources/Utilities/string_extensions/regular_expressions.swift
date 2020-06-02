@@ -1,13 +1,31 @@
 import Foundation
 
 
-public typealias RegexTuple = (
-    fullMatch: String, range: Range<String.Index>, groups: [String?]
+public typealias RegexMatch = (
+    fullMatch: String,
+    range: Range<String.Index>,
+    groups: [String?]
 )
 
 public extension String {
     
-    
+        
+        func lines() -> [String] {
+            
+            return self.split(separator: "\n").map { String($0) }
+            
+        }
+        
+        func words() -> [String] {
+            
+            if let matches = self.regexFindAll(#"\w+"#) {
+                return matches.map { $0.fullMatch }
+            }
+            return []
+
+        }
+        
+        
     /**
      Finds the first match for a regular expression pattern in a string.
      
@@ -22,7 +40,7 @@ public extension String {
     func regexMatch(
         _ pattern: String,
         _ options: NSRegularExpression.Options = []
-    ) -> RegexTuple? {
+    ) -> RegexMatch? {
         
         guard let regex = try? NSRegularExpression(pattern: pattern, options: options) else {
             fatalError("invalid regex")
@@ -35,7 +53,7 @@ public extension String {
             in: self, options: [], range: NSMakeRange(0, nsString.length)
         ) {
         
-            var regexTuple: RegexTuple
+            var regexTuple: RegexMatch
             
             regexTuple.fullMatch = nsString.substring(with: result.range(at: 0))
             regexTuple.range = self.openRange(Range(result.range)!, checkNegative: false)
@@ -108,7 +126,7 @@ public extension String {
     func regexFindAll(
         _ pattern: String,
         _ options: NSRegularExpression.Options = []
-    ) -> [RegexTuple]? {
+    ) -> [RegexMatch]? {
         
         guard let regex = try? NSRegularExpression(pattern: pattern, options: options) else {
             fatalError("invalid regex")
@@ -120,11 +138,11 @@ public extension String {
             in: self, options: [], range: NSMakeRange(0, nsString.length)
         )
 
-        var fullMatches: [RegexTuple] = []
+        var fullMatches: [RegexMatch] = []
         
         for result in results {
             
-            var regexTuple: RegexTuple
+            var regexTuple: RegexMatch
             regexTuple.fullMatch = nsString.substring(with: result.range(at: 0))
             regexTuple.range = self.openRange(Range(result.range)!, checkNegative: false)
             regexTuple.groups = []
