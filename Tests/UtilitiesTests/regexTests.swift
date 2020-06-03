@@ -105,17 +105,18 @@ extension UtilitiesTests {
     
     func testRegexSub() {
         
-        let text = "John Doe, age 21"
+        let text = "123 John Doe, age 21"
         let newText = text.regexSub(#"\d+$"#, with: "unknown")
-        XCTAssertEqual(newText, "John Doe, age unknown")
+        XCTAssertEqual(newText, "123 John Doe, age unknown")
         
         print("\n")
         let text2 = "/one two:,three. four;'%^&five six."
         
+        var foundWords: [String] = []
         for word in text2.words() {
-            print("[\(word)]")
+            foundWords.append(word)
         }
-        print("\n")
+        XCTAssertEqual(foundWords, ["one", "two", "three", "four", "five", "six"])
 
         
     }

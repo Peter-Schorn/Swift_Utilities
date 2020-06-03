@@ -11,13 +11,17 @@ public extension Collection {
         
     }
     
-    subscript(safe i: Index) -> Element? {
+    subscript(safe i: Index?) -> Element? {
         get {
+            guard let i = i else { return nil }
             return self.indices.contains(i) ? self[i] : nil
         }
     }
     
-    subscript(backSafe i: Int) -> Element? {
+    subscript(backSafe i: Int?) -> Element? {
+        
+        guard let i = i else { return nil }
+        
         let indx = self.index(self.endIndex, offsetBy: (-i))
         
         if self.indices.contains(indx) {

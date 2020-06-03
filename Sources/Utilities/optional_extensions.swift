@@ -2,7 +2,7 @@ import Foundation
 
 
 /**
- Type-erases the wrapped value for optional.
+ Type-erases the wrapped value for Optional.
  This protocol allows for extending other protocols
  contingent on one or more of their associated types
  being any optional type.
@@ -42,8 +42,9 @@ extension Optional: AnyOptional {
 
 public extension Sequence where Element: AnyOptional {
 
-    /// Each element in the collection is either unwrapped and
-    /// added to the new array, or removed if nil.
+    /// Returns a new array in which each element in the collection
+    /// is either unwrapped and added to the new array,
+    /// or not added to the new array if nil.
     func removeIfNil() -> [Element.Wrapped] {
         let result = self.compactMap { $0.value }
         

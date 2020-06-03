@@ -5,11 +5,11 @@ import SwiftUI
 
 /// Adds the ability to throw an error with a custom message
 /// Usage: `throw "There was an error"`
-extension String: Error { }
-
-
-
-
+extension String: Error, LocalizedError {
+    
+    public var errorDescription: String? { self }
+    
+}
 
 
 public extension String {
@@ -27,6 +27,7 @@ public extension String {
     }
     
     /**
+     Alias for self.trimmingCharacters(in: characterSet)
      ```
      func strip(_ characterSet: CharacterSet = .whitespacesAndNewlines) -> String {
          return self.trimmingCharacters(in: characterSet)
@@ -37,18 +38,18 @@ public extension String {
         return self.trimmingCharacters(in: characterSet)
     }
 
-    /// see String.strip
+    /// See String.strip.
     mutating func stripInPlace(_ characterSet: CharacterSet = .whitespacesAndNewlines) {
         self = self.strip(characterSet)
     }
 
-    /// see String.strip
+    /// See String.strip.
     mutating func stripInPlace(_ stripOptions: StripOptions) {
         self = self.strip(stripOptions)
     }
     
     
-    /// alias for .components(separatedBy: separator)
+    /// Alias for .components(separatedBy: separator)
     func split(_ separator: String) -> [String] {
         return self.components(separatedBy: separator)
     }
@@ -88,6 +89,38 @@ public extension String {
        
     }
     
+    
+    /// Returns an array of each line in the string
+    func lines() -> [String] {
+        
+        return self.split(separator: "\n").map { String($0) }
+        
+    }
+    
+    /// Returns an array of each word in the string
+    func words() -> [String] {
+        
+        if let matches = try! self.regexFindAll(#"\w+"#) {
+            return matches.map { $0.fullMatch }
+        }
+        return []
+
+    }
+    
+    /// Returns a new string with self repeated the specified number of times.
+    /// ```
+    /// "a".multiplied(by: 4) == "aaaa"
+    /// ```
+    func multiplied(by amount: Int) -> String {
+        
+        return (1...amount).map { _ in self }.joined()
+    }
+    
+    /// See self.multiplied(by:).
+    mutating func multiply(by amount: Int) {
+        self = self.multiplied(by: amount)
+    }
+        
     
 }
 

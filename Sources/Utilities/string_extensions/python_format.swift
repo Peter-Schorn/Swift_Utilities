@@ -7,14 +7,22 @@ func removeDoubleBrackets(_ string: inout String) {
     string.regexSubInPlace(#"\}\}"#, with: "}")
 }
 
+// matches text in between curly brackets, unless the brackets
+// are escaped with another set of curly brakets.
+// This is similar to how python parses f-strings,
+// except only one level of escaping is supported.
+private let regexCurlyBrackets =
+        #"(?<!\{)\{(?!\{)(.*?)(?<!\})\}(?!\})"#
+
 public extension String {
+    
     
     
     func format(dict: [String: Any]) -> String {
         
-        let items = dict.mapValues { "\($0)" }
+        let interpolatedValues = dict.mapValues { "\($0)" }
         
-        guard let keys = self.regexFindAll(#"(?<!\{)\{(?!\{)(.*?)(?<!\})\}(?!\})"#) else {
+        guard let keys = try? self.regexFindAll(regexCurlyBrackets) else {
             fatalError("couldn't find dictionary keys in string")
         }
         
@@ -24,9 +32,9 @@ public extension String {
         for key in keys {
             
             // the keyword inside the curly bracket
-            let kwarg = key.groups[0]!
+            let kwarg = key.groups[0]!.match
             
-            guard let item = items[kwarg] else {
+            guard let item = interpolatedValues[kwarg] else {
                 fatalError("couldn't find key in dictionary")
             }
 
@@ -45,19 +53,20 @@ public extension String {
     func format(_ interpolations: Any...) -> String {
         
         let items = interpolations.map { "\($0)" }
-        guard let matches = self.regexFindAll(#"(?<!\{)\{(?!\{)(\d*)(?<!\})\}(?!\})"#) else {
+        
+        guard let matches = try? self.regexFindAll(regexCurlyBrackets) else {
             fatalError("couldn't find curly brackets")
         }
 
         // if all the curly brackets have numbers in them
-        if matches.allSatisfy({ $0.groups[0]!.regexMatch(#"\d+"#) != nil }) {
-            // print("all numbers")
+        if matches.allSatisfy({ try! $0.groups[0]!.match.regexMatch(#"\d+"#) != nil }) {
+            // then interpolate the values based on the numbers
             return formatNum(items, matches)
         }
         
         // if all the curly brackets are empty
         if matches.allSatisfy({ $0.fullMatch == "{}" }) {
-            // print("all empty brackets")
+            // then interpolate the values based on the order they were passed in
             return formatPos(items, matches)
         }
                 
@@ -102,7 +111,7 @@ public extension String {
         for match in matches {
     
             // the number inside the brackets
-            let num = Int(match.groups[0]!)!
+            let num = Int(match.groups[0]!.match)!
             
             guard let item = items[safe: num] else {
                 fatalError("item \(num) specified in curly brackets not found")
