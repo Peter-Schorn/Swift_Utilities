@@ -21,9 +21,9 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
         .package(
-            name: "RegularExpressions",
             url: "https://github.com/Peter-Schorn/RegularExpressions",
-            from: "0.1.0")
+            "1.0.0"..<"3.0.0"
+        )
     ],
     targets: [
         // Targets are the basic building blocks of a package.
