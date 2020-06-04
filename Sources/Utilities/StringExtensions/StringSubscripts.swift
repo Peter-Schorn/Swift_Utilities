@@ -131,7 +131,7 @@ public extension String {
     }
 
     /// `string[n...]`. See PartialRangeFrom
-    subscript(r: PartialRangeFrom<Int>) -> String {
+    subscript(_ r: PartialRangeFrom<Int>) -> String {
         
         get {
             return String(self[self.openRange(r.lowerBound..<self.count)])
@@ -142,7 +142,7 @@ public extension String {
     }
 
     /// `string[...n]`. See PartialRangeThrough
-    subscript(r: PartialRangeThrough<Int>) -> String {
+    subscript(_ r: PartialRangeThrough<Int>) -> String {
         
         get {
             let upper = negativeIndex(r.upperBound)
@@ -157,7 +157,7 @@ public extension String {
     }
 
     /// `string[...<n]`. See PartialRangeUpTo
-    subscript(r: PartialRangeUpTo<Int>) -> String {
+    subscript(_ r: PartialRangeUpTo<Int>) -> String {
         
         get {
             let upper = negativeIndex(r.upperBound)

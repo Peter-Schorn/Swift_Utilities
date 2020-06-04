@@ -12,14 +12,29 @@ public func UtilitiesTest() {
 public func pass() { }
 
 
-/// Accepts a sequence as input and forwards it to the print function
-/// as a variadic parameter.
+/// Accepts an array as input and forwards it to the print function
+/// as a variadic parameter. Also accepts a separator and terminator,
+/// with the same behavior as the print function.
 public func unpackPrint(
     _ items: [Any], separator: String = " ", terminator: String = "\n"
 ) {
     unsafeBitCast(
         print, to: (([Any], String, String) -> Void).self
     )(items, separator, terminator)
+}
+
+/// Prints items with the specififed padding before and after
+public func paddedPrint(
+    _ items: Any...,
+    separator: String = " ",
+    terminator: String = "\n",
+    padding: String = "\n\n"
+) {
+
+    print(padding, terminator: "")
+    unpackPrint(items, separator: separator, terminator: terminator)
+    print(padding, terminator: "")
+
 }
 
 

@@ -7,7 +7,9 @@ import SwiftUI
 /// Usage: `throw "There was an error"`
 extension String: Error, LocalizedError {
     
-    public var errorDescription: String? { self }
+    public var errorDescription: String? {
+        return self
+    }
     
 }
 

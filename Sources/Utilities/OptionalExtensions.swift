@@ -33,6 +33,7 @@ public protocol AnyOptional {
 extension Optional: AnyOptional {
 
     /// Returns self. **Does not unwrap the value**
+    @inlinable
     public var value: Wrapped? {
         return self
     }
@@ -45,7 +46,8 @@ public extension Sequence where Element: AnyOptional {
     /// is either unwrapped and added to the new array,
     /// or not added to the new array if nil.
     func removeIfNil() -> [Element.Wrapped] {
-        return self.compactMap { $0.value }
+        let result = self.compactMap { $0.value }
+        
+        return result
     }
-    
 }
