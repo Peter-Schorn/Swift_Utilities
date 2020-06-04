@@ -1,4 +1,5 @@
 import Foundation
+import RegularExpressions
 
 /**
  Property Wrapper that removes characters that match a regular expression pattern

@@ -1,5 +1,5 @@
 import Foundation
-
+import RegularExpressions
 
 /// replaces double brackets with single brackets
 func removeDoubleBrackets(_ string: inout String) {

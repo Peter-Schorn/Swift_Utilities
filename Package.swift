@@ -7,7 +7,7 @@ import PackageDescription
 let package = Package(
     name: "Utilities",
     platforms: [
-        .iOS(.v13), .macOS(.v10_15)
+        .iOS(.v13), .macOS(.v10_10)
     ],
     products: [
         // Products define the executables and libraries produced
@@ -20,6 +20,10 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
+        .package(
+            name: "RegularExpressions",
+            url: "https://github.com/Peter-Schorn/RegularExpressions",
+            from: "0.1.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package.
@@ -28,11 +32,11 @@ let package = Package(
         // and on products in packages which this package depends on.
         .target(
             name: "Utilities",
-            dependencies: []
+            dependencies: ["RegularExpressions"]
         ),
         .testTarget(
             name: "UtilitiesTests",
-            dependencies: ["Utilities"]
+            dependencies: ["Utilities", "RegularExpressions"]
         )
     ]
 )

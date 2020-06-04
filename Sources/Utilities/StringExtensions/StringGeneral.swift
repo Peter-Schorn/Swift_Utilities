@@ -1,6 +1,6 @@
 import Foundation
 import SwiftUI
-
+import RegularExpressions
 
 
 /// Adds the ability to throw an error with a custom message

@@ -1,7 +1,7 @@
 import Foundation
 import XCTest
 import Utilities
-
+import RegularExpressions
 
 extension UtilitiesTests {
     
