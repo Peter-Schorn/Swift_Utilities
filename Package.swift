@@ -7,7 +7,7 @@ import PackageDescription
 let package = Package(
     name: "Utilities",
     platforms: [
-        .iOS(.v13), .macOS(.v10_10)
+        .iOS(.v13), .macOS(.v10_15)
     ],
     products: [
         // Products define the executables and libraries produced
