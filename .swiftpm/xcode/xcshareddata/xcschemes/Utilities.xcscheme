@@ -53,6 +53,26 @@
                ReferencedContainer = "container:">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "UtilitiesTests_folder_renamed"
+               BuildableName = "UtilitiesTests_folder_renamed"
+               BlueprintName = "UtilitiesTests_folder_renamed"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "UtilitiesTests-folder-renamed"
+               BuildableName = "UtilitiesTests-folder-renamed"
+               BlueprintName = "UtilitiesTests-folder-renamed"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
