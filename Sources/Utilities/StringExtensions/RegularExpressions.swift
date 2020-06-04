@@ -1,19 +1,71 @@
 import Foundation
 
-public typealias RegexMatch = (
-    fullMatch: String,
-    range: Range<String.Index>,
-    groups: [(match: String, range: Range<String.Index>)?]
-)
+
+/**
+ Represents a regular expression capture group.
+ ```
+ public let match: String
+ public let range: Range<String.Index>
+ ```
+ */
+public struct RegexGroup: Equatable {
+    
+    public init(match: String, range: Range<String.Index>) {
+        self.match = match
+        self.range = range
+    }
+    
+    public let match: String
+    public let range: Range<String.Index>
+}
 
 
-/// Holds a regular expression pattern
+/**
+ Represents a regular expression match
+ ```
+ public struct RegexMatch {
+     let fullMatch: String
+     let range: Range<String.Index>
+     let groups: [RegexGroup?]
+ }
+ ```
+ */
+public struct RegexMatch: Equatable {
+    
+    public init(
+        fullMatch: String,
+        range: Range<String.Index>,
+        groups: [RegexGroup?]
+    ) {
+        self.fullMatch = fullMatch
+        self.range = range
+        self.groups = groups
+    }
+    
+    public let fullMatch: String
+    public let range: Range<String.Index>
+    public let groups: [RegexGroup?]
+    
+    
+}
+
+
+/// Holds a regular expression pattern (String)
 /// and NSRegularExpression.Options.
-/// Can be used on self.regexMatch and self.regexFindAll
-public typealias RegexObject = (
-    pattern: String,
-    options: NSRegularExpression.Options
-)
+/// Can be used on regexMatch, regexFindAll, and regexSplit.
+public struct RegexObject: Equatable {
+    
+    public init(
+        pattern: String,
+        options: NSRegularExpression.Options = []
+    ) {
+        self.pattern = pattern
+        self.options = options
+    }
+    
+    public var pattern: String
+    public var options: NSRegularExpression.Options
+}
 
 
 public extension String {
@@ -39,7 +91,7 @@ public extension String {
         _ options: NSRegularExpression.Options = []
     ) throws -> RegexMatch? {
         
-        let regex = try! NSRegularExpression(pattern: pattern, options: options)
+        let regex = try NSRegularExpression(pattern: pattern, options: options)
         
         let nsString = self as NSString
 
@@ -47,36 +99,34 @@ public extension String {
             in: self, range: NSRange(location: 0, length: self.count)
         ) {
         
-            var regexMatch: RegexMatch
-            
-            regexMatch.fullMatch = nsString.substring(
+            let regexFullMatch = nsString.substring(
                 with: result.range(at: 0)
             )
-            regexMatch.range = self.openRange(
-                Range(result.range)!, checkNegative: false
-            )
-            regexMatch.groups = []
+            let regexRange = Range(result.range, in: self)!
+            var regexGroups: [RegexGroup?] = []
             
             for match in 1..<result.numberOfRanges {
                 let nsRange = result.range(at: match)
                 
                 if nsRange.location == NSNotFound {
-                    regexMatch.groups.append(nil)
+                    regexGroups.append(nil)
                 }
                 else {
                     // append the capture group text and the range thereof
-                    let range = self.openRange(
-                        Range(nsRange)!, checkNegative: false
-                    )
+                    let range = Range(nsRange, in: self)!
                     let capturedText = nsString.substring(with: nsRange)
-                    regexMatch.groups.append(
-                        (match: capturedText, range: range)
+                    regexGroups.append(
+                        RegexGroup(match: capturedText, range: range)
                     )
                 }
                 
             }
             
-            return regexMatch
+            return RegexMatch(
+                fullMatch: regexFullMatch,
+                range: regexRange,
+                groups: regexGroups
+            )
             
         }
         
@@ -102,7 +152,7 @@ public extension String {
      
      - Throws: If the regular expression pattern is invalid
            (e.g., unbalanced parentheses). **Never** throws an error
-           if no matches were found.
+           if no matches are found.
      
      - Returns: An array of tuples, each of which contains the full match,
        the range of the full match in the original text,
@@ -111,9 +161,11 @@ public extension String {
        Each capture group is an optional tuple containing the matched text
        and the range of the matched text, or nil if the group was not matched.
        
-       The ranges returned by this function can be used in the subsript for
-       the original text, or for string.replaceSubrange(_:with:) to modify the
-       text.
+       The ranges returned by this function can be used in the subscript for
+       the original text, or for self.replacingCharacters(in:with:)
+       to modify the text. Note that after the original text has been modified,
+       the ranges may be invalid because characters may  have shifted
+       to difference indices.
      
        If no matches were found at all, returns nil, **not an empty array**.
      
@@ -145,7 +197,7 @@ public extension String {
          
          let firstResult = results[0]
          
-         inputText.replaceSubrange(firstResult.range, with: "new value")
+         inputText.self.replacingCharacters(in: firstResult.range, with: "new value")
          
          print("replaced text: '\(inputText)'")
      }
@@ -174,20 +226,19 @@ public extension String {
             in: self, range: NSRange(location: 0, length: self.count)
         )
 
+        // let x = self.replacingCharacters(in:with:)
+        
         var allMatches: [RegexMatch] = []
         
         // for each full match
         for result in regexResults {
             
-            var regexMatch: RegexMatch
-            
-            regexMatch.fullMatch = nsString.substring(
+            let regexFullMatch = nsString.substring(
                 with: result.range(at: 0)
             )
-            regexMatch.range = self.openRange(
-                Range(result.range)!, checkNegative: false
-            )
-            regexMatch.groups = []
+            let regexRange = Range(result.range, in: self)!
+            var regexGroups: [RegexGroup?] = []
+
             
             // for each capture group
             for match in 1..<result.numberOfRanges {
@@ -195,24 +246,29 @@ public extension String {
                 let nsRange = result.range(at: match)
                 
                 if nsRange.location == NSNotFound {
-                    regexMatch.groups.append(nil)
+                    regexGroups.append(nil)
                 }
                 
                 else {
-                    let capturedTextRange = self.openRange(
-                        Range(nsRange)!, checkNegative: false
-                    )
+                    
+                    let capturedTextRange = Range(nsRange, in: self)!
                     
                     let capturedText = nsString.substring(with: nsRange)
                     
-                    regexMatch.groups.append(
-                        (match: capturedText, range: capturedTextRange)
+                    regexGroups.append(
+                        RegexGroup(match: capturedText, range: capturedTextRange)
                     )
                 }
                 
             }
             
-            allMatches.append(regexMatch)
+            allMatches.append(
+                RegexMatch(
+                    fullMatch: regexFullMatch,
+                    range: regexRange,
+                    groups: regexGroups
+                )
+            )
             
         }
         
@@ -274,7 +330,7 @@ public extension String {
      - Parameters:
        - pattern: A regular expression pattern.
        - options: Regular expression options.
-       - ignoreEmptyMatches: If true, all empty strings will be
+       - ignoreIfEmpty: If true, all empty strings will be
              removed from the array. If false, they will be included.
        - maxLength: The maximum length of the returned array.
              If nil (default), then the string is split
@@ -283,12 +339,12 @@ public extension String {
            if no matches are found.
      - Returns: An array of strings split on each occurence of the pattern.
            If no occurences of the pattern are found, then a single-element
-           array containing the entire string will be removed.
+           array containing the entire string will be returned.
      */
     func regexSplit(
         _ pattern: String,
         _ options: NSRegularExpression.Options = [],
-        ignoreEmptyMatches: Bool,
+        ignoreIfEmpty: Bool = false,
         maxLength: Int? = nil
     ) throws -> [String] {
 
@@ -303,7 +359,6 @@ public extension String {
             matches.map{ Range($0.range, in: self)! } +
             [endIndex..<endIndex]
         
-        // let max = maxLength ?? matches.count
         let max: Int
         if let maxLength = maxLength {
             max = Swift.min(maxLength - 1, matches.count)
@@ -316,7 +371,7 @@ public extension String {
             let item = String(
                 self[ranges[$0].upperBound..<ranges[$0+1].lowerBound]
             )
-            if item.isEmpty && ignoreEmptyMatches { return nil }
+            if item.isEmpty && ignoreIfEmpty { return nil }
             return item
         }
         
