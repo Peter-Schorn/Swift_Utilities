@@ -44,7 +44,10 @@ class JSONTests: XCTestCase {
         
         }
         else {
-            paddedPrint("WARNING: can't perform testJSONAndTempDir on macOS < 10.15")
+            paddedPrint(
+                "WARNING: can't perform test method 'testJSONAndTempDir' on macOS < 10.15",
+                padding: "-".multiplied(by: 58) + "\n" + "-".multiplied(by: 58)
+            )
         }
         
     }

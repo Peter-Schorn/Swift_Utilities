@@ -40,6 +40,11 @@ class FileAndURLTests: XCTestCase {
     
     func testCannonicalPath() {
         
+        let warning = (
+            "WARNING: Can't perform test method 'testCannonicalPath' on macOS < 10.15",
+            "-".multiplied(by: 58) + "\n" + "-".multiplied(by: 58)
+        )
+        
         if #available(macOS 10.15, *) {
         
         #if os(macOS)
@@ -53,17 +58,19 @@ class FileAndURLTests: XCTestCase {
             XCTFail("\(error)")
         }
         #else
-        #warning("no test for URL.cannonicalPath on non-macOS system")
+        #warning("WARNING: Can't perform test method 'testCannonicalPath' on non-macOS system")
         #endif
         
         }
         else {
-            paddedPrint("WARNING: can't perform testCannonicalPath on macOS < 10.15")
+            paddedPrint(warning.0, padding: warning.1)
         }
         
     }
     
     func testURLResolveAlias() {
+        
+        
         
         #if os(macOS)
         let aliasPath = URL(fileURLWithPath: "/var")
@@ -76,7 +83,7 @@ class FileAndURLTests: XCTestCase {
             XCTFail("\(error)")
         }
         #else
-        #warning("no test for resolveAlias(at: URL) on non-macOS system")
+        #warning("cannot perform test method 'testURLResolveAlias' on non-macOS system")
         #endif
     }
     
