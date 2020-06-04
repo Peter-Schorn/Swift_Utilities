@@ -45,6 +45,10 @@ public func renameFile(_ path: URL, to newName: String) throws {
 }
 
 
+
+
+
+
 public enum DeleteOptions {
     case afterClosure
     case useHandler
@@ -76,11 +80,12 @@ public enum DeleteOptions {
  - Returns: The URL of the directory, which may have already been deleted,
        depending on the options specified above.
  */
+@available(OSX 10.12, *)
 @discardableResult
 public func withTempDirectory(
    for directory: FileManager.SearchPathDirectory = .itemReplacementDirectory,
    in domain: FileManager.SearchPathDomainMask = .userDomainMask,
-   appropriateFor url: URL = FileManager.default.homeDirectoryForCurrentUser,
+   appropriateFor url: URL = FileManager.default.temporaryDirectory,
    deleteOptions: DeleteOptions = .afterClosure,
    closure: (_ tempDir: URL, _ delelteClosure: (() -> Void)?) -> Void
 ) throws -> URL {
@@ -111,10 +116,11 @@ public func withTempDirectory(
 }
 
 /// Creates a Temporary directory for the current user.
+@available(OSX 10.12, *)
 public func createTempDirectory(
     for directory: FileManager.SearchPathDirectory = .itemReplacementDirectory,
     in domain: FileManager.SearchPathDomainMask = .userDomainMask,
-    appropriateFor url: URL = FileManager.default.homeDirectoryForCurrentUser
+    appropriateFor url: URL = FileManager.default.temporaryDirectory
 ) throws -> URL {
  
     return try FileManager.default.url(

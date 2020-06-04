@@ -29,8 +29,9 @@ extension UtilitiesTests {
         
     }
     
-    
     func testCannonicalPath() {
+        
+        if #available(macOS 10.15, *) {
         
         #if os(macOS)
         let path = URL(fileURLWithPath: "/var/folders/")
@@ -45,6 +46,11 @@ extension UtilitiesTests {
         #else
         #warning("no test for URL.cannonicalPath on non-macOS system")
         #endif
+        
+        }
+        else {
+            
+        }
         
     }
     

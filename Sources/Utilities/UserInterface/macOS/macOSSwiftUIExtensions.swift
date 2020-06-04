@@ -7,6 +7,7 @@ import AppKit
 
 /// Shows an activity indicator to indicate that
 /// an action is in progress.
+@available(macOS 10.15, *)
 struct ActivityIndicator: NSViewRepresentable {
     
     @Binding var shouldAnimate: Bool
@@ -66,6 +67,7 @@ struct ActivityIndicator: NSViewRepresentable {
  when the user clicks on the link. By default,
  it is opened in the browser.
  */
+@available(macOS 10.15, *)
 struct HyperLink: View {
 
     init(

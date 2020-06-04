@@ -141,5 +141,6 @@ public extension CustomStringInterpolation {
     }
 }
 
+@available(macOS 10.15, *)
 extension LocalizedStringKey.StringInterpolation: CustomStringInterpolation { }
 extension String.StringInterpolation: CustomStringInterpolation { }

@@ -51,6 +51,7 @@ public extension URL {
     
     
     /// You tell me what the cannonical path is.
+    @available(macOS 10.12, *)
     func cannonicalPath() throws -> URL? {
         let resourceValues = try self.resourceValues(forKeys: [.canonicalPathKey])
         if let path = resourceValues.canonicalPath {
