@@ -20,7 +20,7 @@ public struct CenterInForm<V: View>: View {
 
 
 @available(macOS 10.15, *)
-extension View {
+public extension View {
 
     /// Conditionally applies a modifier to a view
     func `if`<Content: View>(_ conditional: Bool, content: (Self) -> Content) -> some View {
