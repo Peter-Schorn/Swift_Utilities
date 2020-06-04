@@ -3,9 +3,16 @@ import XCTest
 import Utilities
 
 
-extension UtilitiesTests {
+class SequenceTests: XCTestCase {
     
-    
+    static var allTests = [
+        ("testAnySequence", testAnySequence),
+        ("testArraySafeIndexing", testArraySafeIndexing),
+        ("testCollectionDuplicatesAndAppendUnique", testCollectionDuplicatesAndAppendUnique),
+        ("testEquatableArrayDuplicates", testEquatableArrayDuplicates),
+        ("testArrayNegativeIndexing", testArrayNegativeIndexing),
+        ("testArrayChunking", testArrayChunking)
+    ]
     
     func testCollectionDuplicatesAndAppendUnique() {
         

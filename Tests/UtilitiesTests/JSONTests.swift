@@ -3,8 +3,13 @@ import XCTest
 import Utilities
 
 
-extension UtilitiesTests {
+class JSONTests: XCTestCase {
 
+    static var allTests = [
+        ("testJSONAndTempDir", testJSONAndTempDir)
+    ]
+    
+    
     func testJSONAndTempDir() {
         
         if #available(macOS 10.15, *) {
@@ -17,12 +22,16 @@ extension UtilitiesTests {
                     do {
                         try saveJSONToFile(url: jsonPath, data: data)
                         
-                        var loadedData = try loadJSONFromFile(url: jsonPath, type: [String: String].self)
+                        var loadedData = try loadJSONFromFile(
+                            url: jsonPath, type: [String: String].self
+                        )
                         loadedData["height"] = "67"
 
                         try saveJSONToFile(url: jsonPath, data: loadedData)
                         
-                        let moreData = try loadJSONFromFile(url: jsonPath, type: [String: String].self)
+                        let moreData = try loadJSONFromFile(
+                            url: jsonPath, type: [String: String].self
+                        )
                         XCTAssertEqual(moreData, loadedData)
 
                     } catch {
@@ -35,7 +44,7 @@ extension UtilitiesTests {
         
         }
         else {
-            paddedPrint("WARNING: couldn't perform testJSONAndTempDir")
+            paddedPrint("WARNING: can't perform testJSONAndTempDir on macOS < 10.15")
         }
         
     }

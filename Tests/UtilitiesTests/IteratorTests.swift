@@ -3,8 +3,14 @@ import XCTest
 import Utilities
 
 
-extension UtilitiesTests {
+class IteratorTests: XCTestCase {
 
+    static var allTests = [
+        ("testCIterator", testCIterator),
+        ("testExponentiate", testExponentiate)
+    ]
+    
+    
     func testExponentiate() {
      
         var doubledArray: [Double] = []

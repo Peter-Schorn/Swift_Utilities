@@ -7,3 +7,6 @@ public func allTests() -> [XCTestCaseEntry] {
     ]
 }
 #endif
+
+
+typealias Opt = Optional

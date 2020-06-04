@@ -3,8 +3,14 @@ import XCTest
 import Utilities
 
 
-extension UtilitiesTests {
+class MathTests: XCTestCase {
 
+    static var allTests = [
+        ("testOperators", testOperators),
+        ("testNumbersAreClose", testNumbersAreClose),
+        ("testFactorial", testFactorial)
+    ]
+    
     func testOperators() {
         
         XCTAssert(1 ≤ 2)

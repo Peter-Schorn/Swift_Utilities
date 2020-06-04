@@ -3,8 +3,13 @@ import XCTest
 import Utilities
 
 
-extension UtilitiesTests {
+class MiscellaneousTests: XCTestCase {
 
+    static var allTests = [
+        ("testAllAny", testAllAny),
+        ("testTimeUnits", testTimeUnits)
+    ]
+    
     func testTimeUnits() {
         XCTAssertEqual(timeUnit(.hour(1), .minute(2), .second(5)), 3725.0)
     }

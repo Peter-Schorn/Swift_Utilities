@@ -1,63 +1,14 @@
-import Foundation
+//
+//  File.swift
+//  
+//
+//  Created by Peter Schorn on 6/4/20.
+//
+
 import SwiftUI
 import AppKit
 
 #if os(macOS)
-
-
-/// Shows an activity indicator to indicate that
-/// an action is in progress.
-@available(macOS 10.15, *)
-struct ActivityIndicator: NSViewRepresentable {
-    
-    @Binding var shouldAnimate: Bool
-    let style: NSProgressIndicator.Style
-    let controlSize: NSControl.ControlSize
-    let hideWhenNotAnimating: Bool
-    
-    
-    init(
-        shouldAnimate: Binding<Bool>,
-        style: NSProgressIndicator.Style,
-        controlSize: NSControl.ControlSize = .small,
-        hideWhenNotAnimating: Bool = true
-    ) {
-        self._shouldAnimate = shouldAnimate
-        self.style = style
-        self.controlSize = controlSize
-        self.hideWhenNotAnimating = hideWhenNotAnimating
-    }
-    
-    
-    func makeNSView(context: Context) -> NSProgressIndicator {
-        let progressView = NSProgressIndicator()
-        progressView.style = style
-        progressView.controlSize = controlSize
-        return progressView
-    }
-
-    func updateNSView(
-        _ progressView: NSProgressIndicator,
-        context: Context
-    ) {
-
-        if self.shouldAnimate {
-            if hideWhenNotAnimating {
-                progressView.isHidden = false
-            }
-            progressView.startAnimation(nil)
-        }
-        else {
-            progressView.stopAnimation(nil)
-            if hideWhenNotAnimating {
-                progressView.isHidden = true
-            }
-        }
-    }
-    
-}
-
-
 
 /**
  Displays text as a hyperlink.
@@ -68,9 +19,9 @@ struct ActivityIndicator: NSViewRepresentable {
  it is opened in the browser.
  */
 @available(macOS 10.15, *)
-struct HyperLink: View {
+public struct HyperLink: View {
 
-    init(
+    public init(
         link: URL? = nil,
         displayText: String,
         openLinkHandler: @escaping (URL) -> Void = { NSWorkspace.shared.open($0) }
@@ -83,7 +34,7 @@ struct HyperLink: View {
     }
     
     
-    init(
+    public init(
         link: URL?,
         displayText: Text,
         openLinkHandler: @escaping (URL) -> Void = { NSWorkspace.shared.open($0) }
@@ -102,7 +53,7 @@ struct HyperLink: View {
     let url: URL?
     let openLinkHandler: (URL) -> Void
     
-    var body: some View {
+    public var body: some View {
         
         Button(action: {
             if let url = self.url {

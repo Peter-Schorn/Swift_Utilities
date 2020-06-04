@@ -3,8 +3,12 @@ import XCTest
 import Utilities
 
 
-extension UtilitiesTests {
+class PropertyWrapperTests: XCTestCase {
 
+    static var allTests = [
+        ("testPropertyWrapper", testPropertyWrapper)
+    ]
+    
     func testPropertyWrapper() {
         
         struct Person {

@@ -3,7 +3,7 @@ import XCTest
 import Utilities
 
 
-extension UtilitiesTests {
+class StringTests: XCTestCase {
     
     func testStringFormatting() {
         XCTAssert(String(format: "$%.2f", 5.4) == 5.4.format(.currency))

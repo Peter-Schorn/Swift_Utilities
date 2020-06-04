@@ -3,8 +3,17 @@ import XCTest
 import Utilities
 
 
-extension UtilitiesTests {
+class FileAndURLTests: XCTestCase {
 
+    static var allTests = [
+        ("testShellScripting", testShellScripting),
+        ("testCannonicalPath", testCannonicalPath),
+        ("testURLLastPathName", testURLLastPathName),
+        ("testURLResolveAlias", testURLResolveAlias),
+        ("testAppendQueryItemToURL", testAppendQueryItemToURL),
+    ]
+    
+    
     func testShellScripting() {
                 
         runShellScriptAsync(args: ["echo", "hello"]) { process, stdout, stderror in
@@ -49,7 +58,7 @@ extension UtilitiesTests {
         
         }
         else {
-            
+            paddedPrint("WARNING: can't perform testCannonicalPath on macOS < 10.15")
         }
         
     }
