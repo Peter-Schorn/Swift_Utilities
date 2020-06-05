@@ -82,7 +82,6 @@ public struct DefaultButton: NSViewRepresentable {
 
     public func updateNSView(_ nsView: NSButton, context: NSViewRepresentableContext<Self>) {
         
-        print("updateNSView")
         
         if attributedTitle == nil {
             nsView.title = title ?? ""
