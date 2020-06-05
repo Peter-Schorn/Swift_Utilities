@@ -51,9 +51,7 @@ public struct HyperLink: View {
         self.foregroundColor = foregroundColor
         self.url = link
         self.openLinkHandler = openLinkHandler
-        
     }
-    
     
     @State private var isHoveringOverURL = false
     
