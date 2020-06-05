@@ -6,7 +6,7 @@ import Utilities
 class StringTests: XCTestCase {
     
     func testStringFormatting() {
-        XCTAssert(String(format: "$%.2f", 5.4) == 5.4.format(.currency))
+        XCTAssert(String(format: "$%.2f", 5.4) == 5.4.format(.currency(.US)))
         XCTAssert(String(format: "$%.2f", 5.4) == 5.4.format("$%.2f"))
     }
     
