@@ -113,6 +113,7 @@ public extension String {
     /// ```
     /// "a".multiplied(by: 4) == "aaaa"
     /// ```
+    /// - Parameter amount: the number of time to repeat self
     func multiplied(by amount: Int) -> String {
         
         return (1...amount).map { _ in self }.joined()

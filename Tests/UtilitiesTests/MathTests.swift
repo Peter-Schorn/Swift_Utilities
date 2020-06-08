@@ -12,7 +12,7 @@ class MathTests: XCTestCase {
     ]
     
     func testOperators() {
-        
+
         XCTAssert(1 ≤ 2)
         XCTAssert(1 ≤ 1)
         XCTAssert(2 ≥ 1)
