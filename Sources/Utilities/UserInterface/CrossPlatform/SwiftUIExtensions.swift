@@ -1,8 +1,10 @@
+#if canImport(SwiftUI)
+
 import Foundation
 import SwiftUI
 
 
-@available(macOS 10.15, *)
+@available(macOS 10.15, ios 13, *)
 public struct CenterInForm<V: View>: View {
     
     public var content: V
@@ -19,7 +21,7 @@ public struct CenterInForm<V: View>: View {
 }
 
 
-@available(macOS 10.15, *)
+@available(macOS 10.15, ios 13, *)
 public extension View {
 
     /// Conditionally applies a modifier to a view
@@ -51,3 +53,5 @@ public extension View {
 
 }
 
+
+#endif

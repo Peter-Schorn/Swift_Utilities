@@ -1,4 +1,5 @@
-import AppKit
+#if canImport(SwiftUI)
+
 import SwiftUI
 
 
@@ -108,3 +109,5 @@ extension StyledText: View {
     }
 }
 
+
+#endif
