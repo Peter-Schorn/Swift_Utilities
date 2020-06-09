@@ -1,14 +1,8 @@
-//
-//  File.swift
-//  
-//
-//  Created by Peter Schorn on 6/4/20.
-//
+#if os(macOS) && canImport(SwiftUI)
 
 import SwiftUI
 import AppKit
 
-#if os(macOS)
 
 /**
  Displays text as a hyperlink.
