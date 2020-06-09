@@ -1,7 +1,8 @@
+#if os(macOS) && canImport(SwiftUI)
+
 import SwiftUI
 import AppKit
 
-#if os(macOS)
 
 private var controlActionClosureProtocolAssociatedObjectKey: UInt8 = 0
 

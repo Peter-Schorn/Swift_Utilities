@@ -1,7 +1,8 @@
+#if os(macOS) && canImport(SwiftUI)
+
+
 import SwiftUI
 import AppKit
-
-#if os(macOS)
 
 /// Shows an activity indicator to indicate that
 /// an action is in progress.
