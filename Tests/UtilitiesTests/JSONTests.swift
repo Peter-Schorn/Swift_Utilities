@@ -1,6 +1,7 @@
 import Foundation
 import XCTest
 import Utilities
+import XCTestCaseExtensions
 
 
 class JSONTests: XCTestCase {

@@ -16,6 +16,10 @@ let package = Package(
             name: "Utilities",
             targets: ["Utilities"]
         ),
+        .library(
+            name: "XCTestCaseExtensions",
+            targets: ["XCTestCaseExtensions"]
+        )
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -34,9 +38,17 @@ let package = Package(
             name: "Utilities",
             dependencies: ["RegularExpressions"]
         ),
+        .target(
+            name: "XCTestCaseExtensions",
+            dependencies: ["Utilities"]
+        ),
         .testTarget(
             name: "UtilitiesTests",
-            dependencies: ["Utilities", "RegularExpressions"]
+            dependencies: [
+                "Utilities",
+                "RegularExpressions",
+                "XCTestCaseExtensions"
+            ]
         )
     ]
 )

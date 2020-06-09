@@ -1,3 +1,5 @@
+#if canImport(XCTest)
+
 import Foundation
 import XCTest
 
@@ -35,3 +37,6 @@ public extension XCTestCase {
     }
 
 }
+
+
+#endif
