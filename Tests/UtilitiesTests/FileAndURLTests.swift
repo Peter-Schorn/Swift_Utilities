@@ -58,7 +58,7 @@ class FileAndURLTests: XCTestCase {
             XCTFail("\(error)")
         }
         #else
-        #warning("WARNING: Can't perform test method 'testCannonicalPath' on non-macOS system")
+        #warning("Can't perform test method 'testCannonicalPath' on non-macOS system")
         #endif
         
         }

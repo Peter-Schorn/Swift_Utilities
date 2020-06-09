@@ -14,12 +14,14 @@ class JSONTests: XCTestCase {
         
         if #available(macOS 10.15, *) {
         
-            do {
+            assertNoThrow {
+                
                 try withTempDirectory { tempDir, _ in
                     let jsonPath = tempDir.appendingPathComponent("dictionary.json")
                     
                     let data = ["name": "peter", "age": "21", "sex": "male"]
-                    do {
+                    
+                    assertNoThrow {
                         try saveJSONToFile(url: jsonPath, data: data)
                         
                         var loadedData = try loadJSONFromFile(
@@ -34,13 +36,12 @@ class JSONTests: XCTestCase {
                         )
                         XCTAssertEqual(moreData, loadedData)
 
-                    } catch {
-                        XCTFail("\(error)")
                     }
                 }
-            } catch {
-                XCTFail("\(error)")
             }
+            // catch {
+            //     XCTFail("\(error)")
+            // }
         
         }
         else {
