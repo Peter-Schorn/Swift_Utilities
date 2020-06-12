@@ -1,5 +1,16 @@
 import Foundation
 
+/// Stores a weak referece to an object.
+public class WeakWrapper<T: AnyObject> {
+    
+    weak var object: T?
+    
+    init(_ object: T) {
+        self.object = object
+    }
+    
+}
+
 
 open class Logger: Equatable, Identifiable, Hashable {
     
@@ -12,10 +23,36 @@ open class Logger: Equatable, Identifiable, Hashable {
     ) -> String
     
     
-    /// All of the instances of this class.
-    public static var allLoggers: [Logger] = []
+    // prevent a strong reference cycle by holding an array of
+    // weak references to each instance of Logger.
+    private static var _allLoggers: [WeakWrapper<Logger>] = []
     
-    /// Enables/disables all loggers.
+    /**
+     All of the instances of this class.
+    
+     This is a computed property that wraps around an array
+     of weak references to each instance. Only the instances
+     that have not been deallocated will be returned.
+     */
+    public static var allLoggers: [Logger] {
+        return _allLoggers.compactMap { $0.object }
+    }
+    
+    /// Returns a logger based on its label.
+    public static subscript(_ label: String) -> Logger? {
+        for logger in allLoggers {
+            if logger.label == label {
+                return logger
+            }
+        }
+        
+        return nil
+    }
+    
+    
+    /// Enables/disables all **current** loggers.
+    /// This variable will not affect loggers created in the
+    /// future.
     open class var allDisabled: Bool {
         get {
             return allLoggers.allSatisfy { logger in
@@ -29,7 +66,8 @@ open class Logger: Equatable, Identifiable, Hashable {
         }
     }
     
-    /// Sets the logging level for all loggers.
+    /// Sets the logging level for all **current** loggers.
+    /// This function will not affect loggers created in the future.
     open class func setLevel(to level: Level) {
         for logger in allLoggers {
             logger.level = level
@@ -45,42 +83,41 @@ open class Logger: Equatable, Identifiable, Hashable {
         hasher.combine(id)
     }
     
-
     /**
-    The closure that gets called when a logging message needs to
-    be printed. Use this to customize the format of the message
-    for **all** log levels. This is used when the formatter for a
-    specific log level is left as nil.
-    
-    ```
-    public typealias LogMsgFormatter = (
-        _ date: Date, _ label: String, _ level: Levels,
-        _ file: UInt, _ function: String, _ line: String,
-        _ message: String
-    ) -> String
-    ```
-    */
+     The closure that gets called when a logging message needs to
+     be printed. Use this to customize the format of the message
+     for **all** log levels. This is used when the formatter for a
+     specific log level is left as nil (which is the default).
+     
+     ```
+     public typealias LogMsgFormatter = (
+         _ date: Date, _ label: String, _ level: Levels,
+         _ file: UInt, _ function: String, _ line: String,
+         _ message: String
+     ) -> String
+     ```
+     */
     public var logMsgFormatter: LogMsgFormatter
     
     /// The formatter for customizing how info messages are logged.
-    /// If left nil, then `logMsgFormatter` will be used for formatting messages.
-    /// See also `logMsgFormatter`
+    /// If left nil (default), then `logMsgFormatter` will be used for formatting messages.
+    /// See also `logMsgFormatter`.
     public var infoMsgFormatter: LogMsgFormatter? = nil
     /// The formatter for customizing how debug messages are logged.
-    /// If left nil, then `logMsgFormatter` will be used for formatting messages.
-    /// See also `logMsgFormatter`
+    /// If left nil (default), then `logMsgFormatter` will be used for formatting messages.
+    /// See also `logMsgFormatter`.
     public var debugMsgFormatter: LogMsgFormatter? = nil
     /// The formatter for customizing how warning messages are logged.
-    /// If left nil, then `logMsgFormatter` will be used for formatting messages.
-    /// See also `logMsgFormatter`
+    /// If left nil (default), then `logMsgFormatter` will be used for formatting messages.
+    /// See also `logMsgFormatter`.
     public var warningMsgFormatter: LogMsgFormatter? = nil
     /// The formatter for customizing how error messages are logged.
-    /// If left nil, then `logMsgFormatter` will be used for formatting messages.
-    /// See also `logMsgFormatter`
+    /// If left nil (default), then `logMsgFormatter` will be used for formatting messages.
+    /// See also `logMsgFormatter`.
     public var errorMsgFormatter: LogMsgFormatter? = nil
     /// The formatter for customizing how critical messages are logged.
-    /// If left nil, then `logMsgFormatter` will be used for formatting messages.
-    /// See also `logMsgFormatter`
+    /// If left nil (default), then `logMsgFormatter` will be used for formatting messages.
+    /// See also `logMsgFormatter`.
     public var criticalMsgFormatter: LogMsgFormatter? = nil
     
     /// Completely disbles all logging messages reglardless of level
@@ -99,7 +136,7 @@ open class Logger: Equatable, Identifiable, Hashable {
         logMsgFormatter: @escaping LogMsgFormatter = {
             date, label, level, file, function, line, message in
         
-            return "\(label): \(level) [\(function):\(line)]: \(message)"
+            return "[\(label): \(level): \(function): line \(line)] \(message)"
         }
     ) {
         self.label = label
@@ -107,13 +144,11 @@ open class Logger: Equatable, Identifiable, Hashable {
         self.disabled = disabled
         self.logMsgFormatter = logMsgFormatter
         
-        Logger.allLoggers.append(self)
+        Self._allLoggers.append(WeakWrapper(self))
     }
     
     deinit {
-        Logger.allLoggers.removeAll { logger in
-            logger == self
-        }
+        print("calling deinit for", self.label)
     }
     
     
@@ -126,118 +161,106 @@ open class Logger: Equatable, Identifiable, Hashable {
         _ message: String,
         file: String = #file,
         function: String = #function,
-        line: UInt = #line,
-        logMsgFormatter: LogMsgFormatter? = nil
+        line: UInt = #line
     ) {
         
         guard level >= self.level && !disabled else {
             return
         }
         
-        let formatter: LogMsgFormatter
+        let formatter: LogMsgFormatter?
             
-        if let f = logMsgFormatter {
-            formatter = f
-        }
-        else {
-            switch level {
-                case .info:
-                    formatter = self.infoMsgFormatter ?? self.logMsgFormatter
-                case .debug:
-                    formatter = self.debugMsgFormatter ?? self.logMsgFormatter
-                case .warning:
-                    formatter = self.warningMsgFormatter ?? self.logMsgFormatter
-                case .error:
-                    formatter = self.errorMsgFormatter ?? self.logMsgFormatter
-                case .critical:
-                    formatter = self.criticalMsgFormatter ?? self.logMsgFormatter
-            }
+        switch level {
+            case .info:
+                formatter = infoMsgFormatter
+            case .debug:
+                formatter = debugMsgFormatter
+            case .warning:
+                formatter = warningMsgFormatter
+            case .error:
+                formatter = errorMsgFormatter
+            case .critical:
+                formatter = criticalMsgFormatter
         }
         
-        print(formatter(
-            Date(), self.label, level, file, function, line, message
-        ))
+        // uw = unwrapped
+        let uwFormatter = formatter ?? logMsgFormatter
+        
+        print(
+            uwFormatter(
+                Date(), label, level, file, function, line, message
+            )
+        )
         
     }
     
+    /// Logs a informational message.
     open func info(
         _ message: String,
         file: String = #file,
         function: String = #function,
-        line: UInt = #line,
-        infoMsgFormatter: LogMsgFormatter? = nil
+        line: UInt = #line
     ) {
-        
-        let formatter = infoMsgFormatter ?? self.infoMsgFormatter
         
         self.log(
             level: .info, message,
-            file: file, function: function, line: line,
-            logMsgFormatter: formatter
+            file: file, function: function, line: line
         )
     }
     
+    /// Logs a debugging message.
     open func debug(
         _ message: String,
         file: String = #file,
         function: String = #function,
-        line: UInt = #line,
-        debugMsgFormatter: LogMsgFormatter? = nil
+        line: UInt = #line
     ) {
-        let formatter = debugMsgFormatter ?? self.debugMsgFormatter
         
         self.log(
             level: .debug, message,
-            file: file, function: function, line: line,
-            logMsgFormatter: formatter
+            file: file, function: function, line: line
         )
     }
     
+    /// Logs a warning message.
     open func warning(
         _ message: String,
         file: String = #file,
         function: String = #function,
-        line: UInt = #line,
-        warningMsgFormatter: LogMsgFormatter? = nil
+        line: UInt = #line
     ) {
-        let formatter = warningMsgFormatter ?? self.warningMsgFormatter
         
         self.log(
             level: .warning, message,
-            file: file, function: function, line: line,
-            logMsgFormatter: formatter
+            file: file, function: function, line: line
         )
     }
     
+    /// Logs an error message.
     open func error(
         _ message: String,
         file: String = #file,
         function: String = #function,
-        line: UInt = #line,
-        errorMsgFormatter: LogMsgFormatter? = nil
+        line: UInt = #line
     ) {
-        let formatter = errorMsgFormatter ?? self.errorMsgFormatter
         
         self.log(
             level: .error, message,
-            file: file, function: function, line: line,
-            logMsgFormatter: formatter
+            file: file, function: function, line: line
         )
     }
     
+    /// Logs a critical error message.
     open func critical(
         _ message: String,
         file: String = #file,
         function: String = #function,
-        line: UInt = #line,
-        criticalMsgFormatter: LogMsgFormatter? = nil
+        line: UInt = #line
     ) {
-        let formatter = criticalMsgFormatter ?? self.criticalMsgFormatter
         
         self.log(
             level: .critical, message,
-            file: file, function: function, line: line,
-            logMsgFormatter: formatter
+            file: file, function: function, line: line
         )
     }
     

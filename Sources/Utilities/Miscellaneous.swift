@@ -40,23 +40,38 @@ public func paddedPrint(
 /**
  See Hasher
  
- Body of function:
+ Body:
  ```
  var hasher = Hasher()
- for i in object {
-     hasher.combine(i)
+ for object in objects {
+     hasher.combine(object)
  }
  return hasher.finalize()
  ```
  */
-func makeHash<H: Hashable>(_ object: H...) -> Int {
+public func makeHash<H: Hashable>(_ objects: H...) -> Int {
+    return makeHash(objects)
+}
+
+/**
+See Hasher.
+
+Body:
+```
+var hasher = Hasher()
+for object in objects {
+    hasher.combine(object)
+}
+return hasher.finalize()
+```
+*/
+public func makeHash<H: Hashable>(_ objects: [H]) -> Int {
     
     var hasher = Hasher()
-    for i in object {
-        hasher.combine(i)
+    for object in objects {
+        hasher.combine(object)
     }
     return hasher.finalize()
-    
 }
 
 
