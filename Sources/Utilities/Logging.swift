@@ -97,8 +97,7 @@ open class Logger: Equatable, Identifiable, Hashable {
         level: Level = .debug,
         disabled: Bool = false,
         logMsgFormatter: @escaping LogMsgFormatter = {
-            date, label, level, file, function, line, message
-        in
+            date, label, level, file, function, line, message in
         
             return "\(label): \(level) [\(function):\(line)]: \(message)"
         }
