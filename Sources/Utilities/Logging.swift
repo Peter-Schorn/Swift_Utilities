@@ -1,7 +1,7 @@
 import Foundation
 
 
-open class Logger: Equatable {
+open class Logger: Equatable, Identifiable, Hashable {
     
     /// The type of the closure that determines
     /// how the log message is formatted.
@@ -41,138 +41,71 @@ open class Logger: Equatable {
         return lhs.id == rhs.id
     }
     
+    final public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
 
     /**
     The closure that gets called when a logging message needs to
-    be printed. Use this to customize the format of the message.
+    be printed. Use this to customize the format of the message
+    for **all** log levels. This is used when the formatter for a
+    specific log level is left as nil.
     
-    - Warning: This is a static variable. **When you change this variable,
-               the formatters for all instances of this class are assigned
-               to this formatter.**
-               An instance variable of the same name also exists.
     ```
     public typealias LogMsgFormatter = (
         _ date: Date, _ label: String, _ level: Levels,
         _ file: UInt, _ function: String, _ line: String,
         _ message: String
-    ) -> Void
+    ) -> String
     ```
     */
-    public static var logMsgFormatter: LogMsgFormatter = { (
-        date, label, level, file, function, line, message
-    ) in
-        
-        return "\(label): \(level) [\(function):\(line)]: \(message)"
-        
-    } {
-        didSet {
-            for logger in allLoggers {
-                logger.logMsgFormatter = Logger.logMsgFormatter
-            }
-            Logger.infoMsgFormatter = Logger.logMsgFormatter
-            Logger.debugMsgFormatter = Logger.logMsgFormatter
-            Logger.warningMsgFormatter = Logger.logMsgFormatter
-            Logger.errorMsgFormatter = Logger.logMsgFormatter
-            Logger.criticalMsgFormatter = Logger.logMsgFormatter
-        }
-    }
+    public var logMsgFormatter: LogMsgFormatter
     
-    /// The log message formatter for info messages. See Logger.logMsgFormatter
-    public static var infoMsgFormatter = Logger.logMsgFormatter {
-        didSet {
-            for logger in allLoggers {
-                logger.infoMsgFormatter = Logger.infoMsgFormatter
-            }
-        }
-    }
-    /// The log message formatter for info messages. See Logger.logMsgFormatter
-    public static var debugMsgFormatter = Logger.logMsgFormatter {
-        didSet {
-            for logger in allLoggers {
-                logger.debugMsgFormatter = Logger.debugMsgFormatter
-            }
-        }
-    }
-    /// The log message formatter for info messages. See Logger.logMsgFormatter
-    public static var warningMsgFormatter = Logger.logMsgFormatter {
-        didSet {
-            for logger in allLoggers {
-                logger.warningMsgFormatter = Logger.warningMsgFormatter
-            }
-        }
-    }
-    /// The log message formatter for info messages. See Logger.logMsgFormatter
-    public static var errorMsgFormatter = Logger.logMsgFormatter {
-        didSet {
-            for logger in allLoggers {
-                logger.errorMsgFormatter = Logger.errorMsgFormatter
-            }
-        }
-    }
+    /// The formatter for customizing how info messages are logged.
+    /// If left nil, then `logMsgFormatter` will be used for formatting messages.
+    /// See also `logMsgFormatter`
+    public var infoMsgFormatter: LogMsgFormatter? = nil
+    /// The formatter for customizing how debug messages are logged.
+    /// If left nil, then `logMsgFormatter` will be used for formatting messages.
+    /// See also `logMsgFormatter`
+    public var debugMsgFormatter: LogMsgFormatter? = nil
+    /// The formatter for customizing how warning messages are logged.
+    /// If left nil, then `logMsgFormatter` will be used for formatting messages.
+    /// See also `logMsgFormatter`
+    public var warningMsgFormatter: LogMsgFormatter? = nil
+    /// The formatter for customizing how error messages are logged.
+    /// If left nil, then `logMsgFormatter` will be used for formatting messages.
+    /// See also `logMsgFormatter`
+    public var errorMsgFormatter: LogMsgFormatter? = nil
+    /// The formatter for customizing how critical messages are logged.
+    /// If left nil, then `logMsgFormatter` will be used for formatting messages.
+    /// See also `logMsgFormatter`
+    public var criticalMsgFormatter: LogMsgFormatter? = nil
     
-    /// The log message formatter for info messages. See Logger.logMsgFormatter
-    public static var criticalMsgFormatter = Logger.logMsgFormatter {
-        didSet {
-            for logger in allLoggers {
-                logger.criticalMsgFormatter = Logger.criticalMsgFormatter
-            }
-        }
-    }
-    
-    
-    
-    /**
-    The closure that gets called when a logging message needs to
-    be printed. Use this to customize the format of the message.
-     
-    - Note: This is an instance variable. A static variable
-            of the same name also exists.
-    ```
-    public typealias LogMsgFormatter = (
-        _ date: Date, _ label: String, _ level: Levels,
-        _ file: UInt, _ function: String, _ line: String,
-        _ message: String
-    ) -> Void
-    ```
-    */
-    public var logMsgFormatter: LogMsgFormatter {
-        didSet {
-            self.infoMsgFormatter = self.logMsgFormatter
-            self.debugMsgFormatter = self.logMsgFormatter
-            self.warningMsgFormatter = self.logMsgFormatter
-            self.errorMsgFormatter = self.logMsgFormatter
-            self.criticalMsgFormatter = self.logMsgFormatter
-        }
-    }
-    
-    /// The log message formatter for info messages. See Logger.logMsgFormatter
-    public var infoMsgFormatter = Logger.logMsgFormatter
-    /// The log message formatter for info messages. See Logger.logMsgFormatter
-    public var debugMsgFormatter = Logger.logMsgFormatter
-    /// The log message formatter for info messages. See Logger.logMsgFormatter
-    public var warningMsgFormatter = Logger.logMsgFormatter
-    /// The log message formatter for info messages. See Logger.logMsgFormatter
-    public var errorMsgFormatter = Logger.logMsgFormatter
-    /// The log message formatter for info messages. See Logger.logMsgFormatter
-    public var criticalMsgFormatter = Logger.logMsgFormatter
-    
+    /// Completely disbles all logging messages reglardless of level
     open var disabled: Bool
+    /// A string identifying the log level.
     open var label: String
+    /// The level of the logger. See `Level`
     open var level: Level
-    open var id: UUID
+    public let id = UUID()
+    
     
     public init(
         label: String,
         level: Level = .debug,
         disabled: Bool = false,
-        id: UUID = UUID(),
-        logMsgFormatter: @escaping LogMsgFormatter =
-                Logger.logMsgFormatter
+        logMsgFormatter: @escaping LogMsgFormatter = {
+            date, label, level, file, function, line, message
+        in
+        
+            return "\(label): \(level) [\(function):\(line)]: \(message)"
+        }
     ) {
         self.label = label
         self.level = level
         self.disabled = disabled
-        self.id = id
         self.logMsgFormatter = logMsgFormatter
         
         Logger.allLoggers.append(self)
@@ -214,15 +147,15 @@ open class Logger: Equatable {
         else {
             switch level {
                 case .info:
-                    callFormatter(self.infoMsgFormatter)
+                    callFormatter(self.infoMsgFormatter ?? self.logMsgFormatter)
                 case .debug:
-                    callFormatter(self.debugMsgFormatter)
+                    callFormatter(self.debugMsgFormatter ?? self.logMsgFormatter)
                 case .warning:
-                    callFormatter(self.warningMsgFormatter)
+                    callFormatter(self.warningMsgFormatter ?? self.logMsgFormatter)
                 case .error:
-                    callFormatter(self.errorMsgFormatter)
+                    callFormatter(self.errorMsgFormatter ?? self.logMsgFormatter)
                 case .critical:
-                    callFormatter(self.criticalMsgFormatter)
+                    callFormatter(self.criticalMsgFormatter ?? self.logMsgFormatter)
             }
         }
         
