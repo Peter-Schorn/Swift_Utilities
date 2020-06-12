@@ -134,29 +134,29 @@ open class Logger: Equatable, Identifiable, Hashable {
             return
         }
         
-        let callFormatter = { (formatter: LogMsgFormatter) in
-            print(formatter(
-                Date(), self.label, level, file, function, line, message
-            ))
-        }
+        let formatter: LogMsgFormatter
             
-        if let formatter = logMsgFormatter {
-            callFormatter(formatter)
+        if let f = logMsgFormatter {
+            formatter = f
         }
         else {
             switch level {
                 case .info:
-                    callFormatter(self.infoMsgFormatter ?? self.logMsgFormatter)
+                    formatter = self.infoMsgFormatter ?? self.logMsgFormatter
                 case .debug:
-                    callFormatter(self.debugMsgFormatter ?? self.logMsgFormatter)
+                    formatter = self.debugMsgFormatter ?? self.logMsgFormatter
                 case .warning:
-                    callFormatter(self.warningMsgFormatter ?? self.logMsgFormatter)
+                    formatter = self.warningMsgFormatter ?? self.logMsgFormatter
                 case .error:
-                    callFormatter(self.errorMsgFormatter ?? self.logMsgFormatter)
+                    formatter = self.errorMsgFormatter ?? self.logMsgFormatter
                 case .critical:
-                    callFormatter(self.criticalMsgFormatter ?? self.logMsgFormatter)
+                    formatter = self.criticalMsgFormatter ?? self.logMsgFormatter
             }
         }
+        
+        print(formatter(
+            Date(), self.label, level, file, function, line, message
+        ))
         
     }
     
