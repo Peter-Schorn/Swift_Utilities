@@ -22,12 +22,12 @@ open class Logger: Equatable, Identifiable, Hashable {
      of weak references to each instance. Only the instances
      that have not been deallocated will be returned.
      */
-    public static var allLoggers: [Logger] {
+    open class var allLoggers: [Logger] {
         return _allLoggers.compactMap { $0.object }
     }
     
     /// Returns a logger based on its label.
-    public static subscript(_ label: String) -> Logger? {
+    open class subscript(_ label: String) -> Logger? {
         for logger in allLoggers {
             if logger.label == label {
                 return logger
@@ -38,20 +38,10 @@ open class Logger: Equatable, Identifiable, Hashable {
     }
     
     
-    /// Enables/disables all **current** loggers.
-    /// This variable will not affect loggers created in the future.
-    open class var allDisabled: Bool {
-        get {
-            return allLoggers.allSatisfy { logger in
-                logger.disabled
-            }
-        }
-        set {
-            for logger in allLoggers {
-                logger.disabled = newValue
-            }
-        }
-    }
+    /// Enables/disables all loggers.
+    /// This variable **WILL** affect loggers created in the future.
+    public static var allDisabled = false
+    
     
     /// Sets the logging level for all **current** loggers.
     /// This function will not affect loggers created in the future.
@@ -73,12 +63,14 @@ open class Logger: Equatable, Identifiable, Hashable {
     /**
      Gets called when a message needs to
      be logged to determine how it is formatted
-     and where the message is sent for **all** log levels.
-     
-     Usually, you will print the message to stdout,
-     but you can customize where the message is sent.
+     and where the message is logged for **all** log levels.
+
      This is used when the formatter for a
      specific log level is left as nil (which is the default).
+     
+     The default is to print the message using the
+     builtin print function,
+     but you can customize how the message is logged.
      
      ```
      public typealias LogMsgFormatter = (
@@ -95,31 +87,31 @@ open class Logger: Equatable, Identifiable, Hashable {
     public var logMsgFormatter: LogMsgFormatter
     
     /// The formatter for customizing how
-    /// info messages are formatted and where they are sent.
+    /// info messages are formatted and where they are logged.
     /// If left nil (default), then `logMsgFormatter`
     /// will be used for formatting messages.
     /// See also `logMsgFormatter`.
     public var infoMsgFormatter: LogMsgFormatter? = nil
     /// The formatter for customizing how
-    /// debug messages are formatted and where they are sent.
+    /// debug messages are formatted and where they are logged.
     /// If left nil (default), then `logMsgFormatter`
     /// will be used for formatting messages.
     /// See also `logMsgFormatter`.
     public var debugMsgFormatter: LogMsgFormatter? = nil
     /// The formatter for customizing how
-    /// warning messages are formatted and where they are sent.
+    /// warning messages are formatted and where they are logged.
     /// If left nil (default), then `logMsgFormatter`
     /// will be used for formatting messages.
     /// See also `logMsgFormatter`.
     public var warningMsgFormatter: LogMsgFormatter? = nil
     /// The formatter for customizing how
-    /// error messages are formatted and where they are sent.
+    /// error messages are formatted and where they are logged.
     /// If left nil (default), then `logMsgFormatter`
     /// will be used for formatting messages.
     /// See also `logMsgFormatter`.
     public var errorMsgFormatter: LogMsgFormatter? = nil
     /// The formatter for customizing how
-    /// critical messages are formatted and where they are sent.
+    /// critical messages are formatted and where they are logged.
     /// If left nil (default), then `logMsgFormatter`
     /// will be used for formatting messages.
     /// See also `logMsgFormatter`.
@@ -172,7 +164,7 @@ open class Logger: Equatable, Identifiable, Hashable {
         line: UInt = #line
     ) {
         
-        guard level >= self.level && !disabled else {
+        guard level >= self.level && !disabled && !Self.allDisabled else {
             return
         }
         

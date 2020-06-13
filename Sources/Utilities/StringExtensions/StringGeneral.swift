@@ -145,7 +145,9 @@ public extension String {
      performance characteristics than `self.removeAll(where:)`
      if only a single character needs to be removed from the
      string because it returns after the first time that
-     the predicate returns true.
+     the predicate returns true, whereas `self.removeAll(where:)`
+     will traverse the entire string.
+     
      
      - Parameter shouldBeRemoved: A closure that takes a character from
            the string as its argument and returns a Boolean value

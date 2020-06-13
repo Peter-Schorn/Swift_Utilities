@@ -35,7 +35,8 @@ public extension RangeReplaceableCollection where Index == Int {
      performance characteristics than `self.removeAll(where:)`
      if only a single element needs to be removed from the
      collection because it returns after the first time that
-     the predicate returns true.
+     the predicate returns true, whereas `self.removeAll(where:)`
+     will traverse the entire collection.
      
      - Parameter shouldBeRemoved: A closure that takes an element of
            the collection as its argument and returns a Boolean value
