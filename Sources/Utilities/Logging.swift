@@ -77,7 +77,7 @@ open class Logger: Equatable, Identifiable, Hashable {
          _ date: Date, _ label: String, _ level: Levels,
          _ file: UInt, _ function: String, _ line: String,
          _ message: String
-     )
+     ) -> Void
      ```
      
      See also `infoMsgFormatter`, `debugMsgFormatter`,

@@ -35,8 +35,13 @@ public func makeFolder(
 }
 
 /// Renames a file or folder.
+///
 /// Equivalent to calling FileManager.default.moveItem(at:to:),
 /// but only changing the last component of the path.
+/// - Parameters:
+///   - path: The path of the file/folder that needs to be renamed.
+///   - newName: The new name.
+/// - Throws: If there is an error renaming the file/folder.
 public func renameFile(_ path: URL, to newName: String) throws {
     
     var newPath = path.deletingLastPathComponent()
@@ -47,17 +52,9 @@ public func renameFile(_ path: URL, to newName: String) throws {
 }
 
 
-public enum DeleteOptions {
-    case afterClosure
-    case useHandler
-}
-
-// MARK: - macOS -
-// #if os(macOS)
-
 /**
  Creates a temporary directory and passes the URL for it
- and a handler for deleting it into a closure.
+ into `body`. After `body` returns, the directory is deleted.
 
  See `FileManager.default.url(for:in:appropriateFor:create:)` for
  a disucssion of the directory, domain, and url parameters, which are
@@ -65,29 +62,20 @@ public enum DeleteOptions {
  should be sufficient for the majority of use cases.
  
  - Parameters:
-   - deleteOptions:
-     - .afterClosure: Deletes the directory immediately after the closure
-           returns and sets `delelteClosure` to nil.
-     - .useHandler: Provides `delelteClosure`, which deletes the directory
-           when called. This is useful for asynchronous code.
-   - closure: Executes after the temporary directory is created,
-         passing in the URL for the temporary directory, and `deleteClosure?`.
+   - body: A closure that takes the URL of the directory as its argument.
+           After `body` returns, the temporary directory is deleted.
    - tempDir: The URL for the temporary directory.
-   - delelteClosure: Deletes the directory when called. `() -> Void`
- - Returns: The URL of the directory, which may have already been deleted,
-       depending on the options specified above.
+ 
  - Throws: If an error is encountered when creating the directory.
        **Errors encountered when deleting the directory are silently ignored.**
  */
 @available(iOS 10.0, macOS 10.12, *)
-@discardableResult
 public func withTempDirectory(
    for directory: FileManager.SearchPathDirectory = .itemReplacementDirectory,
    in domain: FileManager.SearchPathDomainMask = .userDomainMask,
    appropriateFor url: URL = FileManager.default.temporaryDirectory,
-   deleteOptions: DeleteOptions = .afterClosure,
-   closure: (_ tempDir: URL, _ delelteClosure: (() -> Void)?) -> Void
-) throws -> URL {
+   body: (_ tempDir: URL) -> Void
+) throws {
 
     let tempDir = try FileManager.default.url(
         for: directory,
@@ -96,36 +84,32 @@ public func withTempDirectory(
         create: true
     )
     
-    let deletionClosure = {
-        do {
-            try FileManager.default.removeItem(at: tempDir)
-
-        } catch { }
-    }
+    body(tempDir)
     
-    switch deleteOptions {
-        case .afterClosure:
-            closure(tempDir, nil)
-            deletionClosure()
-        case .useHandler:
-            closure(tempDir, deletionClosure)
-    }
+    try? FileManager.default.removeItem(at: tempDir)
     
-    return tempDir
 }
 
-/// Creates a Temporary directory for the current user.
+/**
+ Creates a Temporary directory for the current user.
+
+ Body of function:
+ ```
+ return try FileManager.default.url(
+     for: FileManager.SearchPathDirectory.itemReplacementDirectory,
+     in: FileManager.SearchPathDomainMask.userDomainMask,
+     appropriateFor: FileManager.default.temporaryDirectory,
+     create: true
+ )
+ ```
+ */
 @available(iOS 10.0, macOS 10.12, *)
-public func createTempDirectory(
-    for directory: FileManager.SearchPathDirectory = .itemReplacementDirectory,
-    in domain: FileManager.SearchPathDomainMask = .userDomainMask,
-    appropriateFor url: URL = FileManager.default.temporaryDirectory
-) throws -> URL {
+public func createTempDirectory() throws -> URL {
  
     return try FileManager.default.url(
-        for: directory,
-        in: domain,
-        appropriateFor: url,
+        for: FileManager.SearchPathDirectory.itemReplacementDirectory,
+        in: FileManager.SearchPathDomainMask.userDomainMask,
+        appropriateFor: FileManager.default.temporaryDirectory,
         create: true
     )
     

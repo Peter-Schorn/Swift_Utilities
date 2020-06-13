@@ -17,7 +17,8 @@ class JSONTests: XCTestCase {
         
             assertNoThrow {
                 
-                try withTempDirectory { tempDir, _ in
+                try withTempDirectory { tempDir in
+
                     let jsonPath = tempDir.appendingPathComponent("dictionary.json")
                     
                     let data = ["name": "peter", "age": "21", "sex": "male"]
@@ -40,9 +41,7 @@ class JSONTests: XCTestCase {
                     }
                 }
             }
-            // catch {
-            //     XCTFail("\(error)")
-            // }
+  
         
         }
         else {
