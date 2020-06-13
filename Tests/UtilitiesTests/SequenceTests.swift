@@ -11,7 +11,8 @@ class SequenceTests: XCTestCase {
         ("testCollectionDuplicatesAndAppendUnique", testCollectionDuplicatesAndAppendUnique),
         ("testEquatableArrayDuplicates", testEquatableArrayDuplicates),
         ("testArrayNegativeIndexing", testArrayNegativeIndexing),
-        ("testArrayChunking", testArrayChunking)
+        ("testArrayChunking", testArrayChunking),
+        ("testRemoveFirst", testRemoveFirst)
     ]
     
     func testCollectionDuplicatesAndAppendUnique() {
@@ -130,6 +131,15 @@ class SequenceTests: XCTestCase {
             ]
         )
         
+        
+    }
+    
+    func testRemoveFirst() {
+     
+        var numbers = [1, 2, 3, 1, 1, 3]
+        
+        numbers.removeFirst { $0 == 1 }
+        XCTAssertEqual(numbers, [2, 3, 1, 1, 3])
         
     }
     

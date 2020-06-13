@@ -5,6 +5,12 @@ import Foundation
 
 public extension RangeReplaceableCollection {
 
+    /// Retrieves (and sets the value of) an element
+    /// from the end of the collection backwards.
+    /// self[back: 1] retrieves the last element, self[back: 2] retrieves
+    /// the second to last element, and so on.
+    ///
+    /// - Parameter i: the negative index of an element in the collection.
     subscript(back i: Int) -> Element {
         get {
             let indx = self.index(self.endIndex, offsetBy: (-i))
@@ -17,6 +23,36 @@ public extension RangeReplaceableCollection {
         }
     }
 
+}
+
+public extension RangeReplaceableCollection where Index == Int {
+    
+    /**
+     Removes the first element that satisfies the given
+     predicate.
+     
+     This method usually has better
+     performance characteristics than `self.removeAll(where:)`
+     if only a single element needs to be removed from the
+     collection because it returns after the first time that
+     the predicate returns true.
+     
+     - Parameter shouldBeRemoved: A closure that takes an element of
+           the collection as its argument and returns a Boolean value
+           indicating whether the element should be removed
+           from the collection.
+     */
+    mutating func removeFirst(
+        where shouldBeRemoved: (Element) throws -> Bool
+    ) rethrows {
+        
+        for (i, element) in self.enumerated() {
+            if try shouldBeRemoved(element) {
+                self.remove(at: i)
+                break
+            }
+        }
+    }
 
 }
 
@@ -46,7 +82,7 @@ public extension RangeReplaceableCollection where Element: Equatable {
 public extension RangeReplaceableCollection where Element: Hashable {
     
     /// Removes duplicates and returns true if their were
-    /// duplicates in the array. Else returns false
+    /// duplicates in the array. Else returns false.
     @discardableResult
     mutating func removeDuplicates() -> Bool {
         

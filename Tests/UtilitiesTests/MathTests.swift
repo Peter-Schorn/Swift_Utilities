@@ -47,12 +47,19 @@ class MathTests: XCTestCase {
             XCTAssert(numsAreClose(a, b, rel_tol: 0.1))
         }
         XCTAssert(numsAreClose(3.3, 1.1 + 2.2))
+        XCTAssertFalse(numsAreClose(10, 11, abs_tol: 0.9))
         
         
     }
     
     func testFactorial() {
         XCTAssertEqual(factorial(10), 3_628_800)
+        XCTAssertEqual(factorial(0), 1)
+        XCTAssertEqual(factorial(1), 1)
+        XCTAssertEqual(factorial(2), 2)
+        XCTAssertEqual(factorial(3), 6)
+        XCTAssertEqual(factorial(4), 24)
+        XCTAssertEqual(factorial(5), 120)
     }
 
 }

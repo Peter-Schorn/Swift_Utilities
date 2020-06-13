@@ -37,6 +37,19 @@ public func paddedPrint(
 }
 
 
+/// Wraps a variabe in a weak reference.
+/// This is useful for creating an array of weak references.
+public class WeakWrapper<T: AnyObject> {
+    
+    weak var object: T?
+    
+    init(_ object: T) {
+        self.object = object
+    }
+    
+}
+
+
 /**
  See Hasher
  
@@ -73,8 +86,6 @@ public func makeHash<H: Hashable>(_ objects: [H]) -> Int {
     }
     return hasher.finalize()
 }
-
-
 
 
 /// Returns true if any of the arguments are true.

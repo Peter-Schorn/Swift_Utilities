@@ -5,6 +5,15 @@ import Utilities
 
 class StringTests: XCTestCase {
     
+    static var allTests = [
+        ("testStringFormatting", testStringFormatting),
+        ("testGetStringByIndex", testGetStringByIndex),
+        ("testSetStringByIndex", testSetStringByIndex),
+        ("testExtendedGraphemeClusters", testExtendedGraphemeClusters),
+        ("testPythonStringFormat", testPythonStringFormat),
+        ("testRemoveFirstChar", testRemoveFirstChar)
+    ]
+    
     func testStringFormatting() {
         XCTAssert(String(format: "$%.2f", 5.4) == 5.4.format(.currency(.US)))
         XCTAssert(String(format: "$%.2f", 5.4) == 5.4.format("$%.2f"))
@@ -165,6 +174,15 @@ class StringTests: XCTestCase {
         
         
     }
-    
+
+    func testRemoveFirstChar() {
+        
+        var name = "Peter"
+        
+        name.removeFirst { $0 == "e" }
+        
+        XCTAssertEqual(name, "Pter")
+        
+    }
     
 }

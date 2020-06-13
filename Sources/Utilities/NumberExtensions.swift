@@ -11,7 +11,7 @@ public extension Double {
      Alias for `String(format: specifier, self)`.
      see [String Format Specifiers](https://developer.a.com/library/archive/documentation/Cocoa/Conceptual/Strings/Articles/formatSpecifiers.html)
      - Parameter specifier: string format specifier.
-     - Returns: formatted string
+     - Returns: formatted string.
      */
     func format(_ specifier: String) -> String {
         return String(format: specifier, self)
@@ -46,11 +46,15 @@ public extension Double {
 
 }
 
-public func factorial<N: Numeric>(_ x: N) -> N {
-    x == 0 ? 1 : x * factorial(x - 1)
+
+/// Calculates the factorial of an integer.
+public func factorial<N: BinaryInteger>(_ x: N) -> N {
+    if x > 0 { return x * factorial(x - 1) }
+    if x == 0 { return 1 }
+    fatalError("cannot calculate the factorial of a negative number (got \(x))")
 }
 
-/// performs modulo division on floating point numbers
+/// Performs modulo division on floating point numbers.
 public func % <N: BinaryFloatingPoint>(lhs: N, rhs: N) -> N {
     lhs.truncatingRemainder(dividingBy: rhs)
 }

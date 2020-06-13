@@ -1,17 +1,5 @@
 import Foundation
 
-/// Stores a weak referece to an object.
-public class WeakWrapper<T: AnyObject> {
-    
-    weak var object: T?
-    
-    init(_ object: T) {
-        self.object = object
-    }
-    
-}
-
-
 open class Logger: Equatable, Identifiable, Hashable {
     
     /// The type of the closure that determines
@@ -20,7 +8,7 @@ open class Logger: Equatable, Identifiable, Hashable {
         _ date: Date, _ label: String, _ level: Level,
         _ file: String, _ function: String, _ line: UInt,
         _ message: String
-    ) -> String
+    ) -> Void
     
     
     // prevent a strong reference cycle by holding an array of
@@ -51,8 +39,7 @@ open class Logger: Equatable, Identifiable, Hashable {
     
     
     /// Enables/disables all **current** loggers.
-    /// This variable will not affect loggers created in the
-    /// future.
+    /// This variable will not affect loggers created in the future.
     open class var allDisabled: Bool {
         get {
             return allLoggers.allSatisfy { logger in
@@ -84,9 +71,13 @@ open class Logger: Equatable, Identifiable, Hashable {
     }
     
     /**
-     The closure that gets called when a logging message needs to
-     be printed. Use this to customize the format of the message
-     for **all** log levels. This is used when the formatter for a
+     Gets called when a message needs to
+     be logged to determine how it is formatted
+     and where the message is sent for **all** log levels.
+     
+     Usually, you will print the message to stdout,
+     but you can customize where the message is sent.
+     This is used when the formatter for a
      specific log level is left as nil (which is the default).
      
      ```
@@ -94,29 +85,43 @@ open class Logger: Equatable, Identifiable, Hashable {
          _ date: Date, _ label: String, _ level: Levels,
          _ file: UInt, _ function: String, _ line: String,
          _ message: String
-     ) -> String
+     )
      ```
+     
+     See also `infoMsgFormatter`, `debugMsgFormatter`,
+     `warningMsgFormatter`, `errorMsgFormatter`,
+     and `criticalMsgFormatter`.
      */
     public var logMsgFormatter: LogMsgFormatter
     
-    /// The formatter for customizing how info messages are logged.
-    /// If left nil (default), then `logMsgFormatter` will be used for formatting messages.
+    /// The formatter for customizing how
+    /// info messages are formatted and where they are sent.
+    /// If left nil (default), then `logMsgFormatter`
+    /// will be used for formatting messages.
     /// See also `logMsgFormatter`.
     public var infoMsgFormatter: LogMsgFormatter? = nil
-    /// The formatter for customizing how debug messages are logged.
-    /// If left nil (default), then `logMsgFormatter` will be used for formatting messages.
+    /// The formatter for customizing how
+    /// debug messages are formatted and where they are sent.
+    /// If left nil (default), then `logMsgFormatter`
+    /// will be used for formatting messages.
     /// See also `logMsgFormatter`.
     public var debugMsgFormatter: LogMsgFormatter? = nil
-    /// The formatter for customizing how warning messages are logged.
-    /// If left nil (default), then `logMsgFormatter` will be used for formatting messages.
+    /// The formatter for customizing how
+    /// warning messages are formatted and where they are sent.
+    /// If left nil (default), then `logMsgFormatter`
+    /// will be used for formatting messages.
     /// See also `logMsgFormatter`.
     public var warningMsgFormatter: LogMsgFormatter? = nil
-    /// The formatter for customizing how error messages are logged.
-    /// If left nil (default), then `logMsgFormatter` will be used for formatting messages.
+    /// The formatter for customizing how
+    /// error messages are formatted and where they are sent.
+    /// If left nil (default), then `logMsgFormatter`
+    /// will be used for formatting messages.
     /// See also `logMsgFormatter`.
     public var errorMsgFormatter: LogMsgFormatter? = nil
-    /// The formatter for customizing how critical messages are logged.
-    /// If left nil (default), then `logMsgFormatter` will be used for formatting messages.
+    /// The formatter for customizing how
+    /// critical messages are formatted and where they are sent.
+    /// If left nil (default), then `logMsgFormatter`
+    /// will be used for formatting messages.
     /// See also `logMsgFormatter`.
     public var criticalMsgFormatter: LogMsgFormatter? = nil
     
@@ -136,7 +141,7 @@ open class Logger: Equatable, Identifiable, Hashable {
         logMsgFormatter: @escaping LogMsgFormatter = {
             date, label, level, file, function, line, message in
         
-            return "[\(label): \(level): \(function): line \(line)] \(message)"
+            print("[\(label): \(level): \(function): line \(line)] \(message)")
         }
     ) {
         self.label = label
@@ -148,7 +153,10 @@ open class Logger: Equatable, Identifiable, Hashable {
     }
     
     deinit {
-        print("calling deinit for", self.label)
+        Self._allLoggers.removeFirst { logger in
+            logger.object == self
+        }
+        
     }
     
     
@@ -186,15 +194,13 @@ open class Logger: Equatable, Identifiable, Hashable {
         // uw = unwrapped
         let uwFormatter = formatter ?? logMsgFormatter
         
-        print(
-            uwFormatter(
-                Date(), label, level, file, function, line, message
-            )
+        uwFormatter(
+            Date(), label, level, file, function, line, message
         )
         
     }
     
-    /// Logs a informational message.
+    /// Logs an informational message.
     open func info(
         _ message: String,
         file: String = #file,

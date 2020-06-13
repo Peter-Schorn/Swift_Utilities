@@ -36,12 +36,18 @@ public extension String {
      }
      ```
      */
-    func strip(_ characterSet: CharacterSet = .whitespacesAndNewlines) -> String {
+    func strip(
+        _ characterSet: CharacterSet = .whitespacesAndNewlines
+    ) -> String {
+        
         return self.trimmingCharacters(in: characterSet)
     }
 
     /// See String.strip.
-    mutating func stripInPlace(_ characterSet: CharacterSet = .whitespacesAndNewlines) {
+    mutating func stripInPlace(
+        _ characterSet: CharacterSet = .whitespacesAndNewlines
+    ) {
+    
         self = self.strip(characterSet)
     }
 
@@ -130,7 +136,35 @@ public extension String {
     var fullRange: Range<String.Index> {
         return self.startIndex..<self.endIndex
     }
+    
+    /**
+     Removes the first character in self that satisfies the given
+     predicate.
+     
+     This method usually has better
+     performance characteristics than `self.removeAll(where:)`
+     if only a single character needs to be removed from the
+     string because it returns after the first time that
+     the predicate returns true.
+     
+     - Parameter shouldBeRemoved: A closure that takes a character from
+           the string as its argument and returns a Boolean value
+           indicating whether the character should be removed
+           from the string.
+     */
+    mutating func removeFirst(
+        where shouldBeRemoved: (Character) throws -> Bool
+    ) rethrows {
         
+        for (i, char) in zip(self.indices, self) {
+            if try shouldBeRemoved(char) {
+                self.remove(at: i)
+                break
+            }
+        }
+    }
+    
+    
     
 }
 
