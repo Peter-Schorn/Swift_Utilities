@@ -10,7 +10,6 @@ class StringTests: XCTestCase {
         ("testGetStringByIndex", testGetStringByIndex),
         ("testSetStringByIndex", testSetStringByIndex),
         ("testExtendedGraphemeClusters", testExtendedGraphemeClusters),
-        ("testPythonStringFormat", testPythonStringFormat),
         ("testRemoveFirstChar", testRemoveFirstChar)
     ]
     
@@ -146,34 +145,7 @@ class StringTests: XCTestCase {
         XCTAssertEqual(string2[(-2)...], "🇧🇱🇱🇰")
     }
     
-    func testPythonStringFormat() {
-        
-        let name = "Peter Schorn"
-        let age  = 21
-        let gender = "Male"
-        let country = "The United States of America"
-        
-        let text_1 = "my name is '{{}}', age: '{3}', gender: '{2}' country: '{1}'"
-        
-        let formmated_1 = text_1.format(name, age, gender, country)
-        
-        XCTAssertEqual(
-            formmated_1,
-            "my name is '{}', age: 'The United States of America', gender: 'Male' country: '21'"
-        )
-        
-        let text_2 = "my name is '{{}}', age: '{}', country: '{{}}' gender: '{}'"
-            .format(age, gender, country)
-        
-        // print(text_2)
-        XCTAssertEqual(text_2, "my name is '{}', age: '21', country: '{}' gender: 'Male'")
-        
-        
-        let text_3 = "name: {first}, age: {old}, {{abc}}".format(dict: ["first": name, "old": age])
-        XCTAssertEqual(text_3, "name: Peter Schorn, age: 21, {abc}")
-        
-        
-    }
+    
 
     func testRemoveFirstChar() {
         

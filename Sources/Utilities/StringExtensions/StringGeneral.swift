@@ -137,37 +137,6 @@ public extension String {
         return self.startIndex..<self.endIndex
     }
     
-    /**
-     Removes the first character in self that satisfies the given
-     predicate.
-     
-     This method usually has better
-     performance characteristics than `self.removeAll(where:)`
-     if only a single character needs to be removed from the
-     string because it returns after the first time that
-     the predicate returns true, whereas `self.removeAll(where:)`
-     will traverse the entire string.
-     
-     
-     - Parameter shouldBeRemoved: A closure that takes a character from
-           the string as its argument and returns a Boolean value
-           indicating whether the character should be removed
-           from the string.
-     */
-    mutating func removeFirst(
-        where shouldBeRemoved: (Character) throws -> Bool
-    ) rethrows {
-        
-        for (i, char) in zip(self.indices, self) {
-            if try shouldBeRemoved(char) {
-                self.remove(at: i)
-                break
-            }
-        }
-    }
-    
-    
-    
 }
 
 // MARK: - String interpolations

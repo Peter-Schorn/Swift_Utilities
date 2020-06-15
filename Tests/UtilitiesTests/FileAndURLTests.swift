@@ -15,24 +15,32 @@ class FileAndURLTests: XCTestCase {
     
     
     func testShellScripting() {
-                
-        runShellScriptAsync(args: ["echo", "hello"]) { process, stdout, stderror in
-            XCTAssertEqual(stdout, Optional("hello"))
-            XCTAssertEqual(stderror, Optional(""))
-            XCTAssertEqual(process.terminationStatus, 0)
-        }
         
-        let output = runShellScript(args: ["echo", "hello"])
-        XCTAssertEqual(output.stdout, Optional("hello"))
-        XCTAssertEqual(output.stderror, Optional(""))
-        XCTAssertEqual(output.process.terminationStatus, 0)
-        
-        
-        runShellScriptAsync(args: ["echo", "hello"]) { process, stdout, stderror in
-            XCTAssertEqual(stdout, Optional("hello"))
-            XCTAssertEqual(stderror, Optional(""))
-            XCTAssertEqual(process.terminationStatus, 0)
+        if #available(OSX 10.13, *) {
             
+            runShellScriptAsync(args: ["echo", "hello"]) { process, stdout, stderror in
+                XCTAssertEqual(stdout, Optional("hello"))
+                XCTAssertEqual(stderror, Optional(""))
+                XCTAssertEqual(process.terminationStatus, 0)
+            }
+            let output = runShellScript(args: ["echo", "hello"])
+            XCTAssertEqual(output.stdout, Optional("hello"))
+            XCTAssertEqual(output.stderror, Optional(""))
+            XCTAssertEqual(output.process.terminationStatus, 0)
+            
+            
+            runShellScriptAsync(args: ["echo", "hello"]) { process, stdout, stderror in
+                XCTAssertEqual(stdout, Optional("hello"))
+                XCTAssertEqual(stderror, Optional(""))
+                XCTAssertEqual(process.terminationStatus, 0)
+                
+            }
+            
+        } else {
+            paddedPrint(
+                "WARNING: Can't perform test method 'testShellScripting' on macOS < 10.13",
+                padding: "-".multiplied(by: 58) + "\n" + "-".multiplied(by: 58)
+            )
         }
         
         
@@ -40,9 +48,10 @@ class FileAndURLTests: XCTestCase {
     
     func testCannonicalPath() {
         
+        #if os(macOS)
+
         if #available(macOS 10.15, *) {
         
-        #if os(macOS)
         let path = URL(fileURLWithPath: "/var/folders/")
         assertNoThrow {
             if let cannonical = try path.cannonicalPath() {
@@ -50,9 +59,6 @@ class FileAndURLTests: XCTestCase {
             }
         
         }
-        #else
-        #warning("Can't perform test method 'testCannonicalPath' on non-macOS system")
-        #endif
         
         }
         else {
@@ -61,6 +67,9 @@ class FileAndURLTests: XCTestCase {
                 padding: "-".multiplied(by: 58) + "\n" + "-".multiplied(by: 58)
             )
         }
+        #else
+        #warning("Can't perform test method 'testCannonicalPath' on non-macOS system")
+        #endif
         
     }
     

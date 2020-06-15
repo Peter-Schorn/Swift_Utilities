@@ -25,7 +25,7 @@ public extension RangeReplaceableCollection {
 
 }
 
-public extension RangeReplaceableCollection where Index == Int {
+public extension RangeReplaceableCollection {
     
     /**
      Removes the first element that satisfies the given
@@ -47,9 +47,9 @@ public extension RangeReplaceableCollection where Index == Int {
         where shouldBeRemoved: (Element) throws -> Bool
     ) rethrows {
         
-        for (i, element) in self.enumerated() {
+        for (indx, element) in zip(self.indices, self) {
             if try shouldBeRemoved(element) {
-                self.remove(at: i)
+                self.remove(at: indx)
                 break
             }
         }

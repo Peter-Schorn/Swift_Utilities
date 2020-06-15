@@ -1,6 +1,6 @@
-import Foundation
-
 #if os(macOS)
+
+import Foundation
 
 
 public extension Pipe {
@@ -13,9 +13,10 @@ public extension Pipe {
     
 }
 
-
+@available(macOS 10.13, *)
 public func setupShellScript(
     args: [String],
+    currentDirectoryURL: URL? = nil,
     launchPath: String = "/usr/bin/env",
     stdout: Pipe = Pipe(),
     stderror: Pipe = Pipe()
@@ -27,6 +28,7 @@ public func setupShellScript(
     // Set the task parameters
     task.launchPath = launchPath
     task.arguments = args
+    task.currentDirectoryURL = currentDirectoryURL
      
     // Create Pipes
     task.standardOutput = stdout
@@ -41,6 +43,7 @@ public func setupShellScript(
  
  - Parameters:
    - args: a list of arguments to run
+   - currentDirectoryURL: The working directory for the script.
    - launchPath: the path from which to launch the script. Default is /usr/bin/env
    - stdout: Pipe for the standard output. Default is a new pipe.
    - stderror: Pipe for standard error. Default is a new pipe.
@@ -56,8 +59,10 @@ public func setupShellScript(
  // (stdout: Optional("hello"), stderror: Optional(""), exitCode: 0)
  ```
  */
+@available(macOS 10.13, *)
 public func runShellScript(
     args: [String],
+    currentDirectoryURL: URL? = nil,
     launchPath: String = "/usr/bin/env",
     stdout: Pipe = Pipe(),
     stderror: Pipe = Pipe()
@@ -65,6 +70,7 @@ public func runShellScript(
 
     let task = setupShellScript(
         args: args,
+        currentDirectoryURL: currentDirectoryURL,
         launchPath: launchPath,
         stdout: stdout,
         stderror: stderror
@@ -87,6 +93,7 @@ public func runShellScript(
  
  - Parameters:
    - args: a list of arguments to run
+   - currentDirectoryURL: The working directory for the script.
    - launchPath: the path from which to launch the script. Default is /usr/bin/env
    - stdout: Pipe for the standard output. Default is a new pipe.
    - stderror: Pipe for standard error. Default is a new pipe.
@@ -111,8 +118,10 @@ public func runShellScript(
  ```
  */
 @discardableResult
+@available(macOS 10.13, *)
 public func runShellScriptAsync(
     args: [String],
+    currentDirectoryURL: URL? = nil,
     launchPath: String = "/usr/bin/env",
     stdout: Pipe = Pipe(),
     stderror: Pipe = Pipe(),
@@ -121,6 +130,7 @@ public func runShellScriptAsync(
 
     let task = setupShellScript(
         args: args,
+        currentDirectoryURL: currentDirectoryURL,
         launchPath: launchPath,
         stdout: stdout,
         stderror: stderror

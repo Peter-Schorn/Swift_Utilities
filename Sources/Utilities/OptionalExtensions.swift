@@ -9,45 +9,49 @@ import Foundation
  
  For example, this extension to Array adds an instance method
  that returns a new array in which each of the elements
- are either unwrapped or removed if nil. Use self.value
- to access the the conforming type as an optional
+ are either unwrapped or removed if nil. You must use self.value
+ for swift to recognize that the generic type is an Optional.
  ```
  extension Array where Element: AnyOptional {
 
-
      func removeIfNil() -> [Self.Element.Wrapped] {
-         let result = self.compactMap { $0.value }
-
-         return result
+         return self.compactMap { $0.value }
      }
 
  }
+ ```
+ Body of protocol:
+ ```
+ associatedtype Wrapped
+ var value: Wrapped? { get set }
  ```
  */
 public protocol AnyOptional {
 
     associatedtype Wrapped
-    var value: Wrapped? { get }
+    var value: Wrapped? { get set }
 }
 
 extension Optional: AnyOptional {
 
-    /// Returns self. **Does not unwrap the value**
+    /// Gets and sets self. **Does not unwrap the value**
+    /// This computed property must be used
+    /// for swift to recognize the generic type
+    /// as an Optional.
     @inlinable
     public var value: Wrapped? {
-        return self
+        get { return self }
+        set { self = newValue }
     }
 
 }
 
 public extension Sequence where Element: AnyOptional {
 
-    /// Returns a new array in which each element in the collection
+    /// Returns a new array in which each element in the Sequence
     /// is either unwrapped and added to the new array,
     /// or not added to the new array if nil.
     func removeIfNil() -> [Element.Wrapped] {
-        let result = self.compactMap { $0.value }
-        
-        return result
+        return self.compactMap { $0.value }
     }
 }

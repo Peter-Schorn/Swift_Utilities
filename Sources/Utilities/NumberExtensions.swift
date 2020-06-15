@@ -4,6 +4,11 @@ import Foundation
 public let π = Double.pi
 
 
+public enum CountryCode: String {
+    case US
+}
+
+
 public extension Double {
     
    
@@ -19,9 +24,6 @@ public extension Double {
 
     enum FormatOption {
         case currency(CountryCode), stripTrailingZeros
-    }
-    enum CountryCode: String {
-        case US
     }
     
     /// Formats the double as a string according to a specifier.
@@ -48,6 +50,7 @@ public extension Double {
 
 
 /// Calculates the factorial of an integer.
+/// Throws a fatal error if the number is < 0.
 public func factorial<N: BinaryInteger>(_ x: N) -> N {
     if x > 0 { return x * factorial(x - 1) }
     if x == 0 { return 1 }
@@ -70,7 +73,7 @@ public func % <N: BinaryFloatingPoint>(lhs: N, rhs: N) -> N {
          Must be between 0 and 1, inclusive. 0.05 represents 5%.
    - abs_tol: The maximum allowed absolute difference between a and b.
          **Default: max(a, b).ulp**. Must be greater than or equal to 0.
- - Returns: true if the values a and b are close to each other and false otherwise.
+ - Returns: True if the values a and b are close to each other and false otherwise.
 
  Uses the following boolean expression:
  ```
@@ -88,11 +91,11 @@ public func numsAreClose<N: FloatingPoint>(
     
     assert(
         (0...1).contains(rel_tol),
-        "relative tolerance must be between zero and one (received \(rel_tol))"
+        "relative tolerance must be between 0...1 (got \(rel_tol))"
     )
     assert(
         absTol ≥ 0,
-        "absolute tolerance must be greater than zero (received \(absTol))"
+        "absolute tolerance must be ≥ 0 (got \(absTol))"
     )
     
     return abs(a - b) ≤ max(rel_tol * max(abs(a), abs(b)), absTol)
