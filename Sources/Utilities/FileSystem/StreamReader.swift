@@ -46,15 +46,12 @@ public class StreamReader: Sequence, IteratorProtocol  {
         while !atEOF {
             
             if let range = buffer.range(of: delimData) {
-                print("range = buffer.range(of: delimData)")
                 // Convert complete line (excluding the delimiter) to a string:
                 let line = String(data: buffer.subdata(in: 0..<range.lowerBound), encoding: encoding)
                 // Remove line (and the delimiter) from the buffer:
                 buffer.removeSubrange(0..<range.upperBound)
                 return line
             }
-            
-            print("else")
             
             let tmpData = fileHandle.readData(ofLength: chunkSize)
             
