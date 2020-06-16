@@ -9,6 +9,8 @@ public struct exponetiate<N: BinaryFloatingPoint>:
     Sequence, IteratorProtocol
 {
 
+    public typealias Element = N
+    
     public enum RangeType {
         case open, closed
     }
@@ -27,7 +29,7 @@ public struct exponetiate<N: BinaryFloatingPoint>:
         
     }
     
-    public mutating func next() -> N? {
+    public mutating func next() -> Element? {
         
         if cond(value, max) {
             defer { value **= power }
@@ -60,6 +62,8 @@ public struct exponetiate<N: BinaryFloatingPoint>:
 public struct c_iterator<T>:
     Sequence, IteratorProtocol
 {
+    
+    public typealias Element = T
 
     var value: T
     let cond: (T) -> Bool
@@ -75,7 +79,7 @@ public struct c_iterator<T>:
         self.update = update
     }
     
-    public mutating func next() -> T? {
+    public mutating func next() -> Element? {
         
         if cond(value) {
             defer { value = update(value) }

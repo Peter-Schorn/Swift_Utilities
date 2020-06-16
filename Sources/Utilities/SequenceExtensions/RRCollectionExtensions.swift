@@ -42,17 +42,22 @@ public extension RangeReplaceableCollection {
            the collection as its argument and returns a Boolean value
            indicating whether the element should be removed
            from the collection.
+     
+     - Returns: The element of the collection that was removed
+           or nil if an item was not removed.
      */
+    @discardableResult
     mutating func removeFirst(
         where shouldBeRemoved: (Element) throws -> Bool
-    ) rethrows {
+    ) rethrows -> Element? {
         
         for (indx, element) in zip(self.indices, self) {
             if try shouldBeRemoved(element) {
                 self.remove(at: indx)
-                break
+                return element
             }
         }
+        return nil
     }
 
 }

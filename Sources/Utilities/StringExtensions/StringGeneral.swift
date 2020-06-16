@@ -62,6 +62,8 @@ public extension String {
         return self.components(separatedBy: separator)
     }
     
+    
+    
     enum PercentEncodingOptions {
         case query
         case host
@@ -99,13 +101,22 @@ public extension String {
     
     
     /// Returns an array of each line in the string.
+    ///
+    /// This function simply calls
+    /// ```
+    /// self.components(separatedBy: .newlines)
+    /// ```
     func lines() -> [String] {
-        
-        return self.split(separator: "\n").map { String($0) }
-        
+        return self.components(separatedBy: .newlines)
     }
     
     /// Returns an array of each word in the string.
+    ///
+    /// A word is defined in terms of this regular expression pattern:
+    /// ```
+    /// \w+
+    /// ```
+    /// Returns an empty array if no words are found.
     func words() -> [String] {
         
         if let matches = try! self.regexFindAll(#"\w+"#) {
@@ -119,13 +130,13 @@ public extension String {
     /// ```
     /// "a".multiplied(by: 4) == "aaaa"
     /// ```
-    /// - Parameter amount: the number of time to repeat self
+    /// - Parameter amount: The number of time to repeat self.
     func multiplied(by amount: Int) -> String {
         
-        return (1...amount).map { _ in self }.joined()
+        return (1...amount).map { _ in return self }.joined()
     }
     
-    /// See self.multiplied(by:).
+    /// Same as self.multiplied(by:), except the operation is performed in-place.
     mutating func multiply(by amount: Int) {
         self = self.multiplied(by: amount)
     }

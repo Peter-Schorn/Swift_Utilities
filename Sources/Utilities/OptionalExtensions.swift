@@ -54,4 +54,6 @@ public extension Sequence where Element: AnyOptional {
     func removeIfNil() -> [Element.Wrapped] {
         return self.compactMap { $0.value }
     }
+    
 }
+

@@ -133,6 +133,7 @@ public func timeUnit(_ timeUnits: TimeUnit...) -> Double {
 
 // MARK: - StopWatch -
 
+/// Keeps track of the time elapsed
 open class StopWatch {
 
     public private(set) var startTime: Date?
@@ -143,7 +144,7 @@ open class StopWatch {
      If startNow is set to true (false by default), then the stopwatch
      is started upon instantiation.
      By default, the stopwatch starts counting from 0 seconds,
-     but this can be customized by passing in a passing a number
+     but this can be customized by passing in a number
      to `stargingAt`
      */
     public init(startNow: Bool = false, startingAt: Double = 0) {
@@ -205,9 +206,12 @@ open class StopWatch {
         self.isPaused = true
     }
     
-    /// Adds the specified number of seconds to the stopwatch.
-    /// Negative numbers can be passed in to remove time.
-    open func addTime(_ seconds: Double) {
+    /// Offsets the current time on the stopwatch by the specified number of seconds.
+    /// Passing in a positive number will increment the time;
+    /// passing in a negative number will decrement the time.
+    ///
+    /// - Parameter seconds: The number of seconds to offset the time by.
+    open func offsetTime(by seconds: Double) {
         self._timeElapsed += seconds
     }
     
