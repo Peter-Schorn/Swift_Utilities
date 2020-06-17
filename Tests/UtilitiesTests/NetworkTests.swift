@@ -6,7 +6,7 @@ import XCTest
 class NetworkTests: XCTestCase {
     
     static var allTests = [
-        ("asyncExpectation", asyncExpectation)
+        ("testURLRequestDecodeJSON", testURLRequestDecodeJSON)
     ]
     
     var asyncExpectation: XCTestExpectation!
@@ -35,10 +35,12 @@ class NetworkTests: XCTestCase {
             self.assertNoThrow("error when trying to get JSON from dog api") {
                 
                 let dogResponse = try result.get()
+                print("got json response from dog api:")
+                print(dogResponse.status)
+                print(dogResponse.message, terminator: "\n\n")
                 XCTAssertEqual(dogResponse.status, "success")
             }
             
-            print("\n\ngot json response\n")
 
         }
         
