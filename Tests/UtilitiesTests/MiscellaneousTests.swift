@@ -25,13 +25,6 @@ class MiscellaneousTests: XCTestCase {
         
     }
     
-    func testWillFailOnPurpose() {
-        
-        XCTFail("testing github notifications")
-        
-    }
-    
-    
 }
 
 
