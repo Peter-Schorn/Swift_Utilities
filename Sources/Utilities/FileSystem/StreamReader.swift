@@ -18,7 +18,6 @@ public class StreamReader: Sequence, IteratorProtocol  {
         chunkSize: Int = 4096
     ) {
 
-        // guard let fileHandle = FileHandle(forReadingAtPath: path),
         guard let fileHandle = try? FileHandle(forReadingFrom: url),
                 let delimData = delimiter.data(using: encoding)
         else {
