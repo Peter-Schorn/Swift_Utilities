@@ -10,7 +10,7 @@ import XCTest
 import Utilities
 import XCTestCaseExtensions
 
-class LazySequenceExtensions: XCTest {
+class LazySequenceExtensions: XCTestCase {
     
     static var allTests = [
         ("testSplitAndLines", testSplitAndLines)

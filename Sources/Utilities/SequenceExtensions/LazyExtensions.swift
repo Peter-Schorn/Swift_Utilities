@@ -28,7 +28,6 @@ public struct LazyStringSplit: LazySequenceProtocol, IteratorProtocol {
         var line = ""
         while let char = iterator.next() {
             if delimiters.contains(char) {
-                print("returning next line")
                 return line
             }
             
@@ -36,7 +35,6 @@ public struct LazyStringSplit: LazySequenceProtocol, IteratorProtocol {
         }
         if !finished {
             finished = true
-            print("returning next line")
             return line
         }
         return nil
