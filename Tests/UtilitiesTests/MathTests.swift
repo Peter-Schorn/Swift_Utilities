@@ -36,6 +36,11 @@ class MathTests: XCTestCase {
 
     func testNumbersAreClose() {
         
+        XCTAssert(numsAreClose(1.1 + 2.2, 3.3))
+        XCTAssert(numsAreClose(1.1 + 0.3, 1.4))
+        XCTAssert(numsAreClose(0.1 + 0.2, 0.3))
+        XCTAssertFalse(numsAreClose(10, 11, abs_tol: 0.9))
+        
         do {
             let a = 5
             let b = 10
@@ -46,8 +51,11 @@ class MathTests: XCTestCase {
             let b = 100.0
             XCTAssert(numsAreClose(a, b, rel_tol: 0.1))
         }
-        XCTAssert(numsAreClose(3.3, 1.1 + 2.2))
-        XCTAssertFalse(numsAreClose(10, 11, abs_tol: 0.9))
+        do {
+            let a = 100.0
+            let b = 100.0
+            XCTAssert(numsAreClose(a, b))
+        }
         
         
     }
