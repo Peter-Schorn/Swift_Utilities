@@ -45,6 +45,7 @@ class MathTests: XCTestCase {
             let a = 5
             let b = 10
             XCTAssert(numsAreClose(a, b, abs_tol: 5))
+            XCTAssertFalse(numsAreClose(a, b, abs_tol: 4))
         }
         do {
             let a = 90.0
@@ -55,6 +56,11 @@ class MathTests: XCTestCase {
             let a = 100.0
             let b = 100.0
             XCTAssert(numsAreClose(a, b))
+        }
+        do {
+            let a = -5
+            let b = -10
+            XCTAssert(numsAreClose(a, b, rel_tol: 0.5))
         }
         
         
@@ -69,5 +75,5 @@ class MathTests: XCTestCase {
         XCTAssertEqual(factorial(4), 24)
         XCTAssertEqual(factorial(5), 120)
     }
-
+    
 }
