@@ -19,32 +19,32 @@ class StringTests: XCTestCase {
     }
     
     func testGetStringByIndex() {
-        XCTAssertEqual("123"[0], "1")
-        XCTAssertEqual("123"[1], "2")
-        XCTAssertEqual("123"[2], "3")
+        XCTAssertEqual("012"[0], "0")
+        XCTAssertEqual("012"[1], "1")
+        XCTAssertEqual("012"[2], "2")
         
-        XCTAssertEqual("123"[0...0], "1")
-        XCTAssertEqual("123"[0...2], "123")
-        XCTAssertEqual("123"[2...2], "3")
-        XCTAssertEqual("123"[1...2], "23")
+        XCTAssertEqual("012"[0...0], "0")
+        XCTAssertEqual("012"[0...2], "012")
+        XCTAssertEqual("012"[2...2], "2")
+        XCTAssertEqual("012"[1...2], "12")
         
-        XCTAssertEqual("123"[0..<3], "123")
-        XCTAssertEqual("123"[3..<3], "")
-        XCTAssertEqual("123"[1..<2], "2")
+        XCTAssertEqual("012"[0..<3], "012")
+        XCTAssertEqual("012"[3..<3], "")
+        XCTAssertEqual("012"[1..<2], "1")
         
-        XCTAssertEqual("123"[-1], "3")
-        XCTAssertEqual("123"[-2], "2")
-        XCTAssertEqual("123"[-3], "1")
+        XCTAssertEqual("012"[-1], "2")
+        XCTAssertEqual("012"[-2], "1")
+        XCTAssertEqual("012"[-3], "0")
         
-        XCTAssertEqual("123"[(-3)...(-1)], "123")
-        XCTAssertEqual("123"[(-3)...(-2)], "12")
-        XCTAssertEqual("123"[(-2)...(-1)], "23")
+        XCTAssertEqual("012"[(-3)...(-1)], "012")
+        XCTAssertEqual("012"[(-3)...(-2)], "01")
+        XCTAssertEqual("012"[(-2)...(-1)], "12")
         
-        XCTAssertEqual("123"[(-2)..<(-1)], "2")
-        XCTAssertEqual("123"[(-3)..<(-2)], "1")
-        XCTAssertEqual("123"[(-3)..<(-3)], "")
-        XCTAssertEqual("123"[(-1)..<(-1)], "")
-        XCTAssertEqual("123"[(-3)..<(-1)], "12")
+        XCTAssertEqual("012"[(-2)..<(-1)], "1")
+        XCTAssertEqual("012"[(-3)..<(-2)], "0")
+        XCTAssertEqual("012"[(-3)..<(-3)], "")
+        XCTAssertEqual("012"[(-1)..<(-1)], "")
+        XCTAssertEqual("012"[(-3)..<(-1)], "01")
         
         
         

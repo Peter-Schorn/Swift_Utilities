@@ -36,7 +36,7 @@ public struct InvalidChars {
     
     public var wrappedValue: String {
         get { return value }
-        set { value = newValue.regexSub(regex) }
+        set { value = try! newValue.regexSub(regex) }
     }
 
 }

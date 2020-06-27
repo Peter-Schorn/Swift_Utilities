@@ -82,33 +82,6 @@ public func ~=<T>(pattern: (T) -> Bool, value: T) -> Bool {
     return pattern(value)
 }
 
-/**
- Can be used with a switch statement to determine if a pattern
- is directly equal to a value.
- 
- For exapmle:
- ```
- let x = 5
-
- switch x {
-     
-     case 5:
-         print("is 5")
-     case 6:
-         print("is 6")
-     case 7:
-         print("is 7")
-     default:
-         print("default")
-
- }
-
- // Prints "is 5"
- ```
- */
-public func ~=<T: Equatable>(pattern: T, value: T) -> Bool {
-    return pattern == value
-}
 
 
 // MARK: - Range Offset Operators -

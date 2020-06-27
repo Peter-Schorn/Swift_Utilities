@@ -24,7 +24,7 @@ public extension String {
     func strip(_ stripOptions: StripOptions) -> String {
         switch stripOptions {
             case .fileExt:
-                return self.regexSub(#"\.([^\.]*)$"#)
+                return try! self.regexSub(#"\.([^\.]*)$"#)
         }
     }
     
@@ -119,10 +119,7 @@ public extension String {
     /// Returns an empty array if no words are found.
     func words() -> [String] {
         
-        if let matches = try! self.regexFindAll(#"\w+"#) {
-            return matches.map { $0.fullMatch }
-        }
-        return []
+        return try! self.regexFindAll(#"\w+"#).map { $0.fullMatch }
 
     }
     

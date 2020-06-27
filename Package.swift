@@ -7,7 +7,7 @@ import PackageDescription
 let package = Package(
     name: "Utilities",
     platforms: [
-        .iOS(.v10), .macOS(.v10_10)
+        .iOS(.v9), .macOS(.v10_10), .watchOS(.v2), .tvOS(.v9)
     ],
     products: [
         // Products define the executables and libraries produced
@@ -27,7 +27,7 @@ let package = Package(
         .package(
             name: "RegularExpressions",
             url: "https://github.com/Peter-Schorn/RegularExpressions",
-            "1.0.0"..<"3.0.0"
+            "2.0.0"..<"3.0.0"
         )
     ],
     targets: [
