@@ -24,7 +24,7 @@ class NetworkTests: XCTestCase {
 
         }
 
-        asyncExpectation = expectation(description: "need json response from dog API")
+        asyncExpectation = expectation(description: "need url response from dog API")
         URLSession.shared.decodeJSON(
             url: endpoint,
             responseObject: DogResponse.self
