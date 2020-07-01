@@ -1,5 +1,36 @@
 import Foundation
 
+public extension MutableCollection {
+    
+    /**
+     Mutate each element in self.
+     
+     Calls the provided closure for each element in self,
+     passing in a reference to the element that can be mutated.
+     
+     Example usage:
+     ```
+     var numbers = [0, 1, 2, 3, 4, 5]
+
+     numbers.mutateEach { element in
+         element *= 2
+     }
+
+     print(numbers)
+     // [0, 2, 4, 6, 8, 10]
+     ```
+     */
+    mutating func mutateEach(
+        _ modifyElement: (inout Element) throws -> Void
+    ) rethrows {
+        
+        for indx in self.indices {
+            try modifyElement(&self[indx])
+        }
+
+    }
+
+}
 
 
 public extension Collection {
@@ -44,13 +75,7 @@ public extension Collection {
     }
     
     
-    
-    
-    
-    
 }
-
-
 
 
 public extension Collection where Element: BinaryInteger {

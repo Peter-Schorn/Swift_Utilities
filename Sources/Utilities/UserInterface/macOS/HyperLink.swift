@@ -11,14 +11,13 @@ import AppKit
  to a pointer. You can customize what happens
  when the user clicks on the link. By default,
  it is opened in the browser.
- By default, the foregorund color is the current user's accent color.
+ By default, the text color is the current user's accent color.
  */
 @available(macOS 10.15, *)
 public struct HyperLink: View {
 
     /// When link is nil, this method attempts to use the display text
     /// as the link.
-    
     public init(
         link: URL? = nil,
         displayText: String,

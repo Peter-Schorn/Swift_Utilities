@@ -57,7 +57,7 @@ public func renameFile(_ path: URL, to newName: String) throws {
  into `body`. After `body` returns, the directory is deleted.
 
  See `FileManager.default.url(for:in:appropriateFor:create:)` for
- a disucssion of the directory, domain, and url parameters, which are
+ a disucssion of the `directory`, `domain`, and `url` parameters, which are
  forwarded through to that function. The default values for these parameters
  should be sufficient for the majority of use cases.
  

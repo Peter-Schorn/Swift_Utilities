@@ -46,20 +46,17 @@ class FileAndURLTests: XCTestCase {
         
     }
     
-    func testCannonicalPath() {
+    func testCannonicalPath() throws {
         
         #if os(macOS)
-
-        if #available(macOS 10.15, *) {
         
-        let path = URL(fileURLWithPath: "/var/folders/")
-        assertNoThrow {
-            if let cannonical = try path.cannonicalPath() {
+        if #available(macOS 10.15, *) {
+            
+            let path = URL(fileURLWithPath: "/var/folders/")
+            if let cannonical = try path.canonicalPath() {
                 XCTAssertEqual(cannonical.path, "/private/var/folders")
             }
-        
-        }
-        
+            
         }
         else {
             paddedPrint(
@@ -73,18 +70,16 @@ class FileAndURLTests: XCTestCase {
         
     }
     
-    func testURLResolveAlias() {
+    func testURLResolveAlias() throws {
         
         
         
         #if os(macOS)
         let aliasPath = URL(fileURLWithPath: "/var")
         
-        assertNoThrow {
-            let originalPath = try resolveAlias(at: aliasPath)
-            XCTAssertEqual(originalPath.path, "/private/var")
-            
-        }
+        let originalPath = try resolveAlias(at: aliasPath)
+        XCTAssertEqual(originalPath.path, "/private/var")
+        
         #else
         #warning("cannot perform test method 'testURLResolveAlias' on non-macOS system")
         #endif

@@ -89,10 +89,9 @@ public struct TextStyle {
 extension StyledText: View {
     
     public var body: some View { text() }
-
+    
     public func text() -> Text {
-        
-        var text: Text = Text(verbatim: "")
+        var text = Text(verbatim: "")
         attributedString.enumerateAttributes(
             in: NSRange(location: 0, length: attributedString.length),
             options: []
@@ -100,12 +99,17 @@ extension StyledText: View {
                 
             let string = attributedString.attributedSubstring(from: range).string
             let modifiers = attributes.values.map { $0 as! TextStyle }
-            text = text + modifiers.reduce(Text(verbatim: string)) { segment, style in
+            
+            let reduced = modifiers.reduce(Text(verbatim: string)) { segment, style in
                 style.apply(segment)
             }
+            
+            print("text = text + reduced")
+            text = text + reduced
         }
         
         return text
+        
     }
 }
 
