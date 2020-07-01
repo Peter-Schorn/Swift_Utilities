@@ -6,13 +6,16 @@ import Utilities
 class SequenceTests: XCTestCase {
     
     static var allTests = [
-        ("testAnySequence", testAnySequence),
-        ("testArraySafeIndexing", testArraySafeIndexing),
         ("testCollectionDuplicatesAndAppendUnique", testCollectionDuplicatesAndAppendUnique),
         ("testEquatableArrayDuplicates", testEquatableArrayDuplicates),
+        ("testAnySequence", testAnySequence),
+        ("testArraySafeIndexing", testArraySafeIndexing),
         ("testArrayNegativeIndexing", testArrayNegativeIndexing),
+        ("testSequenceSum", testSequenceSum),
         ("testArrayChunking", testArrayChunking),
-        ("testRemoveFirst", testRemoveFirst)
+        ("testRemoveFirst", testRemoveFirst),
+        ("testMutateEach", testMutateEach),
+        ("testReduceFromFirstElement", testReduceFromFirstElement)
     ]
     
     func testCollectionDuplicatesAndAppendUnique() {
@@ -102,7 +105,6 @@ class SequenceTests: XCTestCase {
         
     }
     
-    
     func testSequenceSum() {
         
         let items = [1, 2, 3, 4, 5]
@@ -143,5 +145,26 @@ class SequenceTests: XCTestCase {
         
     }
     
+    func testMutateEach() {
+        
+        var numbers = [0, 1, 2, 3, 4, 5]
+
+        numbers.mutateEach { element in
+            element *= 2
+        }
+
+        XCTAssertEqual(numbers, [0, 2, 4, 6, 8, 10])
+
+    }
+    
+    func testReduceFromFirstElement() {
+        
+        let numbers = [1, 2, 3, 4, 5]
+
+        let sum = numbers.reduce { $0 += $1 }
+
+        XCTAssertEqual(sum, 15)
+
+    }
     
 }

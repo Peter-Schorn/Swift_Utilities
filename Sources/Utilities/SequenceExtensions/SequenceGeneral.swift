@@ -1,5 +1,51 @@
 import Foundation
 
+extension Sequence {
+    
+    
+    /**
+     Returns the result of combining the elements of the sequence
+     using the given closure. **accumulatingResult is initialized
+     to the first element of the sequence.**
+     
+     - Parameter updateAccumulatingResult: A closure
+           that accepts the accumulating result as an inout
+           variable and the next element of the sequence.
+           It does not return anything; you update the
+           `accumulatingResult` **in place**.
+     - Throws: If `updateAccumulatingResult` throws.
+     - Returns: The final accumulated value after calling
+           the closure for each element of the sequence
+           or nil if the sequence was empty.
+     
+     `accumulatingResult` is initialized to the first element
+     of the sequence. `updateAccumulatingResult` is then called
+     for each successive element with the `accumulatingResult`
+     passed in as an `inout` variable and the next element of
+     the sequence passed in.
+     */
+    public func reduce(
+        _ updateAccumulatingResult: (
+            _ accumulatingResult: inout Element,
+            _ nextElement: Element
+        ) throws -> Void
+    ) rethrows -> Element? {
+    
+        var iterator = self.makeIterator()
+        guard var accumulatingResult = iterator.next() else {
+            return nil
+        }
+        while let nextElement = iterator.next() {
+            try updateAccumulatingResult(&accumulatingResult, nextElement)
+        }
+        return accumulatingResult
+    
+    }
+
+}
+
+
+
 
 public extension Sequence where Element: Numeric {
     

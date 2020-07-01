@@ -5,7 +5,7 @@ extension URLSession {
     
     /**
      Wraps around the function with the same name
-     and transforms the completion hander into a Result.
+     and transforms the completion hander into a `Result<Success, Failure: Error>`.
      
      Transforms the completion handler from
      ```
