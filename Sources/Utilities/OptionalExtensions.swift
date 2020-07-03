@@ -15,7 +15,7 @@ import Foundation
  extension Array where Element: AnyOptional {
 
      func removeIfNil() -> [Self.Element.Wrapped] {
-         return self.compactMap { $0.value }
+         return self.compactMap { $0.optional }
      }
 
  }
@@ -29,17 +29,17 @@ import Foundation
 public protocol AnyOptional {
 
     associatedtype Wrapped
-    var value: Wrapped? { get set }
+    var optional: Wrapped? { get set }
 }
 
 extension Optional: AnyOptional {
 
-    /// Gets and sets self. **Does not unwrap the value**
+    /// Gets and sets self. **Does not unwrap the value**.
     /// This computed property must be used
     /// for swift to recognize the generic type
-    /// as an Optional.
+    /// conforming to `AnyOptional` as an Optional.
     @inlinable
-    public var value: Wrapped? {
+    public var optional: Wrapped? {
         get { return self }
         set { self = newValue }
     }
@@ -51,8 +51,9 @@ public extension Sequence where Element: AnyOptional {
     /// Returns a new array in which each element in the Sequence
     /// is either unwrapped and added to the new array,
     /// or not added to the new array if nil.
+    /// Equivalent
     func removeIfNil() -> [Element.Wrapped] {
-        return self.compactMap { $0.value }
+        return self.compactMap { $0.optional }
     }
     
 }
