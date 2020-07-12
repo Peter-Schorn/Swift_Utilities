@@ -67,10 +67,11 @@ public extension RangeReplaceableCollection {
 public extension RangeReplaceableCollection where Element: Equatable {
     
     /// Only appends the elements of the new array
-    /// that are not contained in self. Duplicate elements
-    /// of the new array will also not be appended. Duplicate
-    /// elements of the original array will **NOT** be removed.
-    
+    /// that are not contained in self.
+    ///
+    /// Duplicate elements of the new array
+    /// will also not be appended. Duplicate elements of the
+    /// original array will **NOT** be removed.
     mutating func appendUnique<C: Collection>(
         contentsOf collection: C
     ) where C.Element == Self.Element {
@@ -82,6 +83,21 @@ public extension RangeReplaceableCollection where Element: Equatable {
         }
         
     }
+    
+    /// Appends the element only if it is not already contained in self.
+    ///
+    /// Returns true if the element was appended, else false.
+    @discardableResult
+    mutating func appendIfUnique(element: Element) -> Bool {
+        
+        if self.contains(element) {
+            return false
+        }
+        self.append(element)
+        return true
+    }
+    
+    
     
 }
 

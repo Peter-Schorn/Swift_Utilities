@@ -5,23 +5,23 @@ import SwiftUI
 import AppKit
 
 /// Shows an activity indicator to indicate that
-/// an action is in progress.
+/// an action is in progress. Wraps an `NSProgressIndicator`.
 @available(macOS 10.15, *)
 public struct ActivityIndicator: NSViewRepresentable {
     
-    @Binding public var shouldAnimate: Bool
+    @Binding public var isAnimating: Bool
     public let style: NSProgressIndicator.Style
     public let controlSize: NSControl.ControlSize
     public let hideWhenNotAnimating: Bool
     
     
     public init(
-        shouldAnimate: Binding<Bool>,
+        isAnimating: Binding<Bool>,
         style: NSProgressIndicator.Style,
         controlSize: NSControl.ControlSize = .small,
         hideWhenNotAnimating: Bool = true
     ) {
-        self._shouldAnimate = shouldAnimate
+        self._isAnimating = isAnimating
         self.style = style
         self.controlSize = controlSize
         self.hideWhenNotAnimating = hideWhenNotAnimating
@@ -40,7 +40,7 @@ public struct ActivityIndicator: NSViewRepresentable {
         context: Context
     ) {
 
-        if self.shouldAnimate {
+        if self.isAnimating {
             if hideWhenNotAnimating {
                 progressView.isHidden = false
             }

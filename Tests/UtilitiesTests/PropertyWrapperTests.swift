@@ -4,15 +4,16 @@ import Utilities
 
 
 class PropertyWrapperTests: XCTestCase {
-
+    
     static var allTests = [
-        ("testPropertyWrapper", testPropertyWrapper)
+        ("testPropertyWrapper", testPropertyWrapper),
+        ("testPropertyWrapper2", testPropertyWrapper2)
     ]
     
     func testPropertyWrapper() {
         
         struct Person {
-            @InvalidChars(#"\s"#) var name: String
+            @RegexRemove(#"\s"#) var name: String
             var age: Int
             
             init(name: String, age: Int) {
@@ -27,19 +28,26 @@ class PropertyWrapperTests: XCTestCase {
         person.name = " lots of spaces "
         XCTAssertEqual(person.name, "lotsofspaces")
         
-        
+    }
+    
+    func testPropertyWrapper2() {
         
         struct Animal {
-            @InvalidChars(#"\W"#) var name = ""
+            @RegexRemove(#"\W"#) var name = ""
             var age: Int
             
             init(name: String, age: Int) {
+                print("Animal.init")
+                print(#line)
                 self.name = name
                 self.age = age
             }
         }
         
+        print(#line)
         var animal = Animal(name: "#$%Annab^&elle)(*&^%$#@!", age: 7)
+        
+        print(#line)
         XCTAssertEqual(animal.name, "Annabelle")
         
         animal.name = "^%$#?>>:{}ice"
@@ -48,6 +56,25 @@ class PropertyWrapperTests: XCTestCase {
         
         
     }
+    
+    func testPropertyWrapperDocs() {
+        
+        struct User {
 
+            // matches non-word characters.
+            @RegexRemove(#"\W+"#) var username: String
 
+            init(username: String) {
+                self.username = username
+            }
+
+        }
+        
+        var user = User(username: "Peter@Schorn")
+        XCTAssertEqual(user.username, "PeterSchorn")
+        // print(user.username)
+        // prints "PeterSchorn"; the "@" is removed because it matches the pattern.
+
+    }
+    
 }
