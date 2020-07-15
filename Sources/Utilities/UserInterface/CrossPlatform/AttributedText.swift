@@ -45,7 +45,7 @@ struct AttributedText: View {
             let modifiedText = textModifiers.reduce(Text(verbatim: plainString)) {
                 text, modifier in
                 // print("    mod", modCounter, quoted(text))
-                modCounter += 1
+                // modCounter += 1
                 return modifier(text)
             }
             text = text + modifiedText
