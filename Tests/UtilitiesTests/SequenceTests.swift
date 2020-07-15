@@ -149,11 +149,12 @@ class SequenceTests: XCTestCase {
         
         var numbers = [0, 1, 2, 3, 4, 5]
 
-        numbers.mutateEach { element in
+        numbers.mutateEach { indx, element in
+            if [1, 5].contains(indx) { return }
             element *= 2
         }
 
-        XCTAssertEqual(numbers, [0, 2, 4, 6, 8, 10])
+        XCTAssertEqual(numbers, [0, 1, 4, 6, 8, 5])
 
     }
     

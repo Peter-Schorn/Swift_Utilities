@@ -6,26 +6,28 @@ public extension MutableCollection {
      Mutate each element in self.
      
      Calls the provided closure for each element in self,
-     passing in a reference to the element that can be mutated.
+     passing in the index of an element and a reference to it
+     that can be mutated.
      
      Example usage:
      ```
      var numbers = [0, 1, 2, 3, 4, 5]
 
-     numbers.mutateEach { element in
+     numbers.mutateEach { indx, element in
+         if [1, 5].contains(indx) { return }
          element *= 2
      }
 
      print(numbers)
-     // [0, 2, 4, 6, 8, 10]
+     // [0, 1, 4, 6, 8, 5]
      ```
      */
     mutating func mutateEach(
-        _ modifyElement: (inout Element) throws -> Void
+        _ modifyElement: (Index, inout Element) throws -> Void
     ) rethrows {
         
         for indx in self.indices {
-            try modifyElement(&self[indx])
+            try modifyElement(indx, &self[indx])
         }
 
     }

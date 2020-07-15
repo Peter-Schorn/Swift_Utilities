@@ -70,7 +70,7 @@ class PropertyWrapperTests: XCTestCase {
 
         }
         
-        var user = User(username: "Peter@Schorn")
+        let user = User(username: "Peter@Schorn")
         XCTAssertEqual(user.username, "PeterSchorn")
         // print(user.username)
         // prints "PeterSchorn"; the "@" is removed because it matches the pattern.
