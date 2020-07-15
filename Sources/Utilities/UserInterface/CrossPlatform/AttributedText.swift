@@ -4,12 +4,12 @@ import SwiftUI
 
 
 @available(macOS 10.15, iOS 13, *)
-struct AttributedText: View {
+public struct AttributedText: View {
 
     private var attributedString: NSMutableAttributedString
     private var string: String
 
-    init(_ string: String) {
+    public init(_ string: String) {
         self.init(attributedString: .init(string: string), string: string)
     }
     
@@ -21,7 +21,7 @@ struct AttributedText: View {
         self.string = string
     }
 
-    var body: some View {
+    public var body: some View {
 
         // print("---------------------")
         // var counter = 0
@@ -59,7 +59,7 @@ struct AttributedText: View {
 
     
     // MARK: Main style function
-    func style(
+    public func style(
         ranges: [Range<String.Index>],
         _ modifier: @escaping (Text) -> Text
     ) -> Self {
@@ -77,7 +77,7 @@ struct AttributedText: View {
     
     // MARK: Closure Overloads
 
-    func style(
+    public func style(
         range: Range<String.Index>?,
         _ modifier: @escaping (Text) -> Text
     ) -> Self {
@@ -86,7 +86,7 @@ struct AttributedText: View {
     }
     
     // MARK: Full range
-    func style(
+    public func style(
         _ modifier: @escaping (Text) -> Text
     ) -> Self {
     
@@ -94,7 +94,7 @@ struct AttributedText: View {
     }
     
     
-    enum TextModifier {
+    public enum TextModifier {
         case bold
         case italic
         case strikethrough
@@ -103,7 +103,7 @@ struct AttributedText: View {
         case font(Font?)
         case fontWeight(Font.Weight?)
         
-        var value: (Text) -> Text {
+        public var value: (Text) -> Text {
             switch self {
                 case .bold:
                     return { $0.bold() }
@@ -125,7 +125,7 @@ struct AttributedText: View {
     
     // MARK: Enum overloads
     
-    func style(
+    public func style(
         ranges: [Range<String.Index>],
         _ modifier: TextModifier
     ) -> Self {
@@ -133,7 +133,7 @@ struct AttributedText: View {
         return style(ranges: ranges, modifier.value)
     }
     
-    func style(
+    public func style(
         range: Range<String.Index>?,
         _ modifier: TextModifier
     ) -> Self {
@@ -141,7 +141,7 @@ struct AttributedText: View {
     }
     
     // MARK: Full range
-    func style(
+    public func style(
         _ modifier: TextModifier
     ) -> Self {
     
