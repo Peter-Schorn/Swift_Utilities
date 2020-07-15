@@ -104,7 +104,7 @@ public extension RangeReplaceableCollection where Element: Equatable {
 public extension RangeReplaceableCollection where Element: Hashable {
     
     /// Removes duplicates and returns true if their were
-    /// duplicates in the array. Else returns false.
+    /// duplicates in the array. Else, returns false.
     @discardableResult
     mutating func removeDuplicates() -> Bool {
         

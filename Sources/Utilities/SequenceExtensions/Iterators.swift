@@ -54,7 +54,7 @@ public struct exponetiate<N: BinaryFloatingPoint>:
  In this example, i begins as 2 and is multiplied by two after each iteration.
  The iterator stops when i > 100
  ```
- for i in iterator(init: 2, while: { $0 <= 100 }, update: { $0 * 2 }) {
+ for i in c_iterator(init: 2, while: { $0 <= 100 }, update: { $0 * 2 }) {
      print(i)
  }
  ```

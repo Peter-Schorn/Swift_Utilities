@@ -24,9 +24,9 @@ struct AttributedText: View {
     var body: some View {
 
         // print("---------------------")
+        // var counter = 0
 
         var text = Text(verbatim: "")
-        var counter = 0
         attributedString.enumerateAttributes(
             in: NSRange(location: 0, length: attributedString.length)
         ) { attributes, range, _ in
@@ -36,11 +36,12 @@ struct AttributedText: View {
                 from: range
             ).string
 
-            // print("enumerate", counter, quoted(plainString))
+            // print("enumerate", counter, plainString)
             
             let textModifiers = attributes.values.map { $0 as! (Text) -> Text }
             
-            var modCounter = 0
+            // var modCounter = 0
+            
             let modifiedText = textModifiers.reduce(Text(verbatim: plainString)) {
                 text, modifier in
                 // print("    mod", modCounter, quoted(text))
@@ -49,7 +50,7 @@ struct AttributedText: View {
             }
             text = text + modifiedText
             
-            counter += 1
+            // counter += 1
         }
         
         // print("---------------------")
@@ -136,7 +137,6 @@ struct AttributedText: View {
         range: Range<String.Index>?,
         _ modifier: TextModifier
     ) -> Self {
-        // let r = range == nil ? [] : [range!]
         return style(range: range, modifier.value)
     }
     

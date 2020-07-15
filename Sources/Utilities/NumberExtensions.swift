@@ -85,11 +85,7 @@ public func % <N: BinaryFloatingPoint>(lhs: N, rhs: N) -> N {
 public func numsAreClose<N: FloatingPoint>(
     _ a: N, _ b: N, rel_tol: N = 0, abs_tol: N? = nil
 ) -> Bool {
-    
-    if a == b { return true }
-    
-    let absTol = abs_tol ?? max(a, b).ulp
-    
+
     precondition(
         rel_tol ≥ 0,
         "numsAreClose: relative tolerance must be"
@@ -100,6 +96,11 @@ public func numsAreClose<N: FloatingPoint>(
         "numsAreClose: absolute tolerance must be"
         + " greater than or equal to 0 (got \(rel_tol))"
     )
+    
+    if a == b { return true }
+    
+    let absTol = abs_tol ?? max(a, b).ulp
+    
     
     return abs(a - b) ≤ max(rel_tol * max(abs(a), abs(b)), absTol)
     
