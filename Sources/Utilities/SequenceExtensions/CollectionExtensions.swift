@@ -3,8 +3,6 @@ import Foundation
 public extension MutableCollection {
     
     /**
-     Mutate each element in self.
-     
      Calls the provided closure for each element in self,
      passing in the index of an element and a reference to it
      that can be mutated.

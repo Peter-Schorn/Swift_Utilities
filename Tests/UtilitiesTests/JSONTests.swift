@@ -13,7 +13,7 @@ class JSONTests: XCTestCase {
     
     func testJSONAndTempDir() throws {
         
-        if #available(macOS 10.15, *) {
+        if #available(macOS 10.15, iOS 10.0, *) {
             
             try withTempDirectory { tempDir in
                 assertNoThrow {

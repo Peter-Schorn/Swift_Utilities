@@ -16,6 +16,7 @@ class FileAndURLTests: XCTestCase {
     
     func testShellScripting() {
         
+        #if os(macOS)
         if #available(OSX 10.13, *) {
             
             runShellScriptAsync(args: ["echo", "hello"]) { process, stdout, stderror in
@@ -43,13 +44,15 @@ class FileAndURLTests: XCTestCase {
             )
         }
         
+        #else
+        #warning("Can't perform test method 'testShellScripting' on non-macOS system")
+        #endif
         
     }
     
     func testCannonicalPath() throws {
         
         #if os(macOS)
-        
         if #available(macOS 10.15, *) {
             
             let path = URL(fileURLWithPath: "/var/folders/")
