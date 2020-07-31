@@ -11,8 +11,19 @@ class StringTests: XCTestCase {
     ]
     
     func testStringFormatting() {
-        XCTAssert(String(format: "$%.2f", 5.4) == 5.4.format(.currency(.US)))
-        XCTAssert(String(format: "$%.2f", 5.4) == 5.4.format("$%.2f"))
+        XCTAssert(
+            String(format: "$%.2f", 5.4) ==
+            5.4.asCurrency(locale: .init(identifier: "en_US"))
+        )
+        XCTAssert(
+            String(format: "$%.2f", 5.4) ==
+            5.4.asCurrency(locale: .init(identifier: "en_US"))
+        )
+        XCTAssert(
+            String(format: "$%.2f", 5.4) ==
+            5.4.format("$%.2f")
+        )
+        
     }
     
     func testRemoveFirstChar() {

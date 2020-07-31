@@ -1,7 +1,6 @@
 import Foundation
 
-extension Sequence {
-    
+public extension Sequence {
     
     /**
      Returns the result of combining the elements of the sequence
@@ -24,7 +23,7 @@ extension Sequence {
      passed in as an `inout` variable and the next element of
      the sequence passed in.
      */
-    public func reduce(
+    func reduce(
         _ updateAccumulatingResult: (
             _ accumulatingResult: inout Element,
             _ nextElement: Element
@@ -45,17 +44,6 @@ extension Sequence {
 }
 
 
-
-
-public extension Sequence where Element: Numeric {
-    
-    /// returns the sum of the elements in a sequence
-    var sum: Element { self.reduce(0, +) }
-
-}
-
-
-
 public extension Sequence {
     
     /// Returns true if the closure returns true for any of the elements
@@ -70,6 +58,14 @@ public extension Sequence {
     }
 
     
+}
+
+
+public extension Sequence where Element: Numeric {
+    
+    /// returns the sum of the elements in a sequence
+    var sum: Element { self.reduce(0, +) }
+
 }
 
 

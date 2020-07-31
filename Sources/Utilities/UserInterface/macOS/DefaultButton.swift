@@ -3,7 +3,6 @@
 import SwiftUI
 import AppKit
 
-
 private var controlActionClosureProtocolAssociatedObjectKey: UInt8 = 0
 
 protocol ControlActionClosureProtocol: NSObjectProtocol {
@@ -39,7 +38,8 @@ extension ControlActionClosureProtocol {
 
 extension NSControl: ControlActionClosureProtocol { }
 
-/// Button that automatically becomes the first responder for keyboard events
+/// A Button that automatically
+/// becomes the first responder for keyboard events.
 @available(macOS 10.15, *)
 public struct DefaultButton: NSViewRepresentable {
     
@@ -73,7 +73,7 @@ public struct DefaultButton: NSViewRepresentable {
         self.action = action
     }
 
-    public func makeNSView(context: NSViewRepresentableContext<Self>) -> NSButton {
+    public func makeNSView(context: Context) -> NSButton {
         let button = NSButton(title: "", target: nil, action: nil)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setContentHuggingPriority(.defaultHigh, for: .vertical)
@@ -81,15 +81,17 @@ public struct DefaultButton: NSViewRepresentable {
         return button
     }
 
-    public func updateNSView(_ nsView: NSButton, context: NSViewRepresentableContext<Self>) {
-        
+    public func updateNSView(
+        _ nsView: NSButton, context: Context
+    ) {
         
         if attributedTitle == nil {
             nsView.title = title ?? ""
         }
 
         if title == nil {
-            nsView.attributedTitle = attributedTitle ?? NSAttributedString(string: "")
+            nsView.attributedTitle = attributedTitle ??
+                    NSAttributedString(string: "")
         }
 
         nsView.keyEquivalent = keyEquivalent?.rawValue ?? ""

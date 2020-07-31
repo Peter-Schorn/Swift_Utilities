@@ -9,7 +9,7 @@ import Foundation
  
  For example, this extension to Array adds an instance method
  that returns a new array in which each of the elements
- are either unwrapped or removed if nil. You must use self.value
+ are either unwrapped or removed if nil. You must use self.optional
  for swift to recognize that the generic type is an Optional.
  ```
  extension Array where Element: AnyOptional {
@@ -51,10 +51,42 @@ public extension Sequence where Element: AnyOptional {
     /// Returns a new array in which each element in the Sequence
     /// is either unwrapped and added to the new array,
     /// or not added to the new array if nil.
-    /// Equivalent
     func removeIfNil() -> [Element.Wrapped] {
         return self.compactMap { $0.optional }
     }
     
 }
 
+
+public struct NilError: LocalizedError {
+    
+    public let errorMessage: String
+    
+    public var errorDescription: String? {
+        var description =
+                "Unexpectedly found nil while trying to unwrap optional"
+        if !errorMessage.isEmpty {
+           description += ":\n\(errorMessage)"
+        }
+        return description
+        
+    }
+    
+}
+
+
+public extension Optional {
+    
+    /// Returns the wrapped value or throws `NilError`
+    /// if it is nil.
+    ///
+    /// - Parameter errorMsg: The message to display when an error is thrown.
+    func tryUnwrap(errorMsg: String = "") throws -> Wrapped {
+        if let wrapped = self {
+            return wrapped
+        }
+        throw NilError(errorMessage: errorMsg)
+    }
+
+
+}

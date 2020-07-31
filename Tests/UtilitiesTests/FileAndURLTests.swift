@@ -17,7 +17,7 @@ class FileAndURLTests: XCTestCase {
     func testShellScripting() {
         
         #if os(macOS)
-        if #available(OSX 10.13, *) {
+        if #available(macOS 10.13, *) {
             
             runShellScriptAsync(args: ["echo", "hello"]) { process, stdout, stderror in
                 XCTAssertEqual(stdout, Optional("hello"))
@@ -40,7 +40,8 @@ class FileAndURLTests: XCTestCase {
         } else {
             paddedPrint(
                 "WARNING: Can't perform test method 'testShellScripting' on macOS < 10.13",
-                padding: "-".multiplied(by: 58) + "\n" + "-".multiplied(by: 58)
+                padding: String(repeating: "-", count: 58) +
+                    "\n" + String(repeating: "-", count: 58)
             )
         }
         
@@ -64,7 +65,8 @@ class FileAndURLTests: XCTestCase {
         else {
             paddedPrint(
                 "WARNING: Can't perform test method 'testCannonicalPath' on macOS < 10.15",
-                padding: "-".multiplied(by: 58) + "\n" + "-".multiplied(by: 58)
+                padding: String(repeating: "-", count: 58) +
+                "\n" + String(repeating: "-", count: 58)
             )
         }
         #else

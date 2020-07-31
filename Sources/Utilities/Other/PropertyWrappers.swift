@@ -81,11 +81,11 @@ public struct RegexRemove {
     
     public var wrappedValue: String {
         get {
-            print("returning wrapped value: '\(try! value.regexSub(regexObject))'")
+            // print("returning wrapped value: '\(try! value.regexSub(regexObject))'")
             return try! value.regexSub(regexObject)
         }
         set {
-            print("setting wrapped value to '\(newValue)'")
+            // print("setting wrapped value to '\(newValue)'")
             value = newValue
         }
     }

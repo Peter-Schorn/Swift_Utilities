@@ -20,11 +20,13 @@ public extension Bundle {
     func decode<T: Decodable>(
         _ file: String,
         extension: String? = nil,
-        into type: T.Type,
+        type: T.Type,
         decoder: JSONDecoder = .init()
     ) -> T {
         
-        guard let url = self.url(forResource: file, withExtension: `extension`) else {
+        guard let url = self.url(
+            forResource: file, withExtension: `extension`
+        ) else {
             fatalError("Failed to locate \(file) in bundle.")
         }
 
@@ -32,11 +34,11 @@ public extension Bundle {
             fatalError("Failed to load \(file) from bundle.")
         }
 
-        guard let loaded = try? decoder.decode(T.self, from: data) else {
+        guard let decodedData = try? decoder.decode(T.self, from: data) else {
             fatalError("Failed to decode \(file) from bundle.")
         }
 
-        return loaded
+        return decodedData
     }
 }
 

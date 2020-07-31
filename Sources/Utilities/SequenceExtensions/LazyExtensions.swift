@@ -60,12 +60,14 @@ public extension LazySequence where Base == String {
         )
     }
     
-    /// Returns a lazy sequence in which self is split on any of the specified characters.
+    /// Returns a lazy sequence in which self is split
+    /// on any of the specified characters.
     func split(separatedBy characters: [Character]) -> LazyStringSplit {
         return LazyStringSplit(self, delimiters: characters)
     }
     
-    /// Returns a lazy sequence in which self is split on any of the specified characters.
+    /// Returns a lazy sequence in which self is split
+    /// on any of the specified characters.
     func split(separatedBy characters: Character...) -> LazyStringSplit {
         return split(separatedBy: characters)
     }

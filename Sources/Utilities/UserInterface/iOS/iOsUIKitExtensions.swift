@@ -1,4 +1,4 @@
-#if !os(macOS)
+#if os(iOS) || os(tvOS)
 
 
 import Foundation
@@ -42,9 +42,9 @@ public extension UIScrollView {
     /// of the scroll view within the given tolerance.
     func isNearBottom(tolerance: CGFloat) -> Bool {
         
-        
         let height: CGFloat = self.frame.size.height
-        let distanceFromBottom: CGFloat = self.contentSize.height - self.contentOffset.y
+        let distanceFromBottom: CGFloat =
+                    self.contentSize.height - self.contentOffset.y
         
         return distanceFromBottom - height <= height * tolerance
     }

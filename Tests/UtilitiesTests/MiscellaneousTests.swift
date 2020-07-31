@@ -7,7 +7,7 @@ class MiscellaneousTests: XCTestCase {
 
     static var allTests = [
         ("testAllAny", testAllAny),
-        ("testTimeUnits", testTimeUnits)
+        ("testTimeUnits", testTimeUnits),
     ]
     
     func testTimeUnits() {
@@ -24,7 +24,7 @@ class MiscellaneousTests: XCTestCase {
         XCTAssert(result_2)
         
     }
-    
+
 }
 
 

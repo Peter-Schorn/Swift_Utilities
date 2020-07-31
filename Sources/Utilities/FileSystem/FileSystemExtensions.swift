@@ -69,7 +69,7 @@ public func renameFile(_ path: URL, to newName: String) throws {
  - Throws: If an error is encountered when creating the directory.
        **Errors encountered when deleting the directory are silently ignored.**
  */
-@available(iOS 10.0, macOS 10.12, *)
+@available(iOS 10.0, macOS 10.12, watchOS 3.0, tvOS 10.0, *)
 public func withTempDirectory(
    for directory: FileManager.SearchPathDirectory = .itemReplacementDirectory,
    in domain: FileManager.SearchPathDomainMask = .userDomainMask,
@@ -103,7 +103,7 @@ public func withTempDirectory(
  )
  ```
  */
-@available(iOS 10.0, macOS 10.12, *)
+@available(iOS 10.0, macOS 10.12, watchOS 6.0, tvOS 10.0, *)
 public func createTempDirectory() throws -> URL {
  
     return try FileManager.default.url(

@@ -13,7 +13,7 @@ class JSONTests: XCTestCase {
     
     func testJSONAndTempDir() throws {
         
-        if #available(macOS 10.15, iOS 10.0, *) {
+        if #available(macOS 10.15, iOS 10.0, tvOS 10.0, *) {
             
             try withTempDirectory { tempDir in
                 assertNoThrow {
@@ -40,8 +40,9 @@ class JSONTests: XCTestCase {
         }
         else {
             paddedPrint(
-                "WARNING: can't perform test method 'testJSONAndTempDir' on macOS < 10.15",
-                padding: "-".multiplied(by: 58) + "\n" + "-".multiplied(by: 58)
+                "WARNING: can't perform test method on current run destination",
+                padding: String(repeating: "-", count: 58) +
+                "\n" + String(repeating: "-", count: 58)
             )
         }
         

@@ -3,19 +3,7 @@ import SwiftUI
 import RegularExpressions
 
 
-/// Adds the ability to throw an error with a custom message
-/// Usage: `throw "There was an error"`
-extension String: Error, LocalizedError {
-    
-    public var errorDescription: String? {
-        return self
-    }
-    
-}
-
-
 public extension String {
-    
     
     enum StripOptions {
         case fileExt
@@ -55,50 +43,6 @@ public extension String {
     mutating func stripInPlace(_ stripOptions: StripOptions) {
         self = self.strip(stripOptions)
     }
-    
-    
-    /// Alias for .components(separatedBy: separator)
-    func split(_ separator: String) -> [String] {
-        return self.components(separatedBy: separator)
-    }
-    
-    
-    
-    enum PercentEncodingOptions {
-        case query
-        case host
-        case path
-        case user
-        case fragment
-        case password
-    }
-       
-   /// Thin wrapper for self.addingPercentEncoding(
-   /// withAllowedCharacters: CharacterSet)
-    func percentEncoded(for option: PercentEncodingOptions) -> String? {
-       
-        let encodingOption: CharacterSet
-        switch option {
-            case .query:
-                encodingOption = .urlQueryAllowed
-            case .host:
-                encodingOption = .urlHostAllowed
-            case .path:
-                encodingOption = .urlPathAllowed
-            case .user:
-                encodingOption = .urlUserAllowed
-            case .fragment:
-                encodingOption = .urlFragmentAllowed
-            case .password:
-                encodingOption = .urlPasswordAllowed
-        }
-       
-        return self.addingPercentEncoding(
-            withAllowedCharacters: encodingOption
-        )
-       
-    }
-    
     
     /// Returns an array of each line in the string.
     ///
@@ -154,14 +98,12 @@ public protocol CustomStringInterpolation {
 }
 
 public extension CustomStringInterpolation {
-    mutating func appendInterpolation(_ value: Double, numFormat: String) {
-        appendInterpolation(value.format(numFormat))
-    }
-    mutating func appendInterpolation(_ value: Double, numFormat: Double.FormatOption) {
-        appendInterpolation(value.format(numFormat))
+    mutating func appendInterpolation(_ value: CVarArg, numFormat: String) {
+        self.appendInterpolation(value.format(numFormat))
     }
 }
 
-@available(macOS 10.15, iOS 13, *)
+@available(macOS 10.15, iOS 13, watchOS 6.0, tvOS 13.0, *)
 extension LocalizedStringKey.StringInterpolation: CustomStringInterpolation { }
+
 extension String.StringInterpolation: CustomStringInterpolation { }

@@ -4,12 +4,12 @@ import Foundation
 /// Lazily reads text files. 
 public class StreamReader: Sequence, IteratorProtocol  {
 
-    let encoding : String.Encoding
-    let chunkSize : Int
-    var fileHandle : FileHandle!
-    let delimData : Data
-    var buffer : Data
-    var atEOF : Bool
+    public let encoding: String.Encoding
+    public let chunkSize: Int
+    var fileHandle: FileHandle?
+    let delimData: Data
+    var buffer: Data
+    var atEOF: Bool
 
     public init?(
         url: URL,
@@ -45,14 +45,19 @@ public class StreamReader: Sequence, IteratorProtocol  {
         while !atEOF {
             
             if let range = buffer.range(of: delimData) {
+                
                 // Convert complete line (excluding the delimiter) to a string:
-                let line = String(data: buffer.subdata(in: 0..<range.lowerBound), encoding: encoding)
+                let line = String(
+                    data: buffer.subdata(in: 0..<range.lowerBound),
+                    encoding: encoding
+                )
+                
                 // Remove line (and the delimiter) from the buffer:
                 buffer.removeSubrange(0..<range.upperBound)
                 return line
             }
             
-            let tmpData = fileHandle.readData(ofLength: chunkSize)
+            let tmpData = fileHandle!.readData(ofLength: chunkSize)
             
             if tmpData.count > 0 {
                 buffer.append(tmpData)
@@ -60,8 +65,12 @@ public class StreamReader: Sequence, IteratorProtocol  {
                 // EOF or read error.
                 atEOF = true
                 if buffer.count > 0 {
-                    // Buffer contains last line in file (not terminated by delimiter).
-                    let line = String(data: buffer as Data, encoding: encoding)
+                    // Buffer contains last line in file
+                    // (not terminated by delimiter).
+                    let line = String(
+                        data: buffer as Data,
+                        encoding: encoding
+                    )
                     buffer.count = 0
                     return line
                 }
@@ -72,14 +81,15 @@ public class StreamReader: Sequence, IteratorProtocol  {
 
     /// Start reading from the beginning of file.
     public func rewind() -> Void {
-        fileHandle.seek(toFileOffset: 0)
+        fileHandle!.seek(toFileOffset: 0)
         buffer.count = 0
         atEOF = false
     }
 
-    /// Close the underlying file. No reading must be done after calling this method.
+    /// Close the underlying file.
+    /// No reading must be done after calling this method.
     public func close() -> Void {
-        fileHandle?.closeFile()
+        fileHandle!.closeFile()
         fileHandle = nil
     }
 }

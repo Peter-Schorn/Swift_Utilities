@@ -3,90 +3,6 @@ import Foundation
 
 extension URLSession {
     
-    /**
-     Wraps around the function with the same name
-     and transforms the completion hander into a `Result<Success, Failure: Error>`.
-     
-     Transforms the completion handler from
-     ```
-     @escaping (Data?, URLResponse?, Error?) -> Void
-     ```
-     into
-     ```
-     @escaping Result<(data: Data, urlResponse: URLResponse), Error>
-     ```
-     */
-    public func dataTask(
-        with url: URL,
-        completionHandler: @escaping (
-            Result<(data: Data, urlResponse: URLResponse), Error>
-        ) -> Void
-    ) -> URLSessionDataTask {
-        
-        return self.dataTask(with: url) { data, response, error in
-            assert(
-                !(data == nil && error == nil),
-                "dataTask: Both data and error were nil"
-            )
-            assert(
-                !(data != nil && error != nil),
-                "dataTask: Both data and error were NON-nil"
-            )
-            
-            if let data = data {
-                completionHandler(.success((data: data, urlResponse: response!)))
-            }
-            else {
-                completionHandler(.failure(error ?? NSError()))
-            }
-            
-        }
-        
-    }
-    
-    /**
-    Wraps around the function with the same name
-    and transforms the completion hander into a Result.
-    
-    Transforms the completion handler from
-    ```
-    @escaping (Data?, URLResponse?, Error?) -> Void
-    ```
-    into
-    ```
-    @escaping Result<(data: Data, urlResponse: URLResponse), Error>
-    ```
-    */
-    public func dataTask(
-        with request: URLRequest,
-        completionHandler: @escaping (
-            Result<(data: Data, urlResponse: URLResponse), Error>
-        ) -> Void
-    ) -> URLSessionDataTask {
-        
-        return self.dataTask(with: request) { data, response, error in
-            assert(
-                !(data == nil && error == nil),
-                "dataTask: Both data and error were nil"
-            )
-            assert(
-                !(data != nil && error != nil),
-                "dataTask: Both data and error were NON-nil"
-            )
-            
-            if let data = data {
-                completionHandler(.success((data: data, urlResponse: response!)))
-            }
-            else {
-                completionHandler(.failure(error ?? NSError()))
-            }
-            
-        }
-        
-    }
-    
-    
-    
     public typealias DetermineResponseObject<ResponseObject: Decodable> =
             (_ httpStatusCode: Int) -> (ResponseObject.Type, decoder: JSONDecoder)
     
@@ -94,23 +10,33 @@ extension URLSession {
             (Result<ResponseObject, Error>) -> Void
     
 
+    // MARK: - Completion Wrapper -
     private func decodeJSONCompletionWrapper<
         ResponseObject: Decodable
     >(
         determineResponseObject: @escaping DetermineResponseObject<ResponseObject>,
         completion: @escaping DecodeJSONCompletion<ResponseObject>
-    ) -> ((Result<(data: Data, urlResponse: URLResponse), Error>) -> Void) {
+    ) -> (Data?, URLResponse?, Error?) -> Void {
         
-        return { result in
+        return { data, urlResponse, error in
             
             do {
-                let (data, urlResponse) = try result.get()
-                let httpResponse = urlResponse as! HTTPURLResponse
+                guard let data = data, let urlResponse = urlResponse else {
+                    completion(.failure( error ?? NSError()))
+                    return
+                }
+                guard let httpResponse = urlResponse as? HTTPURLResponse else {
+                    fatalError(
+                        "could not force-downcast URLResponse to HTTPURLResponse"
+                    )
+                }
                 
                 let (responseType, decoder) = determineResponseObject(
                     httpResponse.statusCode
                 )
-                let responseObject = try decoder.decode(responseType, from: data)
+                let responseObject = try decoder.decode(
+                    responseType, from: data
+                )
                 
                 completion(.success(responseObject))
                 
@@ -128,23 +54,27 @@ extension URLSession {
      `ResponseObject` represents the Decodable type that
      the json data will be decoded into.
      
-     Note that there is a convienence method that accepts a single response object
-     instead of a closure that determines the response object.
+     Note that there is a convienence method that accepts
+     a single response object instead of a closure
+     that determines the response object.
      
      - Parameters:
        - url: The URL of the resource.
        - determineResponseObject:
              A closure that accepts the http status code (Int)
-             from the server and uses it to determine which JSON object to decode
-             the data into, and which JSONDecoder to use.
+             from the server and uses it to determine
+             which JSON object to decode the data into,
+             and which JSONDecoder to use.
              This is useful because servers often return a different
              json object upon encountering an error.
-       - completion: Called when the request has been completed. Accepts a single
-             `Result<ResponseObject, Error>` parameter and returns Void.
+       - completion: Called when the request has been completed.
+             Accepts a single `Result<ResponseObject, Error>`
+             parameter and returns Void.
      - Returns: The url session data task.
  
-     - Warning: The URLResponse will be **force-downcasted** into HTTPURLResponse.
-           Therefore, do not use this method if you are not making a http request.
+     - Warning: The URLResponse will be **force-downcasted**
+           into HTTPURLResponse. Therefore, do not use this method
+           if you are not making a http request.
      */
     @discardableResult
     public func decodeJSON<
@@ -177,12 +107,14 @@ extension URLSession {
              be decoded into.
        - jsonDecoder: The json decoder to use when decoding the object.
              Defaults to a new instance.
-       - completion: Called when the request has been completed. Accepts a single
-             `Result<ResponseObject, Error>` parameter and returns Void.
+       - completion: Called when the request has been completed.
+              Accepts a single `Result<ResponseObject, Error>`
+              parameter and returns Void.
      - Returns: The url session data task.
 
-     - Warning: The URLResponse will be **force-downcasted** into HTTPURLResponse.
-           Therefore, do not use this method if you are not making a http request.
+     - Warning: The URLResponse will be **force-downcasted**
+           into HTTPURLResponse. Therefore, do not use
+           this method if you are not making a http request.
      */
     @discardableResult
     public func decodeJSON<
@@ -211,23 +143,27 @@ extension URLSession {
      `ResponseObject` represents the Decodable type that
      the json data will be decoded into.
      
-     Note that there is a convienence method that accepts a single response object
-     instead of a closure that determines the response object.
+     Note that there is a convienence method that
+     accepts a single response object instead
+     of a closure that determines the response object.
      
      - Parameters:
          - request: A URL request.
          - determineResponseObject:
              A closure that accepts the http status code (Int)
-             from the server and uses it to determine which JSON object to decode
-             the data into, and which JSONDecoder to use.
+             from the server and uses it to determine
+             which JSON object to decode the data into,
+             and which JSONDecoder to use.
              This is useful because servers often return a different
              json object upon encountering an error.
-         - completion: Called when the request has been completed. Accepts a single
-             `Result<ResponseObject, Error>` parameter and returns Void.
+         - completion: Called when the request has been completed.
+              Accepts a single `Result<ResponseObject, Error>`
+              parameter and returns Void.
      - Returns: The url session data task.
     
-     - Warning: The URLResponse will be **force-downcasted** into HTTPURLResponse.
-             Therefore, do not use this method if you are not making a http request.
+     - Warning: The URLResponse will be **force-downcasted**
+           into HTTPURLResponse. Therefore, do not use
+           this method if you are not making a http request.
      */
     @discardableResult
     public func decodeJSON<
@@ -260,12 +196,14 @@ extension URLSession {
              be decoded into.
        - jsonDecoder: The json decoder to use when decoding the object.
              Defaults to a new instance.
-       - completion: Called when the request has been completed. Accepts a single
-             `Result<ResponseObject, Error>` parameter and returns Void.
+       - completion: Called when the request has been completed.
+              Accepts a single `Result<ResponseObject, Error>`
+              parameter and returns Void.
      - Returns: The url session data task.
 
-     - Warning: The URLResponse will be **force-downcasted** into HTTPURLResponse.
-           Therefore, do not use this method if you are not making a http request.
+     - Warning: The URLResponse will be **force-downcasted**
+           into HTTPURLResponse. Therefore, do not use
+           this method if you are not making a http request.
     */
     @discardableResult
     public func decodeJSON<
@@ -293,8 +231,9 @@ extension URLSession {
      `ResponseObject` represents the Decodable type that
      the json data will be decoded into.
      
-     Note that there is a convienence method that accepts a single response object
-     instead of a closure that determines the response object.
+     Note that there is a convienence method that accepts
+     a single response object instead of a closure
+     that determines the response object.
      
      - Parameters:
        - url: The URL of the resource.
@@ -303,17 +242,20 @@ extension URLSession {
        - httpBody: The body of the http request.
        - httpBodyEncoder: The json encoder used to encode the body.
              Defaults to a new instance.
-       - determineResponseObject: A closure that accepts the http status code (Int)
-             from the server and uses it to determine which JSON object to decode
+       - determineResponseObject: A closure that accepts the
+             http status code (Int) from the server and uses it
+             to determine which JSON object to decode
              the data into, and which JSONDecoder to use.
              This is useful because servers often return a different
              json object upon encountering an error.
-       - completion: Called when the request has been completed. Accepts a single
-           `Result<ResponseObject, Error>` parameter and returns Void.
+       - completion: Called when the request has been completed.
+             Accepts a single `Result<ResponseObject, Error>`
+             parameter and returns Void.
      - Returns: The url session data task.
      
-     - Warning: The URLResponse will be **force-downcasted** into HTTPURLResponse.
-           Therefore, do not use this method if you are not making a http request.
+     - Warning: The URLResponse will be **force-downcasted**
+           into HTTPURLResponse. Therefore, do not use this method
+           if you are not making a http request.
      */
     @discardableResult
     public func decodeJSONWithBody<
@@ -363,7 +305,8 @@ extension URLSession {
 
     
     /**
-     Sends json data to a url and decodes the response into a `Decodable` type.
+     Sends json data to a url and decodes the response
+     into a `Decodable` type.
      
      `ResponseObject` represents the Decodable type that
      the json data will be decoded into.
@@ -377,14 +320,16 @@ extension URLSession {
              Defaults to a new instance.
        - responseObject: The Decodable type that the json data will
              be decoded into.
-       - jsonDecoder: The json decoder to use when decoding the response object.
-             Defaults to a new instance.
-       - completion: Called when the request has been completed. Accepts a single
-           `Result<ResponseObject, Error>` parameter and returns Void.
+       - jsonDecoder: The json decoder to use when decoding
+             the response object. Defaults to a new instance.
+       - completion: Called when the request has been completed.
+             Accepts a single `Result<ResponseObject, Error>`
+             parameter and returns Void.
      - Returns: The url session data task.
      
-     - Warning: The URLResponse will be **force-downcasted** into HTTPURLResponse.
-           Therefore, do not use this method if you are not making a http request.
+     - Warning: The URLResponse will be **force-downcasted**
+           into HTTPURLResponse. Therefore, do not use
+           this method if you are not making a http request.
      */
     @discardableResult
     public func decodeJSONWithBody<

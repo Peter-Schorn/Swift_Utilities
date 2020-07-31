@@ -16,13 +16,15 @@ import AppKit
 @available(macOS 10.15, *)
 public struct HyperLink: View {
 
-    /// When link is nil, this method attempts to use the display text
+    /// When `link` is nil, this method attempts to use the display text
     /// as the link.
     public init(
         link: URL? = nil,
         displayText: String,
         foregroundColor: Color = .accentColor,
-        openLinkHandler: @escaping (URL) -> Void = { NSWorkspace.shared.open($0) }
+        openLinkHandler: @escaping (URL) -> Void = { url in
+            NSWorkspace.shared.open(url)
+        }
     ) {
         self.init(
             link: link ?? URL(string: displayText),
@@ -37,7 +39,9 @@ public struct HyperLink: View {
         link: URL?,
         displayText: Text,
         foregroundColor: Color = .accentColor,
-        openLinkHandler: @escaping (URL) -> Void = { NSWorkspace.shared.open($0) }
+        openLinkHandler: @escaping (URL) -> Void = { url in
+            NSWorkspace.shared.open(url)
+        }
     ) {
     
         self.displayText = displayText

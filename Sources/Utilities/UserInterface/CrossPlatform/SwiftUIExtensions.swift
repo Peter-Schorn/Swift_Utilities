@@ -4,28 +4,31 @@ import Foundation
 import SwiftUI
 
 
-@available(macOS 10.15, iOS 13, *)
-public struct CenterInForm<V: View>: View {
-    
-    public var content: V
-    
-    public init(_ content: V) { self.content = content }
-    
-    public var body: some View {
+@available(macOS 10.15, iOS 13, watchOS 6.0, tvOS 13.0, *)
+extension View {
+
+    /// Horizontally centers the view by embedding it
+    /// in a HStack bookended by Spacers.
+    func horizontallyCentered() -> some View {
         HStack {
             Spacer()
-            content
+            self
             Spacer()
         }
     }
+    
 }
 
 
-@available(macOS 10.15, iOS 13, *)
+
+@available(macOS 10.15, iOS 13, watchOS 6.0, tvOS 13.0, *)
 public extension View {
 
-    /// Conditionally applies a modifier to a view
-    func `if`<Content: View>(_ conditional: Bool, content: (Self) -> Content) -> some View {
+    /// Conditionally applies a modifier to a view.
+    func `if`<Content: View>(
+        _ conditional: Bool,
+        content: (Self) -> Content
+    ) -> some View {
         if conditional {
             return AnyView(content(self))
         }
@@ -35,7 +38,7 @@ public extension View {
     }
     
     
-    /// Conditionally applies a modifier to a view
+    /// Conditionally applies a modifier to a view.
     func `if`<Content: View>(
         _ conditional: Bool,
         _ content1: (Self) -> Content,

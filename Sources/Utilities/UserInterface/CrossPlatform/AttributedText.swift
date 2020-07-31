@@ -1,9 +1,9 @@
-#if canImport(SwiftUI)
+// #if canImport(SwiftUI)
 
 import SwiftUI
+import Foundation
 
-
-@available(macOS 10.15, iOS 13, *)
+@available(macOS 10.15, iOS 13, watchOS 6.0, tvOS 13.0, *)
 public struct AttributedText: View {
 
     private var attributedString: NSMutableAttributedString
@@ -153,5 +153,4 @@ public struct AttributedText: View {
 }
 
 
-
-#endif
+// #endif

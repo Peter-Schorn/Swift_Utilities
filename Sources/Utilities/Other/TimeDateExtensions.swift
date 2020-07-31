@@ -1,22 +1,6 @@
 
 import Foundation
 
-
-/// Wraps around the sleep function.
-public func sleep<N: BinaryInteger>(_ interval: N) {
-    sleep(UInt32(interval))
-}
-
-
-public func currentTime() -> String {
-    let date = Date()
-    let timeFormatter = DateFormatter()
-    timeFormatter.timeStyle = .medium
-    let dateTimeString = timeFormatter.string(from: date)
-    return dateTimeString + "\n"
-}
-
-
 public extension Date {
     
     /// Alias for `timeIntervalSince1970`
@@ -46,6 +30,8 @@ public extension Date {
 
 
 
+/// repeats the provided closure the specified number of times
+/// and returns the amount of time elapsed.
 public func timeTrial(repeat r: Int, _ trial: () -> Void) -> Double {
     let stopWatch = StopWatch(startNow: true)
     for _ in 0..<r {
@@ -56,6 +42,7 @@ public func timeTrial(repeat r: Int, _ trial: () -> Void) -> Double {
 
 
 public enum TimeUnit {
+    
     case second(Double)
     case minute(Double)
     case hour(Double)
@@ -69,15 +56,15 @@ public enum TimeUnit {
         return .second(seconds)
     }
     
-    public static func +(lhs: TimeUnit, rhs: Double) -> TimeUnit {
+    public static func + (lhs: TimeUnit, rhs: Double) -> TimeUnit {
         return add(unit: lhs, num: rhs)
     }
     
-    public static func +(lhs: Double, rhs: TimeUnit) -> TimeUnit {
+    public static func + (lhs: Double, rhs: TimeUnit) -> TimeUnit {
         return add(unit: rhs, num: lhs)
     }
     
-    public static func +(lhs: TimeUnit, rhs: TimeUnit) -> TimeUnit {
+    public static func + (lhs: TimeUnit, rhs: TimeUnit) -> TimeUnit {
         let seconds = timeUnit(lhs, rhs)
         return .second(seconds)
     }

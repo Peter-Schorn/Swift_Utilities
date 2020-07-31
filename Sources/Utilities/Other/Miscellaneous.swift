@@ -2,12 +2,13 @@
 import Foundation
 
 
-public func UtilitiesTest() {
+public func utilitiesTest() {
     print("hello from the Utilities package!")
 }
 
-/// Accepts an array as input and forwards it to the print function
-/// as a variadic parameter. Also accepts a separator and terminator,
+/// Accepts an array as the first parameter
+/// and forwards it to the print function
+/// as a variadic parameter. Also accepts a separator and a terminator,
 /// with the same behavior as the print function.
 public func unpackPrint(
     _ items: [Any], separator: String = " ", terminator: String = "\n"
@@ -29,70 +30,6 @@ public func paddedPrint(
     unpackPrint(items, separator: separator, terminator: terminator)
     print(padding)
 
-}
-
-
-/// Wraps an object in a weak reference.
-/// This is useful for creating an array of weak references.
-public class WeakWrapper<T: AnyObject>: Hashable {
-    
-    /// - Warning: This function compares whether two references point to the
-    ///       same object. It **DOES NOT** compare whether the wrapped objects are
-    ///       the same because they are not required to conform to `Equatable`.
-    public static func == <T>(lhs: WeakWrapper<T>, rhs: WeakWrapper<T>) -> Bool {
-        return lhs === rhs
-    }
-    
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-    
-    public weak var object: T?
-    public let id = UUID()
-    
-    init(_ object: T) {
-        self.object = object
-    }
-    
-    
-}
-
-
-/**
- See Hasher
- 
- Body:
- ```
- var hasher = Hasher()
- for object in objects {
-     hasher.combine(object)
- }
- return hasher.finalize()
- ```
- */
-public func makeHash<H: Hashable>(_ objects: H...) -> Int {
-    return makeHash(objects)
-}
-
-/**
-See Hasher.
-
-Body:
-```
-var hasher = Hasher()
-for object in objects {
-    hasher.combine(object)
-}
-return hasher.finalize()
-```
-*/
-public func makeHash<H: Hashable>(_ objects: [H]) -> Int {
-    
-    var hasher = Hasher()
-    for object in objects {
-        hasher.combine(object)
-    }
-    return hasher.finalize()
 }
 
 
@@ -131,15 +68,6 @@ public func all(_ expressions: Bool...) -> Bool {
 /// Returns true if all expressions evaluate to the same value,
 /// else false.
 public func allEqual<E: Equatable>(_ expressions: E...) -> Bool {
-    return allEqual(expressions)
-}
-
-/// Returns true if all the elements in the sequence
-/// evaluate to the same value, else false.
-public func allEqual<S: Sequence>(
-    _ expressions: S
-) -> Bool where S.Element: Equatable {
-
     var iterator = expressions.makeIterator()
     guard let first = iterator.next() else {
         return true

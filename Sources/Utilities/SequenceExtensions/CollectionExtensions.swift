@@ -40,12 +40,10 @@ public extension Collection {
     /// self[back: 1] retrieves the last element, self[back: 2] retrieves
     /// the second to last element, and so on.
     ///
-    /// - Parameter i: the negative index of an element in the collection.
+    /// - Parameter back: the negative index of an element in the collection.
     subscript(back i: Int) -> Element {
-        let indx = self.index(self.endIndex, offsetBy: (-i))
+        let indx = self.index(self.endIndex, offsetBy: -i)
         return self[indx]
-
-        
     }
     
     /// Returns an element of the colletion at the specified index

@@ -30,39 +30,16 @@ class MathTests: XCTestCase {
         XCTAssertEqual(y, Double(16))
         
         
-        XCTAssertEqual(√Double(25.0), Double(5.0))
-                
     }
 
     func testNumbersAreClose() {
         
-        XCTAssert(numsAreClose(1.1 + 2.2, 3.3))
-        XCTAssert(numsAreClose(1.1 + 0.3, 1.4))
-        XCTAssert(numsAreClose(0.1 + 0.2, 0.3))
-        XCTAssertFalse(numsAreClose(10, 11, abs_tol: 0.9))
-        
-        do {
-            let a = 5
-            let b = 10
-            XCTAssert(numsAreClose(a, b, abs_tol: 5))
-            XCTAssertFalse(numsAreClose(a, b, abs_tol: 4))
-        }
-        do {
-            let a = 90.0
-            let b = 100.0
-            XCTAssert(numsAreClose(a, b, rel_tol: 0.1))
-        }
-        do {
-            let a = 100.0
-            let b = 100.0
-            XCTAssert(numsAreClose(a, b))
-        }
-        do {
-            let a = -5
-            let b = -10
-            XCTAssert(numsAreClose(a, b, rel_tol: 0.5))
-        }
-        
+        XCTAssert((1.1 + 2.2).isAlmostEqual(to: 3.3))
+        XCTAssert((1.1 + 0.3).isAlmostEqual(to: 1.4))
+        XCTAssert((0.1 + 0.2).isAlmostEqual(to: 0.3))
+        XCTAssert(10.isAlmostEqual(to: 9, relativeTolerance: 0.9))
+        XCTAssert(Double.infinity.isAlmostEqual(to: .infinity))
+        XCTAssertFalse(Double.nan.isAlmostEqual(to: .nan))
         
     }
     
