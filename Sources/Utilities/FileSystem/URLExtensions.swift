@@ -73,7 +73,7 @@ public extension URL {
         
     }
 
-    /// A dictionary of the query items in the url
+    /// A dictionary of the query items in the url.
     var queryItemsDict: [String: String]? {
         
         return self.queryItems?.reduce(into: [:]) { dict, query in
