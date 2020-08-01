@@ -70,8 +70,16 @@ public extension URL {
         return URLComponents(
             url: self, resolvingAgainstBaseURL: false
         )?.queryItems
+        
     }
-    
+
+    /// A dictionary of the query items in the url
+    var queryItemsDict: [String: String]? {
+        
+        return self.queryItems?.reduce(into: [:]) { dict, query in
+            dict[query.name] = query.value
+        }
+    }
     
 }
 
