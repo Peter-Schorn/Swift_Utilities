@@ -5,7 +5,7 @@ public extension URLComponents {
     init(
         scheme: String? = "https",
         host: String? = nil,
-        path: String,
+        path: String = "",
         queryItems: [URLQueryItem]? = nil
     ) {
         self.init()
