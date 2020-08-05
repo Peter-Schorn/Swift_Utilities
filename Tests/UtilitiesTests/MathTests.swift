@@ -1,22 +1,27 @@
 import Foundation
 import XCTest
 import Utilities
-
+import Numerics
 
 class MathTests: XCTestCase {
 
     static var allTests = [
-        ("testOperators", testOperators),
+        ("testComparisonOperators", testComparisonOperators),
+        ("testExponentOperators", testExponentOperators),
         ("testNumbersAreClose", testNumbersAreClose),
         ("testFactorial", testFactorial)
     ]
     
-    func testOperators() {
+    func testComparisonOperators() {
 
         XCTAssert(1 ≤ 2)
         XCTAssert(1 ≤ 1)
         XCTAssert(2 ≥ 1)
         XCTAssert(2 ≥ 2)
+        
+    }
+    
+    func testExponentOperators() {
         
         XCTAssertEqual(5 ** 2, Int(25))  // Ints
         XCTAssertEqual(5.0 ** 2.0, Double(25.0))  // Doubles
@@ -28,9 +33,9 @@ class MathTests: XCTestCase {
         var y = 4.0
         y **= 2
         XCTAssertEqual(y, Double(16))
-        
-        
+
     }
+    
 
     func testNumbersAreClose() {
         

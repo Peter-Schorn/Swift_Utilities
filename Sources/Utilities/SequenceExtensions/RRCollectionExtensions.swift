@@ -7,10 +7,12 @@ public extension RangeReplaceableCollection {
 
     /// Retrieves (and sets the value of) an element
     /// from the end of the collection backwards.
-    /// self[back: 1] retrieves the last element, self[back: 2] retrieves
+    /// self[back: 1] retrieves the last element,
+    /// self[back: 2] retrieves
     /// the second to last element, and so on.
     ///
-    /// - Parameter back: the negative index of an element in the collection.
+    /// - Parameter back: the negative index
+    ///       of an element in the collection.
     subscript(back i: Int) -> Element {
         get {
             let indx = self.index(self.endIndex, offsetBy: (-i))
@@ -23,9 +25,6 @@ public extension RangeReplaceableCollection {
         }
     }
 
-}
-
-public extension RangeReplaceableCollection {
     
     /**
      Removes the first element that satisfies the given
@@ -97,7 +96,24 @@ public extension RangeReplaceableCollection where Element: Equatable {
         return true
     }
     
-    
+    /// Removes duplicates and returns true if their were
+    /// duplicates in the array. Else returns false.
+    @discardableResult
+    mutating func removeDuplicates() -> Bool {
+        
+        
+        var hadDuplicates = false
+        var seen: [Element] = []
+        for element in self {
+            if seen.contains(element) {
+                self.remove(at: self.firstIndex(of: element)!)
+                hadDuplicates = true
+            }
+            seen.append(element)
+        }
+        
+        return hadDuplicates
+    }
     
 }
 
@@ -110,10 +126,10 @@ public extension RangeReplaceableCollection where Element: Hashable {
         
         var hadDuplicates = false
         var seen: Set<Element> = []
-        for item in self {
-            if !seen.insert(item).inserted {
+        for element in self {
+            if !seen.insert(element).inserted {
                 hadDuplicates = true
-                self.remove(at: self.firstIndex(of: item)!)
+                self.remove(at: self.firstIndex(of: element)!)
             }
         }
         
@@ -121,30 +137,6 @@ public extension RangeReplaceableCollection where Element: Hashable {
     }
     
 }
-
-public extension RangeReplaceableCollection where Element: Equatable {
-    
-    /// Removes duplicates and returns true if their were
-    /// duplicates in the array. Else returns false.
-    @discardableResult
-    mutating func removeDuplicates() -> Bool {
-        
-        
-        var hadDuplicates = false
-        var seen: [Element] = []
-        for item in self {
-            if seen.contains(item) {
-                self.remove(at: self.firstIndex(of: item)!)
-                hadDuplicates = true
-            }
-            seen.append(item)
-        }
-        
-        return hadDuplicates
-    }
-    
-}
-
 
 
 public extension Array where Element == String {

@@ -2,7 +2,7 @@ import XCTest
 
 import UtilitiesTests
 
-var tests: [XCTestCaseEntry] = []
+var tests = [XCTestCaseEntry]()
 tests += UtilitiesTests.__allTests()
 
 XCTMain(tests)

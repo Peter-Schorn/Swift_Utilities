@@ -96,3 +96,14 @@ public func resolveAlias(at url: URL) throws -> URL {
     return url
 }
 
+
+/// Encodes a dictionary into data according to
+/// `application/x-www-form-urlencoded`.
+public func formURLEncode(_ dict: [String: String]) -> Data? {
+    
+    var urlComponents = URLComponents()
+    urlComponents.queryItems = dict.map { item in
+        URLQueryItem(name: item.key, value: item.value)
+    }
+    return urlComponents.query?.data(using: .utf8)
+}

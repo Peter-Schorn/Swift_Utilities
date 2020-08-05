@@ -77,3 +77,10 @@ public func allEqual<E: Equatable>(_ expressions: E...) -> Bool {
     }
     return true
 }
+
+
+public struct GenericError: LocalizedError, CustomCodable {
+    
+    public var errorDescription: String?
+    
+}

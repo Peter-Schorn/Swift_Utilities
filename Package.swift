@@ -7,7 +7,10 @@ import PackageDescription
 let package = Package(
     name: "Utilities",
     platforms: [
-        .iOS(.v9), .macOS(.v10_10), .watchOS(.v2), .tvOS(.v9)
+        .iOS(.v9),
+        .macOS(.v10_10),
+        .watchOS(.v2),
+        .tvOS(.v9)
     ],
     products: [
         // Products define the executables and libraries produced
@@ -28,7 +31,13 @@ let package = Package(
             name: "RegularExpressions",
             url: "https://github.com/Peter-Schorn/RegularExpressions",
             "2.0.0"..<"3.0.0"
+        ),
+        .package(
+            // name: "swift-numerics",
+            url: "https://github.com/Peter-Schorn/swift-numerics",
+            "0.0.7"..<"1.0.0"
         )
+        
     ],
     targets: [
         // Targets are the basic building blocks of a package.
@@ -37,7 +46,10 @@ let package = Package(
         // and on products in packages which this package depends on.
         .target(
             name: "Utilities",
-            dependencies: ["RegularExpressions"]
+            dependencies: [
+                "RegularExpressions",
+                .product(name: "Numerics", package: "swift-numerics")
+            ]
         ),
         .target(
             name: "XCTestCaseExtensions",
@@ -48,7 +60,8 @@ let package = Package(
             dependencies: [
                 "Utilities",
                 "RegularExpressions",
-                "XCTestCaseExtensions"
+                "XCTestCaseExtensions",
+                .product(name: "Numerics", package: "swift-numerics")
             ]
         )
     ]

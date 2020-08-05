@@ -80,12 +80,12 @@ public extension Optional {
     /// Returns the wrapped value or throws `NilError`
     /// if it is nil.
     ///
-    /// - Parameter errorMsg: The message to display when an error is thrown.
-    func tryUnwrap(errorMsg: String = "") throws -> Wrapped {
+    /// - Parameter errorMsg: The message to print when an error is thrown.
+    func tryUnwrap(errorMsg: @autoclosure () -> String = "") throws -> Wrapped {
         if let wrapped = self {
             return wrapped
         }
-        throw NilError(errorMessage: errorMsg)
+        throw NilError(errorMessage: errorMsg())
     }
 
 

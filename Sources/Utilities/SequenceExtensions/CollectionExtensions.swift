@@ -1,38 +1,5 @@
 import Foundation
 
-public extension MutableCollection {
-    
-    /**
-     Calls the provided closure for each element in self,
-     passing in the index of an element and a reference to it
-     that can be mutated.
-     
-     Example usage:
-     ```
-     var numbers = [0, 1, 2, 3, 4, 5]
-
-     numbers.mutateEach { indx, element in
-         if [1, 5].contains(indx) { return }
-         element *= 2
-     }
-
-     print(numbers)
-     // [0, 1, 4, 6, 8, 5]
-     ```
-     */
-    mutating func mutateEach(
-        _ modifyElement: (Index, inout Element) throws -> Void
-    ) rethrows {
-        
-        for indx in self.indices {
-            try modifyElement(indx, &self[indx])
-        }
-
-    }
-
-}
-
-
 public extension Collection {
     
     /// Retrieves (and sets the value of) an element
@@ -50,10 +17,8 @@ public extension Collection {
     /// as an optional. Returns nil if the index is out of bounds.
     /// This can be useful for optional chaining.
     subscript(safe i: Index?) -> Element? {
-        get {
-            guard let i = i else { return nil }
-            return self.indices.contains(i) ? self[i] : nil
-        }
+        guard let i = i else { return nil }
+        return self.indices.contains(i) ? self[i] : nil
     }
     
     /// Combines `subscript(back:)` and `subscript(safe:)`
@@ -70,6 +35,21 @@ public extension Collection {
         }
         
         return nil
+    }
+    
+    
+    /// Returns an array of all the elements at the
+    /// specified indices.
+    subscript(indices indices: [Index]) -> [Element] {
+        return indices.map { indx in
+            self[indx]
+        }
+    }
+    
+    /// Returns an array of all the elements at the
+    /// specified indices.
+    subscript(indices indices: Index...) -> [Element] {
+        return self[indices: indices]
     }
     
     
@@ -108,3 +88,36 @@ public extension Collection where Index == Int {
 
 }
 
+
+
+public extension MutableCollection {
+    
+    /**
+     Calls the provided closure for each element in self,
+     passing in the index of an element and a reference to it
+     that can be mutated.
+     
+     Example usage:
+     ```
+     var numbers = [0, 1, 2, 3, 4, 5]
+
+     numbers.mutateEach { indx, element in
+         if [1, 5].contains(indx) { return }
+         element *= 2
+     }
+
+     print(numbers)
+     // [0, 1, 4, 6, 8, 5]
+     ```
+     */
+    mutating func mutateEach(
+        _ modifyElement: (Index, inout Element) throws -> Void
+    ) rethrows {
+        
+        for indx in self.indices {
+            try modifyElement(indx, &self[indx])
+        }
+
+    }
+
+}
