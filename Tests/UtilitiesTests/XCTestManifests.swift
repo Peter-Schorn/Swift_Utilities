@@ -38,9 +38,7 @@ extension MathTests {
     // to regenerate.
     static let __allTests__MathTests = [
         ("testComparisonOperators", testComparisonOperators),
-        ("testExponentOperators", testExponentOperators),
         ("testFactorial", testFactorial),
-        ("testNumbersAreClose", testNumbersAreClose),
     ]
 }
 

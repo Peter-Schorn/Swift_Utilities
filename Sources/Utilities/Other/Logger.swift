@@ -137,17 +137,18 @@ open class Logger: Equatable, Identifiable, Hashable {
         logMsgFormatter: LogMsgFormatter? = nil
     ) {
         
-        let formatter = logMsgFormatter ?? {
+        self.label = label
+        self.level = level
+        self.disabled = disabled
+        
+        self.logMsgFormatter = logMsgFormatter ?? {
             date, label, level, file, function, line, message in
             
             print("[\(label): \(level): line \(line)] \(message())")
         }
         
-        self.label = label
-        self.level = level
-        self.disabled = disabled
-        self.logMsgFormatter = formatter
         Self._allLoggers.append(WeakWrapper(self))
+        
     }
     
     deinit {
@@ -188,7 +189,7 @@ open class Logger: Equatable, Identifiable, Hashable {
                 formatter = criticalMsgFormatter
         }
         
-        // uw = unwrapped
+        /// uw = unwrapped
         let uwFormatter = formatter ?? logMsgFormatter
         
         uwFormatter(

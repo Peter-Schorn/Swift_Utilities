@@ -31,13 +31,7 @@ let package = Package(
             name: "RegularExpressions",
             url: "https://github.com/Peter-Schorn/RegularExpressions",
             "2.0.0"..<"3.0.0"
-        ),
-        .package(
-            // name: "swift-numerics",
-            url: "https://github.com/Peter-Schorn/swift-numerics",
-            "0.0.7"..<"1.0.0"
         )
-        
     ],
     targets: [
         // Targets are the basic building blocks of a package.
@@ -46,10 +40,7 @@ let package = Package(
         // and on products in packages which this package depends on.
         .target(
             name: "Utilities",
-            dependencies: [
-                "RegularExpressions",
-                .product(name: "Numerics", package: "swift-numerics")
-            ]
+            dependencies: ["RegularExpressions"]
         ),
         .target(
             name: "XCTestCaseExtensions",
@@ -60,8 +51,7 @@ let package = Package(
             dependencies: [
                 "Utilities",
                 "RegularExpressions",
-                "XCTestCaseExtensions",
-                .product(name: "Numerics", package: "swift-numerics")
+                "XCTestCaseExtensions"
             ]
         )
     ]

@@ -38,7 +38,7 @@ extension Optional: AnyOptional {
     /// This computed property must be used
     /// for swift to recognize the generic type
     /// conforming to `AnyOptional` as an Optional.
-    @inlinable
+    @inlinable @inline(__always)
     public var optional: Wrapped? {
         get { return self }
         set { self = newValue }

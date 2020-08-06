@@ -26,13 +26,20 @@ public extension Decimal {
     }
 
     /**
-     Formats the decimal as a currency string using
-     the given locale.
+    Uses `CurrencyFormatter` to convert `self` to
+    a currency string. For example, "$5.99".
     
+    - Parameters:
+      - locale: The desired locale for the currency.
+            Leave as nil to use [Locale.autoupdatingCurrent](https://developer.apple.com/documentation/foundation/locale/2293741-autoupdatingcurrent)
+          (a locale which tracks the user’s current preferences).
+      - usesGroupingSeparator: Determines whether the formatter uses
+            the grouping separator. Defaults to `true`.
+     
      If, for some reason, the number
      cannot be represented as a currency, then it is returned
      rounded to two decimal digits.
-     */
+    */
     func asCurrency(
         locale: Locale? = nil,
         usesGroupingSeparator: Bool = true
@@ -56,19 +63,4 @@ public extension Decimal {
         
     }
 
-}
-
-extension Decimal: ExpressibleByStringLiteral {
-    
-    public init(stringLiteral value: StringLiteralType) {
-        guard let decimal = Decimal(string: value) else {
-            fatalError(
-                "Could not convert string literal " +
-                "'\(value)' to decimal"
-            )
-        }
-        self = decimal
-    }
-
-    
 }
