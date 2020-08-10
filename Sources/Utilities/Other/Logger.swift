@@ -1,12 +1,21 @@
 import Foundation
 
+/// A class for logging messages.
 open class Logger: Equatable, Identifiable, Hashable {
+
+    /**
+     The type of the closure that determines
+     how the log message is formatted.
     
-    /// The type of the closure that determines
-    /// how the log message is formatted.
-    /// See `logMsgFormatter` `infoMsgFormatter`, `debugMsgFormatter`,
-    /// `warningMsgFormatter`, `errorMsgFormatter`,
-    /// and `criticalMsgFormatter`.
+     - Parameters:
+       - date: The date at which the message was logged.
+       - label: The label of the logger.
+       - level: The level of the logger
+       - file: The file in which the message was logged.
+       - function: The function in which the message was logged.
+       - line: The line at which the message was logged.
+       - message: The logging message.
+     */
     public typealias LogMsgFormatter = (
         _ date: Date, _ label: String, _ level: Level,
         _ file: String, _ function: String, _ line: UInt,
@@ -14,8 +23,8 @@ open class Logger: Equatable, Identifiable, Hashable {
     ) -> Void
     
     
-    // prevent a strong reference cycle by holding an array of
-    // weak references to each instance of Logger.
+    /// Prevent a strong reference cycle by holding an array of
+    /// weak references to each instance of Logger.
     private static var _allLoggers: [WeakWrapper<Logger>] = []
     
     /**
@@ -68,10 +77,7 @@ open class Logger: Equatable, Identifiable, Hashable {
     /**
      Gets called when a message needs to
      be logged to determine how it is formatted
-     and where the message is logged for **all** log levels.
-
-     This is used when the formatter for a
-     specific log level is left as nil (which is the default).
+     and where the message is logged.
      
      The default is to print the message using the
      builtin print function,
@@ -79,74 +85,39 @@ open class Logger: Equatable, Identifiable, Hashable {
      
      ```
      public typealias LogMsgFormatter = (
-         _ date: Date, _ label: String, _ level: Levels,
-         _ file: UInt, _ function: String, _ line: String,
-         _ message: String
+         _ date: Date, _ label: String, _ level: Level,
+         _ file: String, _ function: String, _ line: UInt,
+         _ message: () -> String
      ) -> Void
      ```
-     
-     See also `infoMsgFormatter`, `debugMsgFormatter`,
-     `warningMsgFormatter`, `errorMsgFormatter`,
-     and `criticalMsgFormatter`.
+     Default implementation:
+     ```
+     { date, label, level, file, function, line, message in
+         
+         print("[\(label): \(level): line \(line)] \(message())")
+     }
+     ```
      */
-    public var logMsgFormatter: LogMsgFormatter
-    
-    /// The formatter for customizing how
-    /// info messages are formatted and where they are logged.
-    /// If left nil (default), then `logMsgFormatter`
-    /// will be used for formatting messages.
-    /// See also `logMsgFormatter`.
-    public var infoMsgFormatter: LogMsgFormatter? = nil
-    /// The formatter for customizing how
-    /// debug messages are formatted and where they are logged.
-    /// If left nil (default), then `logMsgFormatter`
-    /// will be used for formatting messages.
-    /// See also `logMsgFormatter`.
-    public var debugMsgFormatter: LogMsgFormatter? = nil
-    /// The formatter for customizing how
-    /// warning messages are formatted and where they are logged.
-    /// If left nil (default), then `logMsgFormatter`
-    /// will be used for formatting messages.
-    /// See also `logMsgFormatter`.
-    public var warningMsgFormatter: LogMsgFormatter? = nil
-    /// The formatter for customizing how
-    /// error messages are formatted and where they are logged.
-    /// If left nil (default), then `logMsgFormatter`
-    /// will be used for formatting messages.
-    /// See also `logMsgFormatter`.
-    public var errorMsgFormatter: LogMsgFormatter? = nil
-    /// The formatter for customizing how
-    /// critical messages are formatted and where they are logged.
-    /// If left nil (default), then `logMsgFormatter`
-    /// will be used for formatting messages.
-    /// See also `logMsgFormatter`.
-    public var criticalMsgFormatter: LogMsgFormatter? = nil
-    
-    /// Completely disbles all logging messages reglardless of level
-    open var disabled: Bool
-    /// A string identifying the log level.
+    open var logMsgFormatter: LogMsgFormatter = {
+        date, label, level, file, function, line, message in
+        
+        print("[\(label): \(level): line \(line)] \(message())")
+    }
+
+    /// A string identifying the logger.
     open var label: String
-    /// The level of the logger. See `Level`
+    /// The level of the logger. See `Level`.
     open var level: Level
     public let id = UUID()
     
     public init(
         label: String,
         level: Level = .debug,
-        disabled: Bool = false,
         logMsgFormatter: LogMsgFormatter? = nil
     ) {
         
         self.label = label
         self.level = level
-        self.disabled = disabled
-        
-        self.logMsgFormatter = logMsgFormatter ?? {
-            date, label, level, file, function, line, message in
-            
-            print("[\(label): \(level): line \(line)] \(message())")
-        }
-        
         Self._allLoggers.append(WeakWrapper(self))
         
     }
@@ -170,32 +141,14 @@ open class Logger: Equatable, Identifiable, Hashable {
         line: UInt = #line
     ) {
         
-        guard !Self.allDisabled && !disabled && level >= self.level else {
+        guard !Self.allDisabled && level >= self.level else {
             return
         }
         
-        let formatter: LogMsgFormatter?
-        
-        switch level {
-            case .info:
-                formatter = infoMsgFormatter
-            case .debug:
-                formatter = debugMsgFormatter
-            case .warning:
-                formatter = warningMsgFormatter
-            case .error:
-                formatter = errorMsgFormatter
-            case .critical:
-                formatter = criticalMsgFormatter
-        }
-        
-        /// uw = unwrapped
-        let uwFormatter = formatter ?? logMsgFormatter
-        
-        uwFormatter(
+        self.logMsgFormatter(
             Date(), label, level, file, function, line, message
         )
-        
+
     }
     
     /// Logs an informational message.
@@ -277,6 +230,7 @@ open class Logger: Equatable, Identifiable, Hashable {
     /// The log level of the logger.
     public enum Level: Int, Comparable {
         
+        case disabled
         case info
         case debug
         case warning

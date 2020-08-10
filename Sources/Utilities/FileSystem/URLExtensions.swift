@@ -3,52 +3,63 @@ import Foundation
 
 public extension URL {
 
-    /// Returns a new url with the specified query item appended to it.
-    func appending(
-        _ queryItem: URLQueryItem
-    ) -> URL {
+    /// Returns a new url with the specified query items appended to it.
+    func appending(queryItems: [URLQueryItem]) -> URL? {
 
         guard var urlComponents = URLComponents(
             url: self, resolvingAgainstBaseURL: false
         ) else {
-            fatalError(
-                "trying to append query item: " +
-                "couldn't get url components from url"
-            )
+            return nil
         }
 
-        // Create array of existing query items
-        var currentQueryItems: [URLQueryItem] = urlComponents.queryItems ??  []
+        var currentQueryItems = urlComponents.queryItems ??  []
 
-        currentQueryItems.append(queryItem)
+        currentQueryItems.append(contentsOf: queryItems)
 
-
-        // Append updated query items array in the url component object
         urlComponents.queryItems = currentQueryItems
 
-        // Returns the url from new url components
-        return urlComponents.url!
+        return urlComponents.url
     }
     
-    func appending(page: Int) -> URL {
-        return self.appending(URLQueryItem(name: "page", value: String(page)))
+    /// Returns a new url with the specified query items appended to it.
+    func appending(queryItems: [String: String]) -> URL? {
+        
+        let urlQueryItems = queryItems.map { item in
+            URLQueryItem(name: item.key, value: item.value)
+        }
+        return self.appending(queryItems: urlQueryItems)
+    
+    }
+    
+    /// Appends the query items to the url.
+    mutating func append(queryItems: [URLQueryItem]) {
+        guard let url = self.appending(queryItems: queryItems) else {
+            fatalError(
+                """
+                could not construct new url after appending query items.
+                original url: '\(self)'
+                queryItems: '\(queryItems)'
+                """
+            )
+        }
+        self = url
     }
 
-    mutating func append(page: Int) {
-        self = self.appending(page: page)
+    /// Appends the query items to the url.
+    mutating func append(queryItems: [String: String]) {
+        let urlQueryItems = queryItems.map { item in
+            URLQueryItem(name: item.key, value: item.value)
+        }
+        self.append(queryItems: urlQueryItems)
     }
     
-    /// Appends a query item to the url
-    mutating func append(_ queryItem: URLQueryItem) {
-        self = self.appending(queryItem)
-    }
     
     /// The last component of the path excluding the file extension.
-    /// Calls self.lastPathComponent and strips all text after the last period.
+    /// Calls self.lastPathComponent and strips all text
+    /// after and including the last period.
     var lastPathName: String {
         return self.lastPathComponent.strip(.fileExt)
     }
-    
     
     /// You tell me what the canonical path is.
     @available(macOS 10.12, iOS 10.0, watchOS 3.0, tvOS 10.0, *)
@@ -67,10 +78,7 @@ public extension URL {
     
     /// The query items in the url.
     var queryItems: [URLQueryItem]? {
-        return URLComponents(
-            url: self, resolvingAgainstBaseURL: false
-        )?.queryItems
-        
+        return components?.queryItems
     }
 
     /// A dictionary of the query items in the url.
@@ -78,6 +86,57 @@ public extension URL {
         
         return self.queryItems?.reduce(into: [:]) { dict, query in
             dict[query.name] = query.value
+        }
+    }
+    
+    /// The url components of this url.
+    var components: URLComponents? {
+        return URLComponents(
+            url: self, resolvingAgainstBaseURL: false
+        )
+    }
+    
+    
+    init?(
+        scheme: String?,
+        host: String?,
+        path: String? = nil,
+        queryItems: [String: String]? = nil
+    ) {
+    
+        if let url = URLComponents(
+            scheme: scheme,
+            host: host,
+            path: path,
+            queryItems: queryItems
+        ).url {
+            self = url
+        }
+        else {
+            return nil
+        }
+        
+    }
+        
+    init?(
+        scheme: String?,
+        host: String?,
+        path: String? = nil,
+        queryItems: [URLQueryItem]?,
+        fragment: String? = nil
+    ) {
+        
+        if let url = URLComponents(
+            scheme: scheme,
+            host: host,
+            path: path,
+            queryItems: queryItems,
+            fragment: fragment
+        ).url {
+            self = url
+        }
+        else {
+            return nil
         }
     }
     
@@ -99,6 +158,9 @@ public func resolveAlias(at url: URL) throws -> URL {
 
 /// Encodes a dictionary into data according to
 /// `application/x-www-form-urlencoded`.
+///
+/// Returns `nil` if the query string cannot be converted to
+/// `Data` using a utf-8 character encoding.
 public func formURLEncode(_ dict: [String: String]) -> Data? {
     
     var urlComponents = URLComponents()

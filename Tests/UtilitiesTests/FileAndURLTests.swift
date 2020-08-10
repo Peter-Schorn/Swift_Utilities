@@ -107,13 +107,17 @@ class FileAndURLTests: XCTestCase {
         
         if var endpoint = URL(string: "https://api.themoviedb.org/0/account/movies") {
             
-            endpoint.append(URLQueryItem(name: "page space", value: "5"))
+            endpoint.append(
+                queryItems: [URLQueryItem(name: "page space", value: "5")]
+            )
             
             XCTAssertEqual(
                 endpoint.absoluteString,
                 "https://api.themoviedb.org/0/account/movies?page%20space=5"
             )
-            endpoint.append(URLQueryItem(name: "language", value: "english"))
+            endpoint.append(
+                queryItems: [URLQueryItem(name: "language", value: "english")]
+            )
             
             XCTAssertEqual(
                 endpoint.absoluteString,
@@ -125,21 +129,6 @@ class FileAndURLTests: XCTestCase {
             XCTFail("should've gotten url from string")
         }
 
-        
-        if var endpoint = URL(
-            string: "https://developers.themoviedb.org/3/account/get-movie-watchlist"
-        ) {
-            
-            endpoint.append(page: 5)
-            XCTAssertEqual(
-                endpoint.absoluteString,
-                "https://developers.themoviedb.org/3/account/get-movie-watchlist?page=5"
-            )
-            
-        }
-        else {
-            XCTFail("should've gotten url from string")
-        }
         
         
     }
