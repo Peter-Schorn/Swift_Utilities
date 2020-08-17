@@ -14,7 +14,7 @@ import Foundation
  ```
  extension Array where Element: AnyOptional {
 
-     func removeIfNil() -> [Self.Element.Wrapped] {
+     func removedIfNil() -> [Self.Element.Wrapped] {
          return self.compactMap { $0.optional }
      }
 
@@ -34,10 +34,10 @@ public protocol AnyOptional {
 
 extension Optional: AnyOptional {
 
-    /// Gets and sets self. **Does not unwrap the value**.
-    /// This computed property must be used
+    /// A computed property that directly gets and sets `self`.
+    /// **Does not unwrap self**. This must be used
     /// for swift to recognize the generic type
-    /// conforming to `AnyOptional` as an Optional.
+    /// conforming to `AnyOptional` as an `Optional`.
     @inlinable @inline(__always)
     public var optional: Wrapped? {
         get { return self }
@@ -51,7 +51,8 @@ public extension Sequence where Element: AnyOptional {
     /// Returns a new array in which each element in the Sequence
     /// is either unwrapped and added to the new array,
     /// or not added to the new array if nil.
-    func removeIfNil() -> [Element.Wrapped] {
+    @inlinable @inline(__always)
+    func removedIfNil() -> [Element.Wrapped] {
         return self.compactMap { $0.optional }
     }
     
@@ -81,7 +82,10 @@ public extension Optional {
     /// if it is nil.
     ///
     /// - Parameter errorMsg: The message to print when an error is thrown.
-    func tryUnwrap(errorMsg: @autoclosure () -> String = "") throws -> Wrapped {
+    func tryUnwrap(
+        errorMsg: @autoclosure () -> String = ""
+    ) throws -> Wrapped {
+        
         if let wrapped = self {
             return wrapped
         }

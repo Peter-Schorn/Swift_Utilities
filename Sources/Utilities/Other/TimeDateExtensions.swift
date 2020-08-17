@@ -120,19 +120,21 @@ public func timeUnit(_ timeUnits: TimeUnit...) -> Double {
 
 // MARK: - StopWatch -
 
-/// Keeps track of the time elapsed
-open class StopWatch {
+/// Keeps track of time elapsed.
+public struct StopWatch {
 
     public private(set) var startTime: Date?
     public private(set) var isPaused = true
     private var _timeElapsed: Double
     
     /**
-     If startNow is set to true (false by default), then the stopwatch
-     is started upon instantiation.
-     By default, the stopwatch starts counting from 0 seconds,
-     but this can be customized by passing in a number
-     to `stargingAt`
+     Creates a stopwatch.
+     
+     - Parameters:
+       - startNow: If `false` (default) then the stopwatch will be initialized in
+           a paused state. If `true`, then the stopwatchc will start immediately.
+       - startingAt: The time, in seconds, that the stopwatch starts at.
+           Default 0.
      */
     public init(startNow: Bool = false, startingAt: Double = 0) {
         self._timeElapsed = startingAt
@@ -144,7 +146,7 @@ open class StopWatch {
     /// Returns the amount of time on the stopwatch.
     /// This method can be called when the stopwatch is running
     /// and when it is paused.
-    open var timeElapsed: Double {
+    public var timeElapsed: Double {
         if self.isPaused {
             return self._timeElapsed
         }
@@ -154,11 +156,11 @@ open class StopWatch {
         return 0
     }
     
-    /// Resumes the stopwatch. By default, the stopwatch is instantiated
+    /// Resumes the stopwatch. By default, the stopwatch is initialized
     /// in a paused state. Calling resume for the first time
     /// starts the stopwatch. If the stopwatch was not paused, then
     /// this method has no effect.
-    open func resume() {
+    public mutating func resume() {
         if self.isPaused {
             self.startTime = Date()
             self.isPaused = false
@@ -167,7 +169,7 @@ open class StopWatch {
     
     /// Pauses the stopwatch. If the stopwatch was already paused,
     /// then this method has no effect.
-    open func pause() {
+    public mutating func pause() {
         if !self.isPaused {
             if let start = self.startTime {
                 self._timeElapsed -= start.timeIntervalSinceNow
@@ -177,7 +179,7 @@ open class StopWatch {
     }
     
     /// Toggles the stopwatch between paused and unpaused.
-    open func toggle() {
+    public mutating func toggle() {
         if self.isPaused {
             self.resume()
         }
@@ -187,7 +189,7 @@ open class StopWatch {
     }
     
     /// sets timeElapsed to 0 and pauses the stopwatch.
-    open func reset() {
+    public mutating func reset() {
         self.startTime = nil
         self._timeElapsed = 0
         self.isPaused = true
@@ -198,7 +200,7 @@ open class StopWatch {
     /// passing in a negative number will decrement the time.
     ///
     /// - Parameter seconds: The number of seconds to offset the time by.
-    open func offsetTime(by seconds: Double) {
+    public mutating func offsetTime(by seconds: Double) {
         self._timeElapsed += seconds
     }
     

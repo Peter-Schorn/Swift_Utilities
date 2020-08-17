@@ -40,6 +40,23 @@ public extension URLComponents {
         self.fragment = fragment
     }
     
+    init(
+        scheme: String?,
+        host: String?,
+        path: String? = nil,
+        queryString: String?,
+        fragment: String? = nil
+    ) {
+        self.init()
+        self.scheme = scheme
+        self.host = host
+        if let path = path {
+            self.path = path
+        }
+        self.query = queryString
+        self.fragment = fragment
+    }
+    
     
     /// A dictionary of the query items in the url components.
     var queryItemsDict: [String: String]? {

@@ -32,6 +32,9 @@ public extension URL {
     }
     
     /// Appends the query items to the url.
+    ///
+    /// - Warning: Throws a fatalError if a new URL could
+    ///       not be constructed.
     mutating func append(queryItems: [URLQueryItem]) {
         guard let url = self.appending(queryItems: queryItems) else {
             fatalError(
@@ -46,6 +49,9 @@ public extension URL {
     }
 
     /// Appends the query items to the url.
+    ///
+    /// - Warning: Throws a fatalError if a new URL could
+    ///       not be constructed.
     mutating func append(queryItems: [String: String]) {
         let urlQueryItems = queryItems.map { item in
             URLQueryItem(name: item.key, value: item.value)
@@ -101,14 +107,16 @@ public extension URL {
         scheme: String?,
         host: String?,
         path: String? = nil,
-        queryItems: [String: String]? = nil
+        queryItems: [String: String]? = nil,
+        fragment: String? = nil
     ) {
     
         if let url = URLComponents(
             scheme: scheme,
             host: host,
             path: path,
-            queryItems: queryItems
+            queryItems: queryItems,
+            fragment: fragment
         ).url {
             self = url
         }
@@ -140,6 +148,29 @@ public extension URL {
         }
     }
     
+    init?(
+        scheme: String?,
+        host: String?,
+        path: String? = nil,
+        queryString: String?,
+        fragment: String? = nil
+    ) {
+        
+        if let url = URLComponents(
+            scheme: scheme,
+            host: host,
+            path: path,
+            queryString: queryString,
+            fragment: fragment
+        ).url {
+            self = url
+        }
+        else {
+            return nil
+        }
+    }
+    
+    
 }
 
 
@@ -156,7 +187,7 @@ public func resolveAlias(at url: URL) throws -> URL {
 }
 
 
-/// Encodes a dictionary into data according to
+/// Encodes a dictionary of queries into data according to
 /// `application/x-www-form-urlencoded`.
 ///
 /// Returns `nil` if the query string cannot be converted to

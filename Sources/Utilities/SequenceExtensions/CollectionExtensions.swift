@@ -2,8 +2,7 @@ import Foundation
 
 public extension Collection {
     
-    /// Retrieves (and sets the value of) an element
-    /// from the end of the collection backwards.
+    /// Retrieves an element from the end of the collection backwards.
     /// self[back: 1] retrieves the last element, self[back: 2] retrieves
     /// the second to last element, and so on.
     ///
