@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "RegularExpressions",
+        "repositoryURL": "https://github.com/Peter-Schorn/RegularExpressions",
+        "state": {
+          "branch": null,
+          "revision": "e5a688590be2650bcf916f7d5c65cce40cc5a6c2",
+          "version": "2.0.7"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

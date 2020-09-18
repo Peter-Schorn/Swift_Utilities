@@ -1,10 +1,19 @@
 
-#if canImport(SwiftUI) && os(iOS)
+// #if canImport(SwiftUI) && os(iOS)
+#if canImport(SwiftUI)
+
+#if os(macOS)
+import AppKit
+typealias PlatformColor = NSColor
+#else
+import UIKit
+typealias PlatformColor = UIColor
+#endif
 
 import Foundation
 import SwiftUI
 
-@available(iOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, *)
 extension Color {
 
     public init(hex: String) {
@@ -23,7 +32,7 @@ extension Color {
         b = CGFloat((hexNumber & 0x0000ff00) >> 8) / 255
         a = CGFloat(hexNumber & 0x000000ff) / 255
 
-        let color = UIColor(red: r, green: g, blue: b, alpha: a)
+        let color = PlatformColor(red: r, green: g, blue: b, alpha: a)
         self.init(color)
     }
     

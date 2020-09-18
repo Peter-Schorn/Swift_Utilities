@@ -77,7 +77,7 @@ public extension Collection where Element: BinaryFloatingPoint {
 
 public extension Collection where Index == Int {
 
-    /// Splits Collection into an array of arrays,
+    /// Splits the collection into an array of arrays,
     /// each of which will have the specified size.
     func chunked(size: Int) -> [[Element]] {
         return stride(from: 0, to: self.count, by: size).map {
