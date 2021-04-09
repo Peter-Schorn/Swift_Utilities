@@ -1,5 +1,4 @@
 import Foundation
-import SwiftUI
 import RegularExpressions
 
 
@@ -101,9 +100,13 @@ public extension CustomStringInterpolation {
     mutating func appendInterpolation(_ value: CVarArg, numFormat: String) {
         self.appendInterpolation(value.format(numFormat))
     }
+
 }
 
+#if canImport(SwiftUI)
+import SwiftUI
 @available(macOS 10.15, iOS 13, watchOS 6.0, tvOS 13.0, *)
 extension LocalizedStringKey.StringInterpolation: CustomStringInterpolation { }
+#endif
 
 extension String.StringInterpolation: CustomStringInterpolation { }

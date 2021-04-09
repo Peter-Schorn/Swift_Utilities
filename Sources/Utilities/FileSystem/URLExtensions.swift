@@ -173,6 +173,7 @@ public extension URL {
     
 }
 
+#if canImport(ObjectiveC)
 
 /// If the url is an alias, returns the path that the alias points to.
 /// Else, returns the original URL.
@@ -185,6 +186,8 @@ public func resolveAlias(at url: URL) throws -> URL {
     }
     return url
 }
+
+#endif
 
 
 /// Encodes a dictionary of queries into data according to

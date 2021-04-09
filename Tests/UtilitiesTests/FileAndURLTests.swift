@@ -3,7 +3,7 @@ import XCTest
 import Utilities
 
 
-class FileAndURLTests: XCTestCase {
+class FileAndURLTests: BaseTestCase {
 
     static var allTests = [
         ("testShellScripting", testShellScripting),

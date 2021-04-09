@@ -3,7 +3,7 @@ import XCTest
 import Utilities
 
 
-class PropertyWrapperTests: XCTestCase {
+class PropertyWrapperTests: BaseTestCase {
     
     static var allTests = [
         ("testPropertyWrapper", testPropertyWrapper),

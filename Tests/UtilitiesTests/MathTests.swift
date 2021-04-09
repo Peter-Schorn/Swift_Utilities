@@ -2,7 +2,7 @@ import Foundation
 import XCTest
 import Utilities
 
-class MathTests: XCTestCase {
+class MathTests: BaseTestCase {
 
     static var allTests = [
         ("testComparisonOperators", testComparisonOperators),

@@ -3,7 +3,7 @@ import XCTest
 import Utilities
 
 
-class MiscellaneousTests: XCTestCase {
+class MiscellaneousTests: BaseTestCase {
 
     static var allTests = [
         ("testAllAny", testAllAny),

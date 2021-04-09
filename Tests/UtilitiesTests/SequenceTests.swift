@@ -3,7 +3,7 @@ import XCTest
 import Utilities
 
 
-class SequenceTests: XCTestCase {
+class SequenceTests: BaseTestCase {
     
     static var allTests = [
         ("testCollectionDuplicatesAndAppendUnique", testCollectionDuplicatesAndAppendUnique),

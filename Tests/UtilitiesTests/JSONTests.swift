@@ -4,7 +4,7 @@ import Utilities
 import XCTestCaseExtensions
 
 
-class JSONTests: XCTestCase {
+class JSONTests: BaseTestCase {
     
     static var allTests = [
         ("testJSONAndTempDir", testJSONAndTempDir)

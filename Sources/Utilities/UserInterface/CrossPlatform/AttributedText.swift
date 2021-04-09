@@ -1,5 +1,4 @@
-// #if canImport(SwiftUI)
-
+ #if canImport(SwiftUI)
 import SwiftUI
 import Foundation
 
@@ -123,6 +122,25 @@ public struct AttributedText: View {
         }
     }
     
+    public struct TextModifier2 {
+        
+        let modified: (Text) -> Text
+        
+        public init(_ modified: @escaping (Text) -> Text) {
+            self.modified = modified
+        }
+
+        static let bold = Self { $0.bold() }
+        static let italic = Self { $0.italic() }
+        static let strikethrough = Self { $0.strikethrough() }
+        static let underline = Self { $0.underline() }
+
+        static func foregroundColor(_ color: Color?) -> Self {
+            self.init { $0.foregroundColor(color) }
+        }
+
+    }
+    
     // MARK: Enum overloads
     
     public func style(
@@ -152,5 +170,4 @@ public struct AttributedText: View {
     
 }
 
-
-// #endif
+#endif

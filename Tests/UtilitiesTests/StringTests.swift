@@ -3,7 +3,7 @@ import XCTest
 import Utilities
 
 
-class StringTests: XCTestCase {
+class StringTests: BaseTestCase {
     
     static var allTests = [
         ("testStringFormatting", testStringFormatting),

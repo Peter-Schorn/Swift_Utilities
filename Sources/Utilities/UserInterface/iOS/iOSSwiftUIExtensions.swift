@@ -1,14 +1,12 @@
-
-// #if canImport(SwiftUI) && os(iOS)
-#if canImport(SwiftUI)
-
-#if os(macOS)
+#if canImport(AppKit)
 import AppKit
 typealias PlatformColor = NSColor
-#else
+#elseif canImport(UIKit)
 import UIKit
 typealias PlatformColor = UIColor
 #endif
+
+#if (canImport(AppKit) || canImport(UIKit)) && canImport(SwiftUI)
 
 import Foundation
 import SwiftUI
