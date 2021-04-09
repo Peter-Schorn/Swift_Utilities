@@ -16,6 +16,9 @@ class FileAndURLTests: BaseTestCase {
     
     func testShellScripting() {
         
+        let apiKey = ProcessInfo.processInfo.environment["API_KEY"]
+        XCTAssertNotNil(apiKey)
+
         #if os(macOS)
         if #available(macOS 10.13, *) {
             
