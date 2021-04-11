@@ -14,8 +14,10 @@ class FileAndURLTests: BaseTestCase {
     ]
     
     
-    func testShellScripting() {
+    func testShellScripting() throws {
         
+        throw XCTSkip("skipping")
+
         let apiKey = ProcessInfo.processInfo.environment["API_KEY"]
         XCTAssertNotNil(apiKey)
 
