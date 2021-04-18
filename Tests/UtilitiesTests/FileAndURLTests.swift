@@ -16,11 +16,6 @@ class FileAndURLTests: BaseTestCase {
     
     func testShellScripting() throws {
         
-        throw XCTSkip("skipping")
-
-        let apiKey = ProcessInfo.processInfo.environment["API_KEY"]
-        XCTAssertNotNil(apiKey)
-
         #if os(macOS)
         if #available(macOS 10.13, *) {
             
@@ -110,6 +105,8 @@ class FileAndURLTests: BaseTestCase {
     
     func testAppendQueryItemToURL() {
         
+        XCTFail("intentional failure")
+
         if var endpoint = URL(string: "https://api.themoviedb.org/0/account/movies") {
             
             endpoint.append(
